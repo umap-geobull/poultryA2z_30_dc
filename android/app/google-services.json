@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1092536869888",
+    "project_id": "ecommerce-appbuilder",
+    "storage_bucket": "ecommerce-appbuilder.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092536869888:android:711ee88b66a6416df7a4e5",
+        "android_client_info": {
+          "package_name": "com.poultryapp.poultry_a2z"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092536869888-jm5331ptkp60gfogh4qk263b6fb893td.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.poultryapp.poultry_a2z",
+            "certificate_hash": "2c0404a51d82ce3b776c4ebf3ac5275f9ee5cf96"
+          }
+        },
+        {
+          "client_id": "1092536869888-5sm5gcojahvcisu5je9ee7ldmef008q5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt8bj4UACvakZfiSy-0c1o_ivfplm7jEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092536869888-5sm5gcojahvcisu5je9ee7ldmef008q5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1092536869888-g668d3sngute1oosld4tjkbagvd9iu8a.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.geobull.geobullEcommerce"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
