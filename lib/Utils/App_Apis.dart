@@ -29,6 +29,7 @@ const String get_main_cat_component_list = "get_main_category_components";
 const String get_main_category_brands = "get_main_category_brands";
 
 const String get_main_categories = "get_main_category_list";
+const String get_main_category_lists = "get_main_category_lists";
 const String add_main_categories = "add_main_category";
 const String edit_main_categories = "edit_main_category";
 const String delete_main_categories = "delete_main_category";
@@ -333,3 +334,8 @@ const String image_subscriptions_history="image_subscriptions_history";
 const String get_product_formui="get_product_formui";
 const String update_product_formui="update_product_formui";
 const String add_product_formui="add_product_formui";
+
+
+
+//vendor poultry
+const String add_pountry_vendor="add_pountry_vendor";

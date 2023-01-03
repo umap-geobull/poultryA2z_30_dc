@@ -377,7 +377,7 @@ class _SelectMainCategory extends State<SelectMainCategory> {
   onAddMainCategorylistener(){
     Navigator.pop(context);
     getMainCategories();
-  }
+}
 
   void getMainCategories() async {
     if(mounted){
