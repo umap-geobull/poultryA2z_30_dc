@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:poultry_a2z/Add_Vendor_Screen/Add_Vendor.dart';
 import 'package:poultry_a2z/Home/Components/AddNewComponent/get_title_alignment.dart';
 import 'package:poultry_a2z/Home/Components/AddNewComponent/models/home_main_category_details.dart';
 import 'package:poultry_a2z/Home/Components/MainCategories/ShowMaincategoryListFromHome.dart';
@@ -9,8 +11,6 @@ import 'package:poultry_a2z/Home/Components/MainCategories/edit_main_bottomsheet
 import 'package:poultry_a2z/Home/Components/MainCategories/selec_main_categories.dart';
 import 'package:poultry_a2z/Home/Components/component_constants.dart';
 import 'package:poultry_a2z/Utils/App_Apis.dart';
-import 'package:poultry_a2z/Utils/size_config.dart';
-import '../../../MainCategories/main_category_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
@@ -106,8 +106,10 @@ class _CategoriesState extends State<Categories> {
   }
 
   goToMainCategoryScreen(Content mainCategoryList){
-    Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        MainCategoryScreen(mainCategoryList.maincategoryAutoId,mainCategoryList.mainCategoryName)));
+    // Navigator.push(context, MaterialPageRoute(builder: (context) =>
+    //     MainCategoryScreen(mainCategoryList.maincategoryAutoId,mainCategoryList.mainCategoryName)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => Add_Vendor(main_cat_id:mainCategoryList.maincategoryAutoId, main_cat_name: mainCategoryList.mainCategoryName)));
   }
 
   @override
@@ -371,6 +373,7 @@ class _CategoriesState extends State<Categories> {
       ),
     );
   }
+
 
   showAddCategory(){
     routes = MaterialPageRoute(builder: (context) => SelectMainCategory(onSavelistener,component_id));

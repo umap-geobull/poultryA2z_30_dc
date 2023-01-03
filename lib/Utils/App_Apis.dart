@@ -282,10 +282,10 @@ const String get_Finance_Reports = "get_Vendor_finance_Reports";
 
 
 //grobiz apis
-const String app_base_type_base_url='https://gruzen.in/GrobizEcommerceSuperAdmin/images/app_data/';
-const String app_logo_base_url='https://gruzen.in/GrobizEcommerceSuperAdmin/images/admin_logo/';
-const String demo_logo_base_url='https://gruzen.in/GrobizEcommerceSuperAdmin/images/logos/';
-const String gallery_image_base_url='https://gruzen.in/GrobizEcommerceSuperAdmin/images/grobiz_banner_images/';
+const String app_base_type_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/app_data/';
+const String app_logo_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/admin_logo/';
+const String demo_logo_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/logos/';
+const String gallery_image_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/grobiz_banner_images/';
 
 
 const String get_all_app_base = "get_all_app_base";

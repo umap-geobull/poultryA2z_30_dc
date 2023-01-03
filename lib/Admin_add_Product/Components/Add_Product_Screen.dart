@@ -104,12 +104,11 @@ class _Add_Product_ScreenState extends State<Add_Product_Screen> with TickerProv
   List<GetSizeList> size_List = [];
   String size_title='';
   late Route routes;
-  String user_id = "";
 
   List<Product_Info_Model> product_info_model_List=[];
   List<GetCurrencyList> getCurrencyList=[];
   bool isApiCallProcessing=false;
-  String baseUrl='', admin_auto_id='',app_type_id='';
+  String baseUrl='', admin_auto_id='',app_type_id='',user_id = '';
   bool isedit=false;
   List<String> timeUnititems = [
     'Min',
@@ -118,8 +117,6 @@ class _Add_Product_ScreenState extends State<Add_Product_Screen> with TickerProv
     'Week',
     'Month',
   ];
-
-  bool isTabsAvaialble=false;
 
   Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
       secondaryButtonColor=Colors.orangeAccent;
@@ -272,8 +269,7 @@ class _Add_Product_ScreenState extends State<Add_Product_Screen> with TickerProv
                               },
                               child: const Text("Yes",style: TextStyle(color: Colors.black54,fontSize: 13)),
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.green[200],
-                                onPrimary: Colors.green,
+                                backgroundColor: Colors.green[200],
                                 minimumSize: const Size(70,30),
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(2.0)),
@@ -290,8 +286,7 @@ class _Add_Product_ScreenState extends State<Add_Product_Screen> with TickerProv
                               child: const Text("No",
                                   style: TextStyle(color: Colors.black54,fontSize: 13)),
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.blue[200],
-                                onPrimary: Colors.blue,
+                                backgroundColor: Colors.blue[200],
                                 minimumSize: const Size(70,30),
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(2.0)),
@@ -391,7 +386,6 @@ class _Add_Product_ScreenState extends State<Add_Product_Screen> with TickerProv
           Add_Product_Layout(
               context, index)
       );
-
     }
     return tabs;
   }

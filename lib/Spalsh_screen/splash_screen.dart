@@ -25,7 +25,7 @@ import 'package:upgrader/upgrader.dart';
 
 
 class SplashScreen extends StatefulWidget{
-  String admin_auto_id='636371e2bd3e6182c00869d2';
+  String admin_auto_id='63b2612f9821ce37456a4b31';
 
   SplashScreen(this.admin_auto_id);
 
@@ -34,10 +34,10 @@ class SplashScreen extends StatefulWidget{
 }
 
 class _SplashScreenState extends State<SplashScreen>{
-  String admin_auto_id = '636371e2bd3e6182c00869d2';
+  String admin_auto_id = '63b2612f9821ce37456a4b31';
   
   String businessDetailsId='',businessName='',businessLogo='';
-  String app_base_url='https://gruzen.in/GrobizEcommerceAppBuilder/';
+  String app_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/';
   bool iSApiCallProcessing=false;
 
   String user_type='';
@@ -59,7 +59,8 @@ class _SplashScreenState extends State<SplashScreen>{
     saveAppBaseUrl();
     getAppLogo();
     //getDeepLinkAdminId();
-    getAppMaintenanceStatus();
+    //getAppMaintenanceStatus();
+    checkAdminId();
   }
 
   saveAppBaseUrl() async{
@@ -201,7 +202,7 @@ class _SplashScreenState extends State<SplashScreen>{
 
   // saveDeepLinkAdminId() async{
   //   SharedPreferences prefs= await SharedPreferences.getInstance();
-  //   prefs.setString('deep_link_admin_id','636371e2bd3e6182c00869d2');
+  //   prefs.setString('deep_link_admin_id','63b2612f9821ce37456a4b31');
   // }
   //
   // getDeepLinkAdminId() async{
@@ -211,7 +212,7 @@ class _SplashScreenState extends State<SplashScreen>{
   //   if(id!=null){
   //     if(this.mounted){
   //       setState(() {
-  //         deep_link_admin_auto_id_session = '636371e2bd3e6182c00869d2';
+  //         deep_link_admin_auto_id_session = '63b2612f9821ce37456a4b31';
   //       });
   //     }
   //   }

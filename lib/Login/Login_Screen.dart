@@ -27,9 +27,9 @@ class StartState extends State<LoginScreen> {
 
   String error_msg="";
 
-  String app_base_url='https://gruzen.in/GrobizEcommerceAppBuilder/';
+  String app_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/';
 
-  String admin_auto_id='636bafd640e19ce8b70a92e2';
+  String admin_auto_id='63b2612f9821ce37456a4b31';
   String appName='';
   String businessDetailsId='',businessName='',businessLogo='';
 

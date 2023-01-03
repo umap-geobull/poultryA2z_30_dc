@@ -30,15 +30,12 @@ import 'package:poultry_a2z/grobiz_start_pages/UserBusiness/select_applogo_botto
 import 'package:poultry_a2z/grobiz_start_pages/create_dynamic_link.dart';
 import 'package:poultry_a2z/grobiz_start_pages/grobiz_help/contact_us/ContactUsModel.dart';
 import 'package:poultry_a2z/grobiz_start_pages/order_history/order_history_model.dart';
-import 'package:poultry_a2z/grobiz_start_pages/plans/grobiz_plans.dart';
 import 'package:poultry_a2z/grobiz_start_pages/profile/admin_profile_model.dart';
 import 'package:poultry_a2z/grobiz_start_pages/verify_email/email_otp_screen.dart';
 import '../Cart/Cart_Screen.dart';
 import '../Cart/model/cart_count_model.dart';
 import '../Product_Details/Product_List_User.dart';
 import '../Utils/App_Apis.dart';
-import '../Wishlist/Wishlist.dart';
-import '../grobiz_start_pages/welcome/app_base_list_model.dart';
 import '../grobiz_start_pages/welcome/type_app_base_model.dart';
 import 'Components/AddNewComponent/Offers/edit_offer.dart';
 import 'Components/AddNewComponent/Products/ProductNew.dart';
@@ -60,7 +57,6 @@ import 'package:badges/badges.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
-
 import 'all_category_types.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -206,7 +202,6 @@ class _HomeScreen extends State<HomeScreen> {
         });
       }
     }
-
   }
 
   showHideSetting(){
@@ -326,8 +321,7 @@ class _HomeScreen extends State<HomeScreen> {
                           showHideSetting()
                         },
                         child: Container(
-                          child: Icon(Icons.keyboard_arrow_down,color: Colors.orange,size: 20,),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               boxShadow: <BoxShadow>[
                                 BoxShadow(
                                     color: Colors.black54,
@@ -342,9 +336,10 @@ class _HomeScreen extends State<HomeScreen> {
                               )
                           ),
                           width: 50,
+                          child: const Icon(Icons.keyboard_arrow_down,color: Colors.orange,size: 20,),
                         ),):
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           boxShadow: <BoxShadow>[
                             BoxShadow(
                                 color: Colors.black54,
@@ -370,6 +365,7 @@ class _HomeScreen extends State<HomeScreen> {
                                   children: <Widget>[
                                     eraseDataStatus=='No'?
                                     Container(
+                                      margin: EdgeInsets.all(5),
                                       child:  ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.redAccent,
@@ -379,11 +375,11 @@ class _HomeScreen extends State<HomeScreen> {
                                           showAlertErase()
                                         },
                                       ),
-                                      margin: EdgeInsets.all(5),
                                     ):
                                     Container(),
 
                                     Container(
+                                      margin: const EdgeInsets.all(5),
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.grey[100],
@@ -398,16 +394,16 @@ class _HomeScreen extends State<HomeScreen> {
                                           }
                                         },
                                       ),
-                                      margin: const EdgeInsets.all(5),
                                     ),
 
                                     Container(
+                                      margin: const EdgeInsets.all(5),
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.grey[100],
                                         ),
                                         child:Row(
-                                          children: <Widget>[
+                                          children: const <Widget>[
                                             Icon(Icons.edit,color: black,size: 12,),
                                             Text('App UI',style: TextStyle(color: Colors.black87,fontSize: 12),),
                                           ],
@@ -416,7 +412,6 @@ class _HomeScreen extends State<HomeScreen> {
                                           gotoAppUi();
                                         },
                                       ),
-                                      margin: const EdgeInsets.all(5),
                                     ),
 
                                     // Container(
@@ -501,6 +496,7 @@ class _HomeScreen extends State<HomeScreen> {
                         Column(
                           children: <Widget>[
                             Container(
+                              margin: const EdgeInsets.all(5),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
@@ -516,7 +512,6 @@ class _HomeScreen extends State<HomeScreen> {
                                   }
                                 },
                               ),
-                              margin: const EdgeInsets.all(5),
                             ),
                             SizedBox(height: 10,),
 
@@ -2008,16 +2003,20 @@ class _HomeScreen extends State<HomeScreen> {
     final body={
       'user_auto_id':user_id,
     };
-
+print(body.toString());
     Uri uri=Uri.parse(url);
     final response = await http.post(uri,body: body);
     print(response.toString());
     if (response.statusCode == 200) {
       final resp = jsonDecode(response.body);
       int  status = resp['status'];
-      print('email very count: '+status.toString());
-      email_verification_status = resp['email_verification_status'];
-      print("status=>"+email_verification_status.toString());
+      if(status==1) {
+        print('email very count: ' + status.toString());
+        email_verification_status = resp['email_verification_status'];
+        print("status=>"+email_verification_status.toString());
+      }else{
+
+      }
       if(mounted){
         setState(() {});
       }

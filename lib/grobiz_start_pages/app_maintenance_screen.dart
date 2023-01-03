@@ -36,7 +36,7 @@ class _MaintenanceScreen extends State<MaintenanceScreen> {
   String admin_auto_id='';
   String user_type='';
   String deep_link_admin_auto_id_session = '';
-  String app_base_url='https://gruzen.in/GrobizEcommerceAppBuilder/';
+  String app_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/';
 
   @override
   void initState() {

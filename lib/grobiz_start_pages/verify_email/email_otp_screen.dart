@@ -333,7 +333,7 @@ class _OtpScreen extends State<OtpScreen> {
       int status=resp['status'];
       if(status==1){
         AdminProfileModel adminProfileModel=AdminProfileModel.fromJson(json.decode(response.body));
-        email=adminProfileModel.data[0].email;
+        email=adminProfileModel.data[0].emailId;
         sendOtpApi();
         if(this.mounted){
           setState(() {});

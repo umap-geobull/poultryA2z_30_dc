@@ -36,18 +36,17 @@ class _OtpScreen extends State<OtpScreen> {
   FocusNode? pin4FocusNode;
   String otp='',token='';
   String val_one='',val_two='',val_three='',val_four='';
-  String app_base_url='https://gruzen.in/GrobizEcommerceAppBuilder/';
+  String app_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/';
   bool isVerifyOtpApiProcessing=false,isResendApiProcessing=false;
 
-  String admin_auto_id='636bafd640e19ce8b70a92e2';
+  String admin_auto_id='63b2612f9821ce37456a4b31';
 
   late Timer _timer;
   int _start = 40;
   bool showTimer=true;
   bool showResendButton=false;
 
-  Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
-      secondaryButtonColor=Colors.orangeAccent;
+  Color appBarColor=Colors.white,appBarIconColor=Colors.black, primaryButtonColor=Colors.orange, secondaryButtonColor=Colors.orangeAccent;
 
   void getappUi() async {
     SharedPreferences prefs= await SharedPreferences.getInstance();
@@ -422,10 +421,9 @@ class _OtpScreen extends State<OtpScreen> {
         // Fluttertoast.showToast(msg: 'Signed in successfully', backgroundColor: Colors.grey,);
         String userAutoId=resp['user_id'];
         String userType=resp['user_type'];
-        // String admin_auto_id=resp['admin_auto_id'];
+        String admin_auto_id=resp['admin_auto_id'];
         String category_id=resp['category_id'];
-
-        saveLoginSession(userAutoId,userType,"636bafd640e19ce8b70a92e2",category_id);
+        saveLoginSession(userAutoId,userType,admin_auto_id,category_id);
       }
       else {
         String msg=resp['msg'];
@@ -444,14 +442,13 @@ class _OtpScreen extends State<OtpScreen> {
     prefs.setString('user_type', userType);
     prefs.setString('admin_auto_id', admin_auto_id);
     prefs.setString('app_type_id',category_id);
-    print("userType"+userType);
+    print("userType "+userType);
     print("app type id "+ category_id);
     print("set");
 
     Fluttertoast.showToast(msg: "Signed in successfully", backgroundColor: Colors.grey,);
 
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
   }
 
   void getBaseUrl() async {

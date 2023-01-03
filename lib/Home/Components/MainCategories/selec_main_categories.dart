@@ -63,6 +63,7 @@ class _SelectMainCategory extends State<SelectMainCategory> {
     if(baseUrl!=null && adminId!=null && userId!=null && apptypeid!=null){
       this.baseUrl=baseUrl;
       this.admin_auto_id=adminId;
+      print("admin id"+admin_auto_id.toString());
       this.userId=userId;
       this.app_type_id=apptypeid;
       setState(() {});
@@ -385,24 +386,27 @@ class _SelectMainCategory extends State<SelectMainCategory> {
       });
     }
     var url=baseUrl+'api/'+get_main_categories;
+    print(url);
     var uri = Uri.parse(url);
 
     final body = {
       "admin_auto_id":admin_auto_id,
       "app_type_id": app_type_id,
     };
-
+print(body.toString());
     final response = await http.post(uri, body: body);
     if (response.statusCode == 200) {
       isApiCallProcessing=false;
 
       final resp=jsonDecode(response.body);
       int status=resp['status'];
+      print("status"+status.toString());
       if(status==1){
         MainCategoryModel mainCategoryModel=MainCategoryModel.fromJson(json.decode(response.body));
         mainCategoryList=mainCategoryModel.getmainCategorylist;
 
         print(mainCategoryList.toString());
+        print("Size of shoes"+mainCategoryList.length.toString());
         if(mounted){
           setState(() {});
         }
