@@ -16,6 +16,7 @@ import 'Add_Vacancy.dart';
 import 'ApplyJobs.dart';
 import 'Model/Jobs_Model.dart';
 import 'Model/job_result_model.dart';
+import 'MyAppliedJobs.dart';
 
 class Job_List extends StatefulWidget {
   Job_List(
@@ -218,30 +219,30 @@ class _Job_ListState extends State<Job_List> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        child: Container(
-                            alignment: Alignment.center,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 35,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                color: secondaryButtonColor,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              child: Text("  Apply Jobs   ",textAlign: TextAlign.center,style: TextStyle(color: appBarIconColor)),
-                            )
-                        ),
-                        onTap: (){
-                          Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs()));
-                        },
-                      )
-                  ),
+                  // Expanded(
+                  //     flex: 1,
+                  //     child: GestureDetector(
+                  //       child: Container(
+                  //           alignment: Alignment.center,
+                  //           child: Container(
+                  //             alignment: Alignment.center,
+                  //             height: 35,
+                  //             width: 100,
+                  //             decoration: BoxDecoration(
+                  //               color: secondaryButtonColor,
+                  //               shape: BoxShape.rectangle,
+                  //               borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  //             ),
+                  //             child: Text("  Apply Jobs   ",textAlign: TextAlign.center,style: TextStyle(color: appBarIconColor)),
+                  //           )
+                  //       ),
+                  //       onTap: (){
+                  //         Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs()));
+                  //       },
+                  //     )
+                  // ),
 
-                  Expanded(
+                  user_type=='Admin'?Expanded(
                       flex: 1,
                       child: GestureDetector(
                         child: Container(
@@ -262,7 +263,33 @@ class _Job_ListState extends State<Job_List> {
                           Navigator.push(context,  MaterialPageRoute(builder: (context) => AddVacancyScreen()));
                         },
                       )
+                  ):Container(),
+
+                  //user_type!='Admin'?
+                  Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        child: Container(
+                            alignment: Alignment.center,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 35,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: secondaryButtonColor,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              child: Text("  My Applied Jobs  ",textAlign: TextAlign.center,style: TextStyle(color: appBarIconColor)),
+                            )
+                        ),
+                        onTap: (){
+                         Navigator.push(context,  MaterialPageRoute(builder: (context) => MyAppliedJobs()));
+                        },
+                      )
                   )
+                      //:Container(),
+
                 ],
               ),),
             SingleChildScrollView(
@@ -282,88 +309,6 @@ class _Job_ListState extends State<Job_List> {
                             ),
                             child: Row(
                               children: [
-                                // GestureDetector(
-                                //   child: SizedBox(
-                                //     width: 120,
-                                //     child: Stack(children: [
-                                //       SizedBox(
-                                //           width: 120,
-                                //           height: 170,
-                                //           child: Container(
-                                //               color: Colors.grey[100],
-                                //               child: ClipRRect(
-                                //                 borderRadius: const BorderRadius.only(
-                                //                   bottomLeft: Radius.circular(8),
-                                //                   topLeft: Radius.circular(8),
-                                //                 ),
-                                //                 child: productList.productImages.isNotEmpty
-                                //                     ? CachedNetworkImage(
-                                //                   fit: BoxFit.fill,
-                                //                   imageUrl: baseUrl+product_base_url + product.productImages[0].productImage,
-                                //                   placeholder: (context, url) => Container(
-                                //                       decoration: BoxDecoration(
-                                //                         color: Colors.grey[400],
-                                //                       )),
-                                //                   errorWidget: (context, url, error) =>
-                                //                   const Icon(Icons.error),
-                                //                 ) :
-                                //                 Container(
-                                //                     child: const Icon(Icons.error),
-                                //                     decoration: BoxDecoration(
-                                //                       color: Colors.grey[400],
-                                //                     )),
-                                //               )
-                                //           )
-                                //       ),
-                                //       product.offerData.isNotEmpty && product.offerData[0].offer.isNotEmpty && product.offerData[0].offer!='0'?
-                                //       Container(
-                                //         height: 15,
-                                //         width: 45,
-                                //         alignment: Alignment.center,
-                                //         decoration: const BoxDecoration(
-                                //           borderRadius: BorderRadius.only(
-                                //             topLeft: Radius.circular(8),
-                                //           ),
-                                //           color: Colors.green,
-                                //         ),
-                                //         child: Text(
-                                //           product.offerData[0].offer + "% off",
-                                //           style: const TextStyle(
-                                //               color: Colors.white, fontSize: 11),
-                                //         ),
-                                //       ):
-                                //       product.offerPercentage.isNotEmpty && product.offerPercentage!='0'?
-                                //       Container(
-                                //         height: 15,
-                                //         width: 45,
-                                //         alignment: Alignment.center,
-                                //         decoration: const BoxDecoration(
-                                //           borderRadius: BorderRadius.only(
-                                //             topLeft: Radius.circular(8),
-                                //           ),
-                                //           color: Colors.green,
-                                //         ),
-                                //         child: Text(
-                                //           product.offerPercentage + "% off",
-                                //           style: const TextStyle(
-                                //               color: Colors.white, fontSize: 11),
-                                //         ),
-                                //       ):
-                                //       Container(),
-                                //       Align(
-                                //           alignment: Alignment.bottomRight,
-                                //           child:product.totalNoOfReviews!=0?Container(
-                                //             width: 65,
-                                //             height: 30,
-                                //             alignment: Alignment.bottomRight,
-                                //             child: totalRatingUi(product.avgRating,product.totalNoOfReviews),
-                                //           ):Container())
-                                //     ]),
-                                //   ),
-                                //   onTap: ()=>{
-                                //     showProductDetails(product.productAutoId)
-                                //   },
-                                // ),
                                 Expanded(
                                     flex: 1,
                                     child: Container(
@@ -424,7 +369,7 @@ class _Job_ListState extends State<Job_List> {
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
-                                                          Text(
+                                                          const Text(
                                                             "Description: ",
                                                             style: TextStyle(color: Colors.black, fontSize: 14),
                                                           ),
@@ -448,30 +393,24 @@ class _Job_ListState extends State<Job_List> {
                                                   alignment: Alignment.bottomCenter,
                                                   child: Row(
                                                     crossAxisAlignment: CrossAxisAlignment.end,
-                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                      const Flexible(
+                                                       Flexible(
                                                         flex: 1,
                                                         child: SizedBox(
                                                           height: 35,
-                                                          //child:
-                                                          /* ElevatedButton(
-                                                          style: ElevatedButton.styleFrom(
-                                                              primary: primaryButtonColor,
-                                                              textStyle: const TextStyle(fontSize: 20)),
-                                                          onPressed: () {
-                                                            //showEditPage(product.productAutoId);
-                                                          },
-                                                          child: const Center(
-                                                            child: Text(
-                                                              'Edit',
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Colors.white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),*/
+                                                          child:
+                                                          job_list[index].applied_job_count.toString()==''||job_list[index].applied_job_count==0?
+                                                            const Text("Total Applicants : 0",
+                                                             style: TextStyle(
+                                                             fontSize: 14,
+                                                             color: Colors.black,
+                                                           ),):
+                                                          Text("Total Applicants : "+job_list[index].applied_job_count.toString()!,
+                                                            style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Colors.black,
+                                                            ),)
                                                         ),
                                                       ),
                                                       const SizedBox(
@@ -486,6 +425,7 @@ class _Job_ListState extends State<Job_List> {
                                                                 backgroundColor: secondaryButtonColor,
                                                                 textStyle: const TextStyle(fontSize: 20)),
                                                             onPressed: () {
+                                                              Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs(job_list[index].id)));
                                                               //showAlert(product.productAutoId);
                                                             },
                                                             child: const Center(

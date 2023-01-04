@@ -16,7 +16,7 @@ const String view_icon='assets/images/view.svg';
 const String share_icon='assets/images/share_icon.svg';
 const String send_icon='assets/images/send_icon.svg';
 const String like_fill_icon='assets/images/like_fill.svg';
-
+const String profile_pic_base_url = "images/profiles/";
 
 const String send_login_otp = "send_login_otp";
 const String login = "login";
@@ -341,6 +341,7 @@ const String add_job_vacancy="add_job_vacancy";
 const String get_job_vacancy="get_job_vacancy";
 const String delete_job_vacancy="delete_job_vacancy";
 const String apply_jobs="apply_jobs";
+const String get_applied_jobs="get_applied_jobs";
 
 
 //Consultant

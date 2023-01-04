@@ -351,9 +351,9 @@ class _HomeScreen extends State<HomeScreen> {
                         ),
                         child: Column(
                           children: <Widget>[
-                            Container(
-                                margin: const EdgeInsets.only(top: 5, bottom: 5),
-                                child: Vendor_Menu(user_id,admin_auto_id)),
+                            // Container(
+                            //     margin: const EdgeInsets.only(top: 5, bottom: 5),
+                            //     child: Vendor_Menu(user_id,admin_auto_id)),
 
                             Container(
                               width: MediaQuery.of(context).size.width,

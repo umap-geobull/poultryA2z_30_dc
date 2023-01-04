@@ -40,6 +40,7 @@ class ConsultData {
     required this.availableTo,
     required this.description,
     required this.resume,
+    required this.profile_photo,
     required this.rdate,
     required this.updatedAt,
     required this.createdAt,
@@ -59,6 +60,7 @@ class ConsultData {
   late final String availableTo;
   late final String description;
   late final String resume;
+  late final String profile_photo;
   late final String rdate;
   late final String updatedAt;
   late final String createdAt;
@@ -79,6 +81,7 @@ class ConsultData {
     availableTo = json['available_to'];
     description = json['description'];
     resume = json['resume'];
+    profile_photo = json['profile_photo'];
     rdate = json['rdate'];
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
@@ -101,6 +104,7 @@ class ConsultData {
     _data['available_to'] = availableTo;
     _data['description'] = description;
     _data['resume'] = resume;
+    _data['profile_photo'] = profile_photo;
     _data['rdate'] = rdate;
     _data['updated_at'] = updatedAt;
     _data['created_at'] = createdAt;

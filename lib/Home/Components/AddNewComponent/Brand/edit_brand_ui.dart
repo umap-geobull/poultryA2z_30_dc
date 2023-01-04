@@ -88,7 +88,7 @@ class _EditBrand extends State<EditBrand> {
           height: 400,
           child:  GridView.builder(
               itemCount: mainCategoryList.length,
-              physics: const NeverScrollableScrollPhysics(),
+              //physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 1/0.4,
@@ -234,7 +234,7 @@ class _EditBrand extends State<EditBrand> {
                                   ):
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                        primary: Colors.blue,
+                                        backgroundColor: Colors.blue,
                                         minimumSize: const Size(80, 25)
                                     ),
                                     child: const Text('Save'),
@@ -258,7 +258,7 @@ class _EditBrand extends State<EditBrand> {
                                   Container():
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                        primary: Colors.redAccent,
+                                        backgroundColor: Colors.redAccent,
                                         minimumSize: const Size(80, 25)
                                     ),
                                     child: const Text('Delete'),

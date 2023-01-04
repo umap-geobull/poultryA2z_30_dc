@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -287,7 +288,17 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                                           width:
                                               MediaQuery.of(context).size.width,
                                           height: 220,
-                                          child: Image.asset(
+                                          child: consultList[index].profile_photo.isNotEmpty
+                                              ? CachedNetworkImage(
+                                            fit: BoxFit.fill,
+                                            imageUrl: baseUrl+profile_pic_base_url+ consultList[index].profile_photo,
+                                            placeholder: (context, url) => Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey[400],
+                                                )),
+                                            errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                          ) :Image.asset(
                                             consultantList[0].logo,
                                             fit: BoxFit.fill,
                                           ),
