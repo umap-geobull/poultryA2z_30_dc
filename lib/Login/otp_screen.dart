@@ -13,6 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:getwidget/getwidget.dart';
 
+import '../Sign_Up/vendor_signup_catagory.dart';
+
 class OtpScreen extends StatefulWidget {
   String mobile_number;
   String country_code;
@@ -445,10 +447,29 @@ class _OtpScreen extends State<OtpScreen> {
     print("userType "+userType);
     print("app type id "+ category_id);
     print("set");
-
+    String? userID = prefs.getString('user_id');
+    print("user id ${userID}");
     Fluttertoast.showToast(msg: "Signed in successfully", backgroundColor: Colors.grey,);
-
-    Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
+    if(userType == "Vendor"){
+      if(prefs.getBool('VENDOR_ADDED') != null){
+        if(prefs.getBool('VENDOR_ADDED') == true){
+          Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
+        }else{
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) => VendorSignupCatagory()),
+          );
+        }
+      }else{
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (context) => VendorSignupCatagory()),
+        );
+      }
+    }else {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          HomeScreen.routeName, (Route<dynamic> route) => false);
+    }
   }
 
   void getBaseUrl() async {
