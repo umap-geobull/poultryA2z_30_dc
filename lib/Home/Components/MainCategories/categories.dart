@@ -108,8 +108,8 @@ class _CategoriesState extends State<Categories> {
   goToMainCategoryScreen(Content mainCategoryList){
     // Navigator.push(context, MaterialPageRoute(builder: (context) =>
     //     MainCategoryScreen(mainCategoryList.maincategoryAutoId,mainCategoryList.mainCategoryName)));
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => Add_Vendor(main_cat_id:mainCategoryList.maincategoryAutoId, main_cat_name: mainCategoryList.mainCategoryName)));
+    // Navigator.push(context,
+    //     MaterialPageRoute(builder: (context) => Add_Vendor(main_cat_id:mainCategoryList.maincategoryAutoId, main_cat_name: mainCategoryList.mainCategoryName)));
   }
 
   @override

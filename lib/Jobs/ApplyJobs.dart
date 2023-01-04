@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:poultry_a2z/Utils/App_Apis.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
-
+import 'package:file_picker/file_picker.dart';
 import '../Utils/coustom_bottom_nav_bar.dart';
 import '../Utils/enums.dart';
 
@@ -26,16 +29,14 @@ class _ApplyJobs extends State<ApplyJobs> {
   TextEditingController tv_name = TextEditingController();
   TextEditingController tv_mobile = TextEditingController();
   TextEditingController tv_experience = TextEditingController();
-  TextEditingController tv_address = TextEditingController();
   TextEditingController tv_expected_salary = TextEditingController();
-  // TextEditingController tv_latitude = TextEditingController();
-  // TextEditingController tv_longitude = TextEditingController();
   TextEditingController tv_category = TextEditingController();
   TextEditingController tv_state = TextEditingController();
   TextEditingController tv_country = TextEditingController();
   TextEditingController tv_address_type = TextEditingController();
   List<String> selected_categories=[];
   String selectedJobs='';
+  bool isfileuploaded=false;
 
   Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
       secondaryButtonColor=Colors.orangeAccent;
@@ -54,7 +55,9 @@ class _ApplyJobs extends State<ApplyJobs> {
     'Other'
   ];
   String category='Select Category';
-
+  bool loaded = false;
+  bool isaddApiCallProcessing=false;
+  late File resume_file;
   Future<String?> getUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('user_id');
@@ -194,7 +197,7 @@ class _ApplyJobs extends State<ApplyJobs> {
                         ),
                       ),
 
-                      GestureDetector(
+                      !isfileuploaded?GestureDetector(
                           onTap: showImageDialog,
                             child:
                             Container(
@@ -219,7 +222,7 @@ class _ApplyJobs extends State<ApplyJobs> {
                                   )
                                 ],)
                             ),
-                          ),
+                          ):Text(resume_file.path.toString()),
 
                       const SizedBox(height: 15),
                       SizedBox(width: 200,
@@ -227,6 +230,7 @@ class _ApplyJobs extends State<ApplyJobs> {
                         onPressed: () {
                           if(checkValidations()==true){
                             //addUserAddress();
+                            apply_job();
                           }
                         },
                         child: const Text('Save'),
@@ -257,6 +261,7 @@ class _ApplyJobs extends State<ApplyJobs> {
         bottomBarColor,bottomMenuIconColor,),
     );
   }
+
   showSelectcategory() {
     showDialog(
       context: context,
@@ -313,6 +318,69 @@ class _ApplyJobs extends State<ApplyJobs> {
     );
   }
 
+  Future apply_job() async {
+    if(mounted) {
+      setState(() {
+       isaddApiCallProcessing = true;
+      });
+    }
+    var url = baseUrl + 'api/' + apply_jobs;
+
+    var uri = Uri.parse(url);
+
+    var request = http.MultipartRequest("POST", uri);
+
+    try {
+      if (resume_file != null) {
+        request.files.add(
+          http.MultipartFile(
+            'resume',
+            resume_file.readAsBytes().asStream(),
+            await resume_file.length(),
+            filename: resume_file.path.split('/').last,
+          ),
+        );
+      } else {
+        request.fields["resume"] = '';
+      }
+    } catch (exception) {
+      print('resume not selected');
+      request.fields["resume"] = '';
+    }
+    request.fields["candidate_name"] = tv_name.text;
+    request.fields["mobile_no"] = tv_mobile.text;
+    request.fields["experience"] = tv_experience.text;
+    request.fields["expected_salary"] = tv_expected_salary.text;
+    request.fields["category"] = tv_category.text;
+    request.fields["user_auto_id"] = user_id;
+    print(request.fields.toString());
+    http.Response response =
+    await http.Response.fromStream(await request.send());
+    print(response.statusCode.toString());
+
+    if (response.statusCode == 200) {
+      setState(() {
+        isaddApiCallProcessing = false;
+      });
+      final resp = jsonDecode(response.body);
+      //String message=resp['msg'];
+      int status = resp['status'];
+      if (status == 1) {
+        Fluttertoast.showToast(
+          msg: "Applied successfully",
+          backgroundColor: Colors.grey,
+        );
+        // widget.onSaveCallback();
+        Navigator.pop(context);
+      } else {
+        Fluttertoast.showToast(
+          msg: "Something went wrong.Please try later",
+          backgroundColor: Colors.grey,
+        );
+      }
+    }
+  }
+
   showcolorlistUi() {
     return SizedBox(
       width: MediaQuery.of(context).size.width/2,
@@ -335,6 +403,7 @@ class _ApplyJobs extends State<ApplyJobs> {
                   Container(
                     height: 22,
                     width: 22,
+                    margin: const EdgeInsets.all(5),
                     child: Checkbox(
                       onChanged: (value) {
                         if (mounted) {
@@ -342,7 +411,7 @@ class _ApplyJobs extends State<ApplyJobs> {
                             if (isAdded(Category_list[index]) == true)
                             {
                               selected_categories.remove(Category_list[index]);
-                              //print(selected_manufacturer_id.toString());
+                              print(selected_categories.toString());
                              // widget.onSaveCallback(selected_manufacturer_id);
                             }
                             else {
@@ -354,7 +423,6 @@ class _ApplyJobs extends State<ApplyJobs> {
                       },
                       value: isAdded(Category_list[index]),
                     ),
-                    margin: const EdgeInsets.all(5),
                   ),
                   Flexible(
                     child: Text(
@@ -425,21 +493,21 @@ class _ApplyJobs extends State<ApplyJobs> {
     }
     else  if(tv_experience.text.isEmpty){
       Fluttertoast.showToast(
-        msg: 'Please add pincode',
+        msg: 'Please add experience',
         backgroundColor: Colors.black,
       );
       return false;
     }
     else  if(tv_category.text.isEmpty){
       Fluttertoast.showToast(
-        msg: 'Please add city',
+        msg: 'Please select category',
         backgroundColor: Colors.black,
       );
       return false;
     }
-    else  if(tv_address.text.isEmpty){
+    else  if(tv_expected_salary.text.isEmpty){
       Fluttertoast.showToast(
-        msg: 'Please add address details',
+        msg: 'Please add expected salary',
         backgroundColor: Colors.black,
       );
       return false;
@@ -462,8 +530,25 @@ class _ApplyJobs extends State<ApplyJobs> {
               children: <Widget>[
                 Container(
                   child: ElevatedButton(
-                    onPressed: () {
-                     // getImage(ImageSource.camera);
+                    onPressed: () async {
+                      //get(ImageSource.camera);
+                      FilePickerResult? result = await FilePicker.platform.pickFiles(
+                        type: FileType.custom,
+                        allowedExtensions: ['pdf', 'doc'],
+                        allowMultiple: false
+                      );
+                      if (result != null) {
+                        PlatformFile file = result.files.first;
+                        resume_file=File(file.path!);
+                        isfileuploaded=true;
+                        print(file.name);
+                        print(file.bytes);
+                        print(file.size);
+                        print(file.extension);
+                        print(file.path);
+                      } else {
+                        print('No file selected');
+                      }
                     },
                     child: const Text("File Manager",
                         style: TextStyle(color: Colors.black54, fontSize: 13)),
@@ -479,22 +564,22 @@ class _ApplyJobs extends State<ApplyJobs> {
                 const SizedBox(
                   height: 10,
                 ),
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      //getImage(ImageSource.gallery);
-                    },
-                    child: const Text("Drive",
-                        style: TextStyle(color: Colors.white, fontSize: 13)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: secondaryButtonColor,
-                      minimumSize: const Size(150, 30),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                  ),
-                ),
+                // Container(
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       //getImage(ImageSource.gallery);
+                //     },
+                //     child: const Text("Drive",
+                //         style: TextStyle(color: Colors.white, fontSize: 13)),
+                //     style: ElevatedButton.styleFrom(
+                //       backgroundColor: secondaryButtonColor,
+                //       minimumSize: const Size(150, 30),
+                //       shape: const RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           )),

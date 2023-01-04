@@ -1,8 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:getwidget/getwidget.dart';
+import '../Utils/App_Apis.dart';
 import '../Utils/coustom_bottom_nav_bar.dart';
 import '../Utils/enums.dart';
+import 'package:http/http.dart' as http;
 
 class AddVacancyScreen extends StatefulWidget {
   const AddVacancyScreen({
@@ -14,30 +19,19 @@ class AddVacancyScreen extends StatefulWidget {
 }
 
 class _AddVacancyScreenState extends State<AddVacancyScreen> {
-  // List<String> Arrival_List = [
-  //   'Select category',
-  //   'Grocery',
-  //   'Flats',
-  //   'Clothing',
-  //   'Furniture',
-  //   'Repair & Services',
-  // ];
-  // String? selectedValue;
-  // String selectedcategory="";
-  // bool isApiCallProcessing=false;
-  // bool enablesearch=false;
-  // List<Specification> specificationlist=[];
-  // List<Product_Info_Model> product_info_model_List=[];
-  TextEditingController tv_businessnamecontroller = new TextEditingController();
-  TextEditingController tv_ownernamecontroller = new TextEditingController();
-  TextEditingController tv_discriptioncontroller = new TextEditingController();
-  TextEditingController searchcontroller = TextEditingController();
+
+  TextEditingController jobtitle_controller = new TextEditingController();
+  TextEditingController experience_controller = new TextEditingController();
+  TextEditingController salary_controller = new TextEditingController();
+  TextEditingController description_controller = TextEditingController();
+
+  bool isApiCallProcessing=false;
   Color appBarColor = Colors.white,
       appBarIconColor = Colors.black,
       primaryButtonColor = Colors.orange,
       secondaryButtonColor = Colors.orangeAccent;
   String user_id = '';
-  String baseUrl = '', admin_auto_id = '';
+  String baseUrl = '', admin_auto_id = '',app_type_id='';
   Color bottomBarColor=Colors.white, bottomMenuIconColor=Color(0xFFFF7643);
 
   @override
@@ -67,14 +61,7 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              // product_info_model_List.isNotEmpty?Container(
-              //   decoration: BoxDecoration(
-              //       border: Border.all(color: Colors.black12)
-              //   ),
-              //   child:  ImagesUi(),):
-              // GestureDetector(
-              //     onTap: fetch_images,
-              //     child:
+
                   Container(
                       height: 150,
                       width: MediaQuery.of(context).size.width,
@@ -84,47 +71,14 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
                       child: SizedBox(
                         height: 140,width: 140,
                         child:Image.asset('assets/job_vacancy.png'),)),
-            // ),
-              // const SizedBox(
-              //   height: 10,),
 
-              // const Text("Product Name",
-              //     style: TextStyle(color: Colors.black, fontSize: 16)),
-              // const SizedBox(
-              //   height: 8,
-              // ),
-              // InputText(),
-              // const Text("Price Range",
-              //     style: TextStyle(color: Colors.black, fontSize: 16)),
-              // const SizedBox(
-              //   height: 8,
-              // ),
-              // const SizedBox(
-              //   height: 10,),
-              // SizedBox(
-              //   height: 50,
-              //   child: TextField(
-              //     // maxLines: 1,
-              //     // controller: tv_name,
-              //     textAlignVertical: TextAlignVertical.center,
-              //     decoration: const InputDecoration(
-              //       labelText: "Business Name",
-              //       labelStyle: TextStyle(fontWeight: FontWeight.w100),
-              //       contentPadding: EdgeInsets.all(15),
-              //       border: OutlineInputBorder(),
-              //     ),
-              //     style: const TextStyle(
-              //     ),
-              //     keyboardType: TextInputType.text,
-              //   ),
-              // ),
               const SizedBox(
                 height: 10,
               ),
               SizedBox(
                 height: 50,
                 child: TextField(
-                  controller: tv_businessnamecontroller,
+                  controller: jobtitle_controller,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
                     labelText: 'Job Title',
@@ -139,26 +93,10 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
               const SizedBox(
                 height: 10,
               ),
-              // SizedBox(
-              //   height: 50,
-              //   child: TextField(
-              //     // maxLines: 1,
-              //     // controller: tv_name,
-              //     textAlignVertical: TextAlignVertical.center,
-              //     decoration: const InputDecoration(
-              //       labelText: "Owner Name",
-              //       contentPadding: EdgeInsets.all(15),
-              //       border: OutlineInputBorder(),
-              //     ),
-              //     style: const TextStyle(
-              //     ),
-              //     keyboardType: TextInputType.text,
-              //   ),
-              // ),
               SizedBox(
                 height: 50,
                 child: TextField(
-                  controller: tv_businessnamecontroller,
+                  controller: experience_controller,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
                     labelText: 'Experience',
@@ -176,7 +114,7 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
               SizedBox(
                 height: 50,
                 child: TextField(
-                  controller: tv_businessnamecontroller,
+                  controller: salary_controller,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
                     labelText: 'Salary Expectation',
@@ -194,7 +132,7 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
               SizedBox(
                 height: 100,
                 child: TextField(
-                  controller: tv_businessnamecontroller,
+                  controller: description_controller,
                   textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
                     labelText: 'Description',
@@ -209,10 +147,14 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
               const SizedBox(
                 height: 15,
               ),
-              SizedBox(width: 200,
+
+              isApiCallProcessing==false?SizedBox(width: 200,
                 child: ElevatedButton(
                   onPressed: () {
-
+                    if(isValid())
+                      {
+                        _onSave();
+                      }
                   },
                   child: const Text('Save'),
                   style: ElevatedButton.styleFrom(
@@ -222,25 +164,57 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
                     shadowColor: Colors.grey,
                     elevation: 5,
                   ),
-                ),)
+                ),):
+              isApiCallProcessing==true?
+              Container(
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width,
+                child: const GFLoader(
+                    type:GFLoaderType.circle
+                ),
+              ):
+              Container()
             ],
           ),
         )),
     bottomSheet: CustomBottomNavBar(MenuState.profile,bottomBarColor,bottomMenuIconColor,));
   }
 
+
+  bool isValid()
+  {
+    if (jobtitle_controller.text == ""|| jobtitle_controller.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Please enter job title ", backgroundColor: Colors.grey,);
+      return false;
+    }
+    else if (experience_controller.text == ""|| experience_controller.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Please enter experience", backgroundColor: Colors.grey,);
+      return false;
+    }
+    else if (salary_controller.text == ""|| salary_controller.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Please enter salary expectations", backgroundColor: Colors.grey,);
+      return false;
+    }
+    else if (description_controller.text == ""|| description_controller.text.isEmpty) {
+      Fluttertoast.showToast(msg: "Please enter job description", backgroundColor: Colors.grey,);
+      return false;
+    }
+    return true;
+  }
   Future<String?> getUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userId = prefs.getString('user_id');
     String? baseUrl = prefs.getString('base_url');
     String? adminId = prefs.getString('admin_auto_id');
+    String? apptypeid= prefs.getString('app_type_id');
 
-    if (baseUrl != null && userId != null && adminId != null) {
+    if (baseUrl != null && userId != null && adminId != null && apptypeid!=null) {
       if (mounted) {
         setState(() {
           user_id = userId;
           this.baseUrl = baseUrl;
           this.admin_auto_id = adminId;
+          this.app_type_id=apptypeid;
         });
       }
     }
@@ -284,4 +258,57 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
       setState(() {});
     }
   }
+
+  Future<void> _onSave() async {
+
+    if(mounted){
+      setState(() {
+        isApiCallProcessing=true;
+      });
+    }
+    final body = {
+      "job_title": jobtitle_controller.text,
+      "experience":experience_controller.text,
+      "salary_expectations":salary_controller.text,
+      "job_description":description_controller.text,
+      "admin_auto_id":admin_auto_id,
+      "app_type_id":app_type_id,
+    };
+
+    var url = baseUrl+'api/' + add_job_vacancy;
+print(body.toString());
+print(url);
+    Uri uri=Uri.parse(url);
+
+    final response = await http.post(uri, body: body);
+    print(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      isApiCallProcessing=false;
+
+      final resp = jsonDecode(response.body);
+      int  status = resp['status'];
+      print("status=>"+status.toString());
+      if (status == 1) {
+        Fluttertoast.showToast(
+          msg: "Job Posted successfully",
+          backgroundColor: Colors.grey,
+        );
+        Navigator.pop(context);
+      }
+      else {
+        print('empty');
+      }
+      if(mounted){
+        setState(() {});
+      }
+    }else if(response.statusCode==500)
+      {
+        isApiCallProcessing=false;
+        Fluttertoast.showToast(
+          msg: "server error",
+          backgroundColor: Colors.grey,
+        );
+      }
+  }
+
 }

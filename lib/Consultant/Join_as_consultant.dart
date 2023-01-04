@@ -1,9 +1,7 @@
 import 'dart:convert';
-
-import 'package:dropdown_button2/dropdown_button2.dart';
+import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:poultry_a2z/Utils/App_Apis.dart';
 import 'package:http/http.dart' as http;
@@ -28,12 +26,12 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   TextEditingController tv_name = TextEditingController();
   TextEditingController tv_mobile = TextEditingController();
   TextEditingController tv_experience = TextEditingController();
-  TextEditingController tv_address = TextEditingController();
+  TextEditingController tv_fees = TextEditingController();
   TextEditingController tv_expected_salary = TextEditingController();
   TextEditingController tv_category = TextEditingController();
-  TextEditingController tv_state = TextEditingController();
-  TextEditingController tv_country = TextEditingController();
-  TextEditingController tv_address_type = TextEditingController();
+  // TextEditingController tv_state = TextEditingController();
+  // TextEditingController tv_country = TextEditingController();
+  // TextEditingController tv_address_type = TextEditingController();
   TextEditingController tv_consultant_type = TextEditingController();
   TextEditingController tv_location = TextEditingController();
   TextEditingController tv_speciality = TextEditingController();
@@ -44,13 +42,14 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   List<String> selected_speciality=[];
   String selectedJobs='';
   String selectedSpeciality='';
-
+  late File resume_file;
+  bool isfileuploaded=false;
   Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
       secondaryButtonColor=Colors.orangeAccent;
 
   Color bottomBarColor=Colors.white, bottomMenuIconColor=Color(0xFFFF7643);
   String user_id='';
-  String baseUrl='', admin_auto_id='';
+  String baseUrl='', admin_auto_id='',app_type_id='';
   bool isApiCallProcessing=false;
   List<String> Category_list = [
     'Veterinarian',
@@ -77,13 +76,15 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     String? userId = prefs.getString('user_id');
     String? baseUrl =prefs.getString('base_url');
     String? adminId =prefs.getString('admin_auto_id');
+    String? apptypeid= prefs.getString('app_type_id');
 
-    if (baseUrl!=null && userId != null && adminId!=null) {
+    if (baseUrl!=null && userId != null && adminId!=null && apptypeid!=null ) {
       if(mounted){
         setState(() {
           user_id = userId;
           this.baseUrl=baseUrl;
           this.admin_auto_id=adminId;
+          this.app_type_id=apptypeid;
         });
       }
     }
@@ -231,7 +232,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                       SizedBox(
                         height: 50,
                         child: TextField(
-                          controller: tv_experience,
+                          controller: tv_fees,
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(15),
                             // prefixIcon: Icon(Icons.description),
@@ -293,12 +294,25 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                           maxLines: 5,
                         ),
                       ),
+                      !isfileuploaded?
                       GestureDetector(
                           onTap: () async {
                             FilePickerResult? result = await FilePicker.platform.pickFiles(
                               type: FileType.custom,
                               allowedExtensions: [ 'pdf', 'doc'],
                             );
+                            if (result != null) {
+                              PlatformFile file = result.files.first;
+                              resume_file=File(file.path!);
+                              isfileuploaded=true;
+                              print(file.name);
+                              print(file.bytes);
+                              print(file.size);
+                              print(file.extension);
+                              print(file.path);
+                            } else {
+                              print('No file selected');
+                            }
                           },
                           // onTap: showImageDialog,
                             child:
@@ -324,7 +338,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                                   )
                                 ],)
                             ),
-                          ),
+                          ):Text(resume_file.path.toString()),
 
                       const SizedBox(height: 15),
                       SizedBox(width: 200,
@@ -332,6 +346,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                         onPressed: () {
                           if(checkValidations()==true){
                             //addUserAddress();
+                            add_consultant_api();
                           }
                         },
                         child: const Text('Save'),
@@ -363,6 +378,77 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
         bottomBarColor,bottomMenuIconColor,),
     );
   }
+
+  Future add_consultant_api() async {
+    if(mounted) {
+      setState(() {
+        isApiCallProcessing = true;
+      });
+    }
+    var url = baseUrl + 'api/' + add_consultant;
+
+    var uri = Uri.parse(url);
+
+    var request = http.MultipartRequest("POST", uri);
+
+    try {
+      if (resume_file != null) {
+        request.files.add(
+          http.MultipartFile(
+            'resume',
+            resume_file.readAsBytes().asStream(),
+            await resume_file.length(),
+            filename: resume_file.path.split('/').last,
+          ),
+        );
+      } else {
+        request.fields["resume"] = '';
+      }
+    } catch (exception) {
+      print('resume not selected');
+      request.fields["resume"] = '';
+    }
+    request.fields["full_name"] = tv_name.text;
+    request.fields["mobile_no"] = tv_mobile.text;
+    request.fields["location"] = tv_location.text;
+    request.fields["consutant_type"] = tv_consultant_type.text;
+    request.fields["specialization"] = tv_speciality.text;
+    request.fields["experience"] = tv_experience.text;
+    request.fields["fees"] = tv_fees.text;
+    request.fields["available_from"] = tv_available_from.text;
+    request.fields["available_to"] = tv_available_to.text;
+    request.fields["description"] = tv_description.text;
+    request.fields["user_auto_id"] = user_id;
+    request.fields["admin_auto_id"] = admin_auto_id;
+    request.fields["app_type_id"] = app_type_id;
+    print(request.fields.toString());
+    http.Response response =
+    await http.Response.fromStream(await request.send());
+    print(response.statusCode.toString());
+
+    if (response.statusCode == 200) {
+      setState(() {
+        isApiCallProcessing = false;
+      });
+      final resp = jsonDecode(response.body);
+      //String message=resp['msg'];
+      int status = resp['status'];
+      if (status == 1) {
+        Fluttertoast.showToast(
+          msg: "Added as consultant successfully",
+          backgroundColor: Colors.grey,
+        );
+        // widget.onSaveCallback();
+        Navigator.pop(context);
+      } else {
+        Fluttertoast.showToast(
+          msg: "Something went wrong.Please try later",
+          backgroundColor: Colors.grey,
+        );
+      }
+    }
+  }
+
   _showTimePicker(BuildContext context,String type) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
@@ -705,21 +791,56 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     }
     else  if(tv_experience.text.isEmpty){
       Fluttertoast.showToast(
-        msg: 'Please add pincode',
+        msg: 'Please add experience',
         backgroundColor: Colors.black,
       );
       return false;
     }
-    else  if(tv_category.text.isEmpty){
+    // else  if(tv_category.text.isEmpty){
+    //   Fluttertoast.showToast(
+    //     msg: 'Please add category',
+    //     backgroundColor: Colors.black,
+    //   );
+    //   return false;
+    // }
+    else  if(tv_consultant_type.text.isEmpty){
       Fluttertoast.showToast(
-        msg: 'Please add city',
+        msg: 'Please select consultation type',
         backgroundColor: Colors.black,
       );
       return false;
     }
-    else  if(tv_address.text.isEmpty){
+    else  if(tv_speciality.text.isEmpty){
       Fluttertoast.showToast(
-        msg: 'Please add address details',
+        msg: 'Please select specialization',
+        backgroundColor: Colors.black,
+      );
+      return false;
+    }
+    else  if(tv_fees.text.isEmpty){
+      Fluttertoast.showToast(
+        msg: 'Please add consultstion fees',
+        backgroundColor: Colors.black,
+      );
+      return false;
+    }
+    else  if(tv_available_from.text.isEmpty){
+      Fluttertoast.showToast(
+        msg: 'Please add available from time',
+        backgroundColor: Colors.black,
+      );
+      return false;
+    }
+    else  if(tv_available_to.text.isEmpty){
+      Fluttertoast.showToast(
+        msg: 'Please add available time to',
+        backgroundColor: Colors.black,
+      );
+      return false;
+    }
+    else  if(tv_description.text.isEmpty){
+      Fluttertoast.showToast(
+        msg: 'Please add description',
         backgroundColor: Colors.black,
       );
       return false;

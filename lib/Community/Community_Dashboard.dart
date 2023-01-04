@@ -54,18 +54,9 @@ class _Community_DashboardState extends State<Community_Dashboard> {
 
   List<Map<String, dynamic>> vendor_menu_List = [
     {"text": "About Disease"},
-    // {"text": "Approvals"},
     {"text": "About Management"},
-    // {"text": "Vendor List"},
     {"text": "About Feed"},
     {"text": "About Farm"},
-    // {"text": "Inventory"},
-    // {"text": "Sales"},
-    // //{"text": "Finance"},
-    // {"text":"Invoice"},
-    // {"text":"Coupons"},
-    // {"text" : "Payment Gateway"},
-    // {"text" : "Delivery Partner"},
   ];
   List<ConsultantResult> communitypostList = [];
   //filter
@@ -202,15 +193,7 @@ class _Community_DashboardState extends State<Community_Dashboard> {
                   },
                   icon: Icon(Icons.notifications, color: appBarIconColor),
                 ),
-                //
-                // widget.type != "brand" ?
-                // IconButton(
-                //   onPressed: () {
-                //     fetch_images();
-                //   },
-                //   icon: Icon(Icons.add_circle_outline, color: appBarIconColor),
-                // ):
-                // Container(),
+
               ]),
           body: SingleChildScrollView(
               child: SizedBox(
@@ -266,7 +249,7 @@ class _Community_DashboardState extends State<Community_Dashboard> {
                                           color: Colors.white,
                                           borderRadius:
                                               BorderRadius.circular(10)),
-                                      child: TextField(
+                                      child: const TextField(
                                         cursorColor: Colors.black,
                                         decoration: InputDecoration(
                                             border: InputBorder.none,
@@ -314,6 +297,7 @@ class _Community_DashboardState extends State<Community_Dashboard> {
                                   );
                                   if (pickedFile != null) {
                                     File imageFile = File(pickedFile.path);
+                                    print(imageFile.toString());
                                   }
 
                                 },
@@ -339,6 +323,7 @@ class _Community_DashboardState extends State<Community_Dashboard> {
                                   );
                                   if (pickedFile != null) {
                                     File imageFile = File(pickedFile.path);
+                                    print(imageFile.toString());
                                   }
 
                                 },

@@ -333,3 +333,19 @@ const String image_subscriptions_history="image_subscriptions_history";
 const String get_product_formui="get_product_formui";
 const String update_product_formui="update_product_formui";
 const String add_product_formui="add_product_formui";
+
+
+//poultry job vacancy
+const String add_job_vacancy="add_job_vacancy";
+const String get_job_vacancy="get_job_vacancy";
+const String delete_job_vacancy="delete_job_vacancy";
+const String apply_jobs="apply_jobs";
+
+
+//Consultant
+const String add_consultant="add_consultant";
+const String get_consultants="get_consultants";
+
+//community post
+const String upload_post="upload_post";
+const String get_post="get_post";

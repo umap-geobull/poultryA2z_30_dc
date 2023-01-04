@@ -5,9 +5,9 @@ import 'dart:io';
 import '../Utils/alert_dialog.dart';
 
 class Add_Vendor extends StatefulWidget {
-  Add_Vendor(required this.main_cat_id,required this.main_cat_name) ;
-  String main_cat_id;
-  String main_cat_name;
+  // Add_Vendor() ;
+  // String main_cat_id;
+  // String main_cat_name;
   @override
   State<Add_Vendor> createState() => _Add_VendorState();
 }
