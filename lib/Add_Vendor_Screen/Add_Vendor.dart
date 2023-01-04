@@ -8,6 +8,10 @@ class Add_Vendor extends StatefulWidget {
   // Add_Vendor() ;
   // String main_cat_id;
   // String main_cat_name;
+
+  Add_Vendor( this.main_cat_id, this.main_cat_name) ;
+  String main_cat_id;
+  String main_cat_name;
   @override
   State<Add_Vendor> createState() => _Add_VendorState();
 }

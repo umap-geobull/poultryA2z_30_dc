@@ -29,6 +29,7 @@ const String get_main_cat_component_list = "get_main_category_components";
 const String get_main_category_brands = "get_main_category_brands";
 
 const String get_main_categories = "get_main_category_list";
+const String get_main_category_lists = "get_main_category_lists";
 const String add_main_categories = "add_main_category";
 const String edit_main_categories = "edit_main_category";
 const String delete_main_categories = "delete_main_category";
@@ -349,3 +350,6 @@ const String get_consultants="get_consultants";
 //community post
 const String upload_post="upload_post";
 const String get_post="get_post";
+
+//vendor poultry
+const String add_pountry_vendor="add_pountry_vendor";
