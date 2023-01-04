@@ -144,8 +144,8 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    "${widget.vendorData.fields[index].fieldName.toLowerCase()}",
-                                    style: TextStyle(
+                                    widget.vendorData.fields[index].fieldName.toLowerCase(),
+                                    style: const TextStyle(
                                         fontSize: 16, color: Colors.black)),
                                 const SizedBox(
                                   height: 10,
@@ -210,7 +210,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                     height: 40,
                     padding: EdgeInsets.all(4),
                     alignment: Alignment.center,
-                    child: Text(
+                    child: const Text(
                       "Sign up",
                       style: TextStyle(
                           color: Colors.white,
