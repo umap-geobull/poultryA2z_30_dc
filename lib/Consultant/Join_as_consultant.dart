@@ -424,6 +424,8 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     print(request.fields.toString());
     http.Response response =
     await http.Response.fromStream(await request.send());
+
+    print("Responses consultant ${response.body}");
     print(response.statusCode.toString());
 
     if (response.statusCode == 200) {
