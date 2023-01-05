@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen>{
   saveAppBaseUrl() async{
     SharedPreferences prefs= await SharedPreferences.getInstance();
     prefs.setString('base_url',app_base_url);
-    prefs.setString('admin_auto_id', admin_auto_id);
+    prefs.setString('admin_auto_id', AppConfig.admin_auto_id);
   }
 
   @override
@@ -119,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen>{
           String maintenanceMessage=maintenanceStatusModel.maintanceStatusData[0].message;
 
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => MaintenanceScreen(widget.admin_auto_id, maintenanceMessage)),
+              MaterialPageRoute(builder: (context) => MaintenanceScreen(AppConfig.admin_auto_id, maintenanceMessage)),
                   (Route<dynamic> route) => false
           );
 
@@ -142,11 +142,11 @@ class _SplashScreenState extends State<SplashScreen>{
     final body = {
       "user_auto_id":admin_id,
     };
-
+print(body.toString());
     var url=AppConfig.grobizBaseUrl+get_admin_profile;
 
     var uri = Uri.parse(url);
-
+print(url);
     final response = await http.post(uri,body: body);
 
     if (response.statusCode == 200) {
@@ -183,7 +183,7 @@ class _SplashScreenState extends State<SplashScreen>{
     print("Get UI");
     Rest_Apis restApis = Rest_Apis();
 
-    restApis.getAppUi(admin_auto_id,app_base_url).then((value) {
+    restApis.getAppUi(AppConfig.admin_auto_id,app_base_url).then((value) {
       if (value != null) {
 
         AppUiModel appUiModel=value;
@@ -240,18 +240,18 @@ class _SplashScreenState extends State<SplashScreen>{
   }
 
   checkAdminId(){
-    if(widget.admin_auto_id.isNotEmpty){
-      print("user admin not empty");
+    // if(widget.admin_auto_id.isNotEmpty){
+    //   print("user admin not empty");
       //saveDeepLinkAdminId();
       if(this.mounted){
         setState(() {
           // user_type = 'customer';
-          admin_auto_id = widget.admin_auto_id;
-          getAdminProfile(admin_auto_id);
+          //AppConfig.admin_auto_id = widget.admin_auto_id;
+          getAdminProfile(AppConfig.admin_auto_id);
           //getAppUiDetails();
         });
       }
-    }
+    // }
     // else if(deep_link_admin_auto_id_session.isNotEmpty){
     //   if(this.mounted){
     //     setState(() {
@@ -284,7 +284,7 @@ class _SplashScreenState extends State<SplashScreen>{
         if(this.mounted){
           setState(() {
             admin_auto_id=adminId;
-            getAdminProfile(admin_auto_id);
+            getAdminProfile(AppConfig.admin_auto_id);
           });
         }
       }

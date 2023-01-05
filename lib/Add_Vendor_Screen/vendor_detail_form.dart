@@ -277,7 +277,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.black)),
-                                          Text(" *",
+                                          const Text(" *",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.red)),

@@ -1356,10 +1356,10 @@ class BtoCSignupState extends State<BtoCSignup> {
 
     final body = {
       "mobile_number": mobileNumber,
-      "admin_auto_id": admin_auto_id,
+      "admin_auto_id": AppConfig.admin_auto_id,
     };
 
-    var url = baseUrl + 'api/' + send_registration_otp;
+    var url = AppConfig.grobizBaseUrl + send_registration_otp;
 
     var uri = Uri.parse(url);
 
@@ -1390,10 +1390,10 @@ class BtoCSignupState extends State<BtoCSignup> {
     final body = {
       "mobile_number": mobile,
       "otp": otp,
-      "admin_auto_id": admin_auto_id,
+      "admin_auto_id": AppConfig.admin_auto_id,
     };
 
-    var url = baseUrl + 'api/' + verify_registration_otp;
+    var url = AppConfig.grobizBaseUrl + verify_registration_otp;
 
     print("Url ${url}");
     print("body ${body}");
@@ -1493,11 +1493,11 @@ class BtoCSignupState extends State<BtoCSignup> {
       "user_type": "Vendor",
       "country_code": c.countries[0].code + '-' + c.countries[0].dialCode,
       "country_name": country_name,
-      "admin_auto_id": admin_auto_id,
+      "admin_auto_id": AppConfig.admin_auto_id,
       "token": token
     };
 
-    var url = baseUrl + 'api/' + user_registration;
+    var url = AppConfig.grobizBaseUrl + user_registration;
     print("vendor signup body ${body}");
 
     var uri = Uri.parse(url);
