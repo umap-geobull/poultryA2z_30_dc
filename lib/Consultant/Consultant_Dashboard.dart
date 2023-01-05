@@ -79,7 +79,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
       secondaryButtonColor = Colors.orangeAccent;
   Color bottomBarColor = Colors.white, bottomMenuIconColor = Color(0xFFFF7643);
 
-  late final List<ConsultData> consultList;
+  List<ConsultData> consultList = [];
 
   void getappUi() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -190,7 +190,9 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
         setState(() {
           isApiCallProcessing = false;
         });
-      } else {}
+      } else {  setState(() {
+        isApiCallProcessing = false;
+      });}
     } else if (response.statusCode == 500) {
       if (this.mounted) {
         setState(() {
