@@ -275,18 +275,19 @@ class _SplashScreenState extends State<SplashScreen>{
 
     print("user type ${adminId} ${userType}");
 
-    this.user_type = userType!;
-
     if(adminId!=null && adminId.isNotEmpty){
-      print("admin Login info if main");
+      //print("admin Login info if main");
       if(userType!=null && userType!='Admin'){
         print("admin Login info inside else");
         if(this.mounted){
           setState(() {
             admin_auto_id=adminId;
+            this.user_type = userType!;
             getAdminProfile(admin_auto_id);
           });
         }
+      }else{
+        getAdminLoginInfo();
       }
       // else if(userType!=null && userType!='Vendor'){
       //   if(this.mounted){
