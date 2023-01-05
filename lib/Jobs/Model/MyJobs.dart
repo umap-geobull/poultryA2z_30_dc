@@ -26,56 +26,44 @@ class MyJobs {
 class Data {
   Data({
     required this.id,
-    required this.userAutoId,
-    required this.candidateName,
-    required this.mobileNo,
+    required this.adminAutoId,
+    required this.appTypeId,
+    required this.jobTitle,
     required this.experience,
-    required this.expectedSalary,
-    required this.category,
-    required this.resume,
+    required this.salaryExpectations,
+    required this.jobDescription,
     required this.rdate,
-    required this.updatedAt,
-    required this.createdAt,
   });
   late final String id;
-  late final String userAutoId;
-  late final String candidateName;
-  late final String mobileNo;
+  late final String adminAutoId;
+  late final String appTypeId;
+  late final String jobTitle;
   late final String experience;
-  late final String expectedSalary;
-  late final String category;
-  late final String resume;
+  late final String salaryExpectations;
+  late final String jobDescription;
   late final String rdate;
-  late final String updatedAt;
-  late final String createdAt;
 
   Data.fromJson(Map<String, dynamic> json){
     id = json['_id'];
-    userAutoId = json['user_auto_id'];
-    candidateName = json['candidate_name'];
-    mobileNo = json['mobile_no'];
+    adminAutoId = json['admin_auto_id'];
+    appTypeId = json['app_type_id'];
+    jobTitle = json['job_title'];
     experience = json['experience'];
-    expectedSalary = json['expected_salary'];
-    category = json['category'];
-    resume = json['resume'];
+    salaryExpectations = json['salary_expectations'];
+    jobDescription = json['job_description'];
     rdate = json['rdate'];
-    updatedAt = json['updated_at'];
-    createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['_id'] = id;
-    _data['user_auto_id'] = userAutoId;
-    _data['candidate_name'] = candidateName;
-    _data['mobile_no'] = mobileNo;
+    _data['admin_auto_id'] = adminAutoId;
+    _data['app_type_id'] = appTypeId;
+    _data['job_title'] = jobTitle;
     _data['experience'] = experience;
-    _data['expected_salary'] = expectedSalary;
-    _data['category'] = category;
-    _data['resume'] = resume;
+    _data['salary_expectations'] = salaryExpectations;
+    _data['job_description'] = jobDescription;
     _data['rdate'] = rdate;
-    _data['updated_at'] = updatedAt;
-    _data['created_at'] = createdAt;
     return _data;
   }
 }

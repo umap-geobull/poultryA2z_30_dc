@@ -95,8 +95,8 @@ class _MyAppliedJobsState extends State<MyAppliedJobs> {
       if(status=='1'){
         MyJobs Jobsmodel=MyJobs.fromJson(json.decode(response.body));
         job_list=Jobsmodel.data;
+        print(response.body.toString());
 
-        print(job_list.toString());
         if(mounted){
           setState(() {});
         }
@@ -111,7 +111,7 @@ class _MyAppliedJobsState extends State<MyAppliedJobs> {
           isApiCallProcessing=false;
         });
       }
-      Fluttertoast.showToast(msg: "Server error in getting main categories", backgroundColor: Colors.grey,);
+      Fluttertoast.showToast(msg: "Server error ", backgroundColor: Colors.grey,);
     }
   }
 
@@ -184,151 +184,149 @@ class _MyAppliedJobsState extends State<MyAppliedJobs> {
                           ),
                           child: Row(
                             children: [
-                              // Expanded(
-                              //     flex: 1,
-                              //     child: Container(
-                              //         height: 250,
-                              //         padding: const EdgeInsets.all(10),
-                              //         child: Column(
-                              //           crossAxisAlignment: CrossAxisAlignment.start,
-                              //           children: [
-                              //             GestureDetector(
-                              //               onTap: ()=>{
-                              //                 //showProductDetails(product.productAutoId)
-                              //               },
-                              //               child: Column(
-                              //                 crossAxisAlignment: CrossAxisAlignment.start,
-                              //                 children: <Widget>[
-                              //                   Row(
-                              //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              //                     children: [
-                              //                       Text(
-                              //                         job_list[index].jobTitle,
-                              //                         overflow: TextOverflow.ellipsis,
-                              //                         style: const TextStyle(
-                              //                             fontWeight: FontWeight.w600, fontSize: 18,color: Colors.blue),
-                              //                       ),
-                              //                       user_type=='Admin'?IconButton(onPressed: ()=>{showAlert(job_list[index].id)},
-                              //                           icon: Icon(Icons.delete, color: appBarIconColor)):Container()
-                              //                     ],),
-                              //
-                              //                   Container(
-                              //                     margin: const EdgeInsets.only(top: 5),
-                              //                     child: Row(
-                              //                       children: [
-                              //                         Text(
-                              //                           "Experience: "+job_list[index].experience,
-                              //                           style:
-                              //                           const TextStyle(color: Colors.black, fontSize: 14),
-                              //                         )
-                              //                       ],
-                              //                     ),
-                              //                   ),
-                              //                   Container(
-                              //                     margin: const EdgeInsets.only(top: 5),
-                              //                     child: Row(
-                              //                       children: [
-                              //                         Text(
-                              //                           "Salary: " + job_list[index].salaryExpectations,
-                              //                           style:
-                              //                           const TextStyle(color: Colors.black, fontSize: 14),
-                              //                         ),
-                              //                       ],
-                              //                     ),
-                              //                   ),
-                              //                   Container(
-                              //                       height: 110,
-                              //                       margin: const EdgeInsets.only(top: 5),
-                              //                       child:
-                              //                       Column(
-                              //                         mainAxisAlignment: MainAxisAlignment.start,
-                              //                         crossAxisAlignment: CrossAxisAlignment.start,
-                              //                         children: [
-                              //                           const Text(
-                              //                             "Description: ",
-                              //                             style: TextStyle(color: Colors.black, fontSize: 14),
-                              //                           ),
-                              //                           SizedBox(height: 3,),
-                              //                           Text(job_list[index].jobDescription,
-                              //                             style: const TextStyle(
-                              //                                 color: Colors.black54,
-                              //                                 fontSize: 13,
-                              //                                 overflow: TextOverflow.clip
-                              //                             ),
-                              //                           )
-                              //                         ],
-                              //                       )
-                              //                   ),
-                              //                 ],
-                              //               ),
-                              //             ),
-                              //             Expanded(
-                              //                 child:Container(
-                              //                   height: MediaQuery.of(context).size.height,
-                              //                   alignment: Alignment.bottomCenter,
-                              //                   child: Row(
-                              //                     crossAxisAlignment: CrossAxisAlignment.end,
-                              //                     mainAxisAlignment: MainAxisAlignment.end,
-                              //                     children: [
-                              //                       const Flexible(
-                              //                         flex: 1,
-                              //                         child: SizedBox(
-                              //                           height: 35,
-                              //                           //child:
-                              //                           /* ElevatedButton(
-                              //                             style: ElevatedButton.styleFrom(
-                              //                                 primary: primaryButtonColor,
-                              //                                 textStyle: const TextStyle(fontSize: 20)),
-                              //                             onPressed: () {
-                              //                               //showEditPage(product.productAutoId);
-                              //                             },
-                              //                             child: const Center(
-                              //                               child: Text(
-                              //                                 'Edit',
-                              //                                 style: TextStyle(
-                              //                                   fontSize: 16,
-                              //                                   color: Colors.white,
-                              //                                 ),
-                              //                               ),
-                              //                             ),
-                              //                           ),*/
-                              //                         ),
-                              //                       ),
-                              //                       const SizedBox(
-                              //                         width: 5,
-                              //                       ),
-                              //                       Flexible(
-                              //                         flex: 1,
-                              //                         child: SizedBox(
-                              //                           height: 35,
-                              //                           child:  ElevatedButton(
-                              //                             style: ElevatedButton.styleFrom(
-                              //                                 backgroundColor: secondaryButtonColor,
-                              //                                 textStyle: const TextStyle(fontSize: 20)),
-                              //                             onPressed: () {
-                              //                               Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs()));
-                              //                               //showAlert(product.productAutoId);
-                              //                             },
-                              //                             child: const Center(
-                              //                               child: Text(
-                              //                                 'Apply',
-                              //                                 style: TextStyle(
-                              //                                   fontSize: 16,
-                              //                                   color: Colors.white,
-                              //                                 ),
-                              //                               ),
-                              //                             ),
-                              //                           ) ,
-                              //                         ),
-                              //                       ),
-                              //                     ],
-                              //                   )
-                              //                   ,
-                              //                 ))
-                              //           ],
-                              //         )
-                              //     )
-                              // )
+                              Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                      height: 250,
+                                      padding: const EdgeInsets.all(10),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: ()=>{
+                                              //showProductDetails(product.productAutoId)
+                                            },
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      job_list[index].jobTitle,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontWeight: FontWeight.w600, fontSize: 18,color: Colors.blue),
+                                                    ),
+                                                  ],),
+
+                                                Container(
+                                                  margin: const EdgeInsets.only(top: 5),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "Experience: "+job_list[index].experience,
+                                                        style:
+                                                        const TextStyle(color: Colors.black, fontSize: 14),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                  margin: const EdgeInsets.only(top: 5),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                        "Salary: " + job_list[index].salaryExpectations,
+                                                        style:
+                                                        const TextStyle(color: Colors.black, fontSize: 14),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Container(
+                                                    height: 110,
+                                                    margin: const EdgeInsets.only(top: 5),
+                                                    child:
+                                                    Column(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        const Text(
+                                                          "Description: ",
+                                                          style: TextStyle(color: Colors.black, fontSize: 14),
+                                                        ),
+                                                        SizedBox(height: 3,),
+                                                        Text(job_list[index].jobDescription,
+                                                          style: const TextStyle(
+                                                              color: Colors.black54,
+                                                              fontSize: 13,
+                                                              overflow: TextOverflow.clip
+                                                          ),
+                                                        )
+                                                      ],
+                                                    )
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                              child:Container(
+                                                height: MediaQuery.of(context).size.height,
+                                                alignment: Alignment.bottomCenter,
+                                                child: Row(
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  mainAxisAlignment: MainAxisAlignment.end,
+                                                  children: [
+                                                    const Flexible(
+                                                      flex: 1,
+                                                      child: SizedBox(
+                                                        height: 35,
+                                                        //child:
+                                                        /* ElevatedButton(
+                                                          style: ElevatedButton.styleFrom(
+                                                              primary: primaryButtonColor,
+                                                              textStyle: const TextStyle(fontSize: 20)),
+                                                          onPressed: () {
+                                                            //showEditPage(product.productAutoId);
+                                                          },
+                                                          child: const Center(
+                                                            child: Text(
+                                                              'Edit',
+                                                              style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Colors.white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),*/
+                                                      ),
+                                                    ),
+                                                    // const SizedBox(
+                                                    //   width: 5,
+                                                    // ),
+                                                    // Flexible(
+                                                    //   flex: 1,
+                                                    //   child: SizedBox(
+                                                    //     height: 35,
+                                                    //     child:  ElevatedButton(
+                                                    //       style: ElevatedButton.styleFrom(
+                                                    //           backgroundColor: secondaryButtonColor,
+                                                    //           textStyle: const TextStyle(fontSize: 20)),
+                                                    //       onPressed: () {
+                                                    //         Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs()));
+                                                    //         //showAlert(product.productAutoId);
+                                                    //       },
+                                                    //       child: const Center(
+                                                    //         child: Text(
+                                                    //           'Apply',
+                                                    //           style: TextStyle(
+                                                    //             fontSize: 16,
+                                                    //             color: Colors.white,
+                                                    //           ),
+                                                    //         ),
+                                                    //       ),
+                                                    //     ) ,
+                                                    //   ),
+                                                    // ),
+                                                  ],
+                                                )
+                                                ,
+                                              ))
+                                        ],
+                                      )
+                                  )
+                              )
                             ],
                           ),
 

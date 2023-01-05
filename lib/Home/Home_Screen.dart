@@ -1576,12 +1576,12 @@ class _HomeScreen extends State<HomeScreen> {
     var uri = Uri.parse(url);
 
     final response = await http.post(uri,body: body);
-    print(response.statusCode.toString());
+    //print(response.statusCode.toString());
 
     if (response.statusCode == 200) {
       final resp=jsonDecode(response.body);
       int status=resp['status'];
-      print('admin_profile: '+status.toString());
+      //print('admin_profile: '+status.toString());
       if(status==1){
         AdminProfileModel adminProfileModel=AdminProfileModel.fromJson(json.decode(response.body));
         businessLogo=adminProfileModel.data[0].appLogo;
