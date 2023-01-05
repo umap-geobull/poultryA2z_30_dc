@@ -180,8 +180,12 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                 );
                                 if (result != null) {
                                   PlatformFile file = result.files.first;
-                                  resume_file[index]=File(file.path!);
-                                  isfileuploaded=true;
+                                  setState(() {
+                                    resume_file[index]=File(file.path!);
+                                    print("${resume_file[index].path.isEmpty}");
+                                    isfileuploaded=true;
+                                  });
+
                                   print(file.name);
                                   print(file.bytes);
                                   print(file.size);
@@ -193,7 +197,9 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                               },
                               // onTap: showImageDialog,
                               child:
-                              Container(
+                             //      resume_file[index].path.isEmpty
+                             // ?
+                                  Container(
                                   margin: EdgeInsets.only(top: 5),
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -207,12 +213,18 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                     border: Border.all(color: Colors.grey),
                                   ),
                                   child: Stack(children: [
-                                    Container(
+                                    resume_file[index].path.isEmpty? Container(
                                       width: MediaQuery.of(context).size.width,
                                       height: 120,
                                       padding: EdgeInsets.all(30),
                                       // color: Colors.white!,
                                       child: Image.asset('assets/upload_cv.png'),
+                                    ):Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 120,
+                                      padding: EdgeInsets.all(30),
+                                      // color: Colors.white!,
+                                      child: Image.file(File( resume_file[index].path)),
                                     ),
                                     Container(
                                         width: MediaQuery.of(context).size.width,
@@ -222,7 +234,31 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                         child:Text('Upload Image here',style: TextStyle(fontSize: 16),)
                                     )
                                   ],)
-                              ),
+                              )
+                              // :Container(
+                              //         margin: EdgeInsets.only(top: 5),
+                              //         decoration: BoxDecoration(
+                              //           borderRadius: BorderRadius.all(Radius.circular(10)),
+                              //           color: Colors.white,
+                              //           boxShadow: [
+                              //             BoxShadow(
+                              //                 color: Color.fromRGBO(0, 0, 0, 0.15),
+                              //                 offset: Offset(1, 6),
+                              //                 blurRadius: 12)
+                              //           ],
+                              //           border: Border.all(color: Colors.grey),
+                              //         ),
+                              //         child: Stack(children: [
+                              //           Container(
+                              //             width: MediaQuery.of(context).size.width,
+                              //             height: 120,
+                              //             padding: EdgeInsets.all(30),
+                              //             // color: Colors.white!,
+                              //             child: Image.file(File( resume_file[index].path),
+                              //           ),
+                              //           )
+                              //         ],)
+                              //     ),
                             ):Text(resume_file[index].path.toString()),
                             const SizedBox(
                               height: 20,
@@ -260,7 +296,9 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                     height: MediaQuery.of(context).size.height,
                                     child: TextFormField(
                                       controller: textController[index],
-                                      validator: (name) {},
+                                      validator: widget.vendorData.fields[index].required == 'Yes'?(name) {
+                                      }:(name) {
+                                      },
                                       decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Colors.white,
