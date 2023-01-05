@@ -7,6 +7,7 @@ import 'package:country_picker/country_picker.dart';
 import 'package:poultry_a2z/Home/Home_Screen.dart';
 import 'package:poultry_a2z/Sign_Up/vendor_catagory_model.dart';
 import 'package:poultry_a2z/Sign_Up/vendor_signup_catagory.dart';
+import 'package:poultry_a2z/Utils/AppConfig.dart';
 import 'package:poultry_a2z/Utils/constants.dart';
 import 'package:poultry_a2z/grobiz_start_pages/welcome/phone_field.dart';
 import '../Add_Vendor_Screen/vendor_detail_form.dart';
@@ -18,6 +19,8 @@ import 'package:getwidget/getwidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+
+import '../grobiz_start_pages/welcome/countries.dart' as c;
 
 class BtoCSignup extends StatefulWidget {
   final String mobile_number;
@@ -43,6 +46,10 @@ class BtoCSignupState extends State<BtoCSignup> {
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+
+  final TextEditingController _mobileControllerVendor = TextEditingController();
+  final TextEditingController _nameControllerVendor = TextEditingController();
+  final TextEditingController _emailControllerVendor = TextEditingController();
 
   final formGlobalKey = GlobalKey<FormState>();
   bool isSignUpApiprocessing = false,
@@ -132,7 +139,7 @@ class BtoCSignupState extends State<BtoCSignup> {
         isApiCallProcessing = true;
       });
     }
-    var url = baseUrl + 'api/' + get_main_category_lists;
+    var url = AppConfig.grobizBaseUrl + get_main_category_lists;
     print(url);
     var uri = Uri.parse(url);
     print("url ${uri}");
@@ -339,176 +346,157 @@ class BtoCSignupState extends State<BtoCSignup> {
   initWidget() {
     return DefaultTabController(
       length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-            elevation: 0,
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                businessLogo.isNotEmpty
-                    ? SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CachedNetworkImage(
-                          imageUrl: app_logo_base_url + businessLogo,
-                          placeholder: (context, url) => Container(),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        ),
-                      )
-                    : Container(),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Sign Up",
-                  style: TextStyle(fontSize: 30, color: Colors.white),
-                ),
-              ],
-            ),
-            backgroundColor: Colors.white,
-            centerTitle: true,
-            leadingWidth: 0,
-            // toolbarHeight: 1,
-            automaticallyImplyLeading: false,
-            flexibleSpace: Container(
-                decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30)),
-              color: primaryButtonColor,
-            )),
-            bottom: TabBar(
-              indicatorColor: Colors.white,
-              indicatorSize: TabBarIndicatorSize.label,
-              indicatorWeight: 4,
-              tabs: [
-                Tab(icon: Icon(Icons.person_pin), text: "Customer"),
-                Tab(icon: Icon(Icons.contacts), text: "Vendor")
-              ],
-            )),
-        body: TabBarView(
-          children: [
-            SingleChildScrollView(
-                child: Column(
-              children: [
-                // Container(
-                //   padding: EdgeInsets.only(top: 60,bottom: 40),
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.only(
-                //         bottomLeft: Radius.circular(30),
-                //         bottomRight: Radius.circular(30)),
-                //     color: primaryButtonColor,
-                //   ),
-                //   child: Center(
-                //       child: Column(
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         crossAxisAlignment: CrossAxisAlignment.center,
-                //         children: [
-                //           businessLogo.isNotEmpty?
-                //           SizedBox(
-                //             height: 150,
-                //             width: 150,
-                //             child: CachedNetworkImage(
-                //               imageUrl: app_logo_base_url+businessLogo,
-                //               placeholder:(context, url) => Container(),
-                //               errorWidget: (context, url, error) => const Icon(Icons.error),
-                //             ),
-                //           ):
-                //           Container(),
-                //
-                //           SizedBox(height: 20,),
-                //
-                //           Text(
-                //             "Sign Up",
-                //             style: TextStyle(fontSize: 30, color: Colors.white),
-                //           ),
-                //         ],
-                //       )),
-                // ),
-                formUi()
-              ],
-            )),
-            VendorSignupCatagory()
-          ],
-        ),
-      ),
+      child: Builder(builder: (BuildContext context) {
+        final TabController? tabController = DefaultTabController.of(context);
+        tabController?.addListener(() {
+          if (!tabController.indexIsChanging) {
+            print("inside tasb change");
+
+          }
+        });
+        return Scaffold(
+          appBar: AppBar(
+              elevation: 0,
+              title: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  businessLogo.isNotEmpty
+                      ? SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CachedNetworkImage(
+                            imageUrl: app_logo_base_url + businessLogo,
+                            placeholder: (context, url) => Container(),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Sign Up",
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  ),
+                ],
+              ),
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              leadingWidth: 0,
+              // toolbarHeight: 1,
+              automaticallyImplyLeading: false,
+              flexibleSpace: Container(
+                  decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                    bottomRight: Radius.circular(30)),
+                color: primaryButtonColor,
+              )),
+              bottom: TabBar(
+                indicatorColor: Colors.white,
+                indicatorSize: TabBarIndicatorSize.label,
+                indicatorWeight: 4,
+                tabs: [
+                  Tab(icon: Icon(Icons.person_pin), text: "Customer"),
+                  Tab(icon: Icon(Icons.contacts), text: "Vendor")
+                ],
+              )),
+          body: TabBarView(
+            children: [
+              SingleChildScrollView(
+                  child: Column(
+                children: [
+                  // Container(
+                  //   padding: EdgeInsets.only(top: 60,bottom: 40),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.only(
+                  //         bottomLeft: Radius.circular(30),
+                  //         bottomRight: Radius.circular(30)),
+                  //     color: primaryButtonColor,
+                  //   ),
+                  //   child: Center(
+                  //       child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         crossAxisAlignment: CrossAxisAlignment.center,
+                  //         children: [
+                  //           businessLogo.isNotEmpty?
+                  //           SizedBox(
+                  //             height: 150,
+                  //             width: 150,
+                  //             child: CachedNetworkImage(
+                  //               imageUrl: app_logo_base_url+businessLogo,
+                  //               placeholder:(context, url) => Container(),
+                  //               errorWidget: (context, url, error) => const Icon(Icons.error),
+                  //             ),
+                  //           ):
+                  //           Container(),
+                  //
+                  //           SizedBox(height: 20,),
+                  //
+                  //           Text(
+                  //             "Sign Up",
+                  //             style: TextStyle(fontSize: 30, color: Colors.white),
+                  //           ),
+                  //         ],
+                  //       )),
+                  // ),
+                  formUi()
+                ],
+              )),
+              SingleChildScrollView(
+                  child: Column(
+                children: [
+                  // Container(
+                  //   padding: EdgeInsets.only(top: 60,bottom: 40),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.only(
+                  //         bottomLeft: Radius.circular(30),
+                  //         bottomRight: Radius.circular(30)),
+                  //     color: primaryButtonColor,
+                  //   ),
+                  //   child: Center(
+                  //       child: Column(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         crossAxisAlignment: CrossAxisAlignment.center,
+                  //         children: [
+                  //           businessLogo.isNotEmpty?
+                  //           SizedBox(
+                  //             height: 150,
+                  //             width: 150,
+                  //             child: CachedNetworkImage(
+                  //               imageUrl: app_logo_base_url+businessLogo,
+                  //               placeholder:(context, url) => Container(),
+                  //               errorWidget: (context, url, error) => const Icon(Icons.error),
+                  //             ),
+                  //           ):
+                  //           Container(),
+                  //
+                  //           SizedBox(height: 20,),
+                  //
+                  //           Text(
+                  //             "Sign Up",
+                  //             style: TextStyle(fontSize: 30, color: Colors.white),
+                  //           ),
+                  //         ],
+                  //       )),
+                  // ),
+                  formUiVendor()
+                ],
+              )),
+
+              // VendorSignupCatagory()
+            ],
+          ),
+        );
+      }),
     );
   }
 
-  Widget VendorSignupCatagory() {
-    return isApiCallProcessing == false && mainCategoryList.isNotEmpty
-        ? Container(
-            margin: EdgeInsets.all(8),
-            child: GridView.builder(
-              shrinkWrap: true,
-              physics: ClampingScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 10,
-                childAspectRatio: MediaQuery.of(context).size.width /
-                    (MediaQuery.of(context).size.height / 2.3),
-                mainAxisSpacing: 10,
-              ),
-              itemCount: mainCategoryList.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => VendorDetailsForm(
-                                vendorData: mainCategoryList[index],
-                              )),
-                    );
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Colors.white,
-                        border: Border.all(color: primaryButtonColor),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Color.fromRGBO(0, 0, 0, 0.15),
-                              offset: Offset(1, 6),
-                              blurRadius: 12)
-                        ]),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              color: primaryButtonColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.only(topRight: Radius.circular(10),topLeft: Radius.circular(10))
-                          ),
-                       
-                            child: Image.asset(
-
-                              "assets/images/default.png",
-                              height: 100,
-                              width: MediaQuery.of(context).size.width / 2,
-                            )),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "${mainCategoryList[index].categoryName.toLowerCase()}",
-                            textAlign: TextAlign.center,
-                              style: TextStyle(color: appBarIconColor)
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          )
-        : Text("Catagories Not available");
-  }
+  // Widget VendorSignupCatagory() {
+  //
+  // }
 
   getAppLogo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -792,7 +780,14 @@ class BtoCSignupState extends State<BtoCSignup> {
                       )
                     : GestureDetector(
                         onTap: () {
-                          sendSignUpOtpApi(_mobileController.text);
+                          if (_mobileController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                              msg: "Please Enter mobile number",
+                              backgroundColor: Colors.grey,
+                            );
+                          } else {
+                            sendSignUpOtpApi(_mobileController.text);
+                          }
                         },
                         child: Container(
                           width: 200,
@@ -814,8 +809,293 @@ class BtoCSignupState extends State<BtoCSignup> {
                           ),
                         ),
                       ),
-            isOtpSend == true ? verifyOtpUi() : Container(),
+            isOtpSend == true ? verifyOtpUi(_mobileController.text) : Container(),
             isOtpVerified == true ? showDetails() : Container()
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget formUiVendor() {
+    return Container(
+      margin: const EdgeInsets.only(right: 20, top: 20, left: 20),
+      child: Form(
+        key: formGlobalKey,
+        child: Column(
+          children: [
+            Container(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Name",
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 45,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: TextFormField(
+                      controller: _nameControllerVendor,
+                      validator: (name) {
+                        if (isNameValid(name!)) {
+                          return null;
+                        } else {
+                          return 'Please enter your name';
+                        }
+                      },
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(10, 15, 0, 0),
+                          hintText: 'Please enter your name',
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          )),
+                      // style: AppTheme.form_field_text,
+                      keyboardType: TextInputType.name,
+                    ),
+                  ),
+                ),
+              ],
+            )),
+            const SizedBox(height: 20.0),
+            Container(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Email Id",
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 45,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: TextFormField(
+                      controller: _emailControllerVendor,
+                      validator: (email) {
+                        if (isNameValid(email!)) {
+                          return null;
+                        } else {
+                          return 'Please enter email id';
+                        }
+                      },
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding:
+                              const EdgeInsets.fromLTRB(10, 15, 0, 0),
+                          hintText: 'Please enter your email id',
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          )),
+                      // style: AppTheme.form_field_text,
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ),
+                ),
+              ],
+            )),
+            const SizedBox(height: 20.0),
+            Container(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text("Mobile Number",
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+/*                          SizedBox(
+                            height: 45,
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    margin: const EdgeInsets.only(right: 5),
+                                    height: MediaQuery.of(context).size.height,
+                                    decoration: BoxDecoration(
+
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+
+                                      borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(10.0),
+                                          topLeft: Radius.circular(10.0)),
+                                    ),
+                                    child: TextButton(
+
+                                      onPressed: () {
+                                        onCountryCodePressed();
+                                      },
+                                      child: Text(
+                                        country_code,
+                                        style: form_field_label_text(),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 8,
+                                  child: Container(
+                                    height: MediaQuery.of(context).size.height,
+                                    margin: const EdgeInsets.only(right: 5),
+                                    decoration: BoxDecoration(
+
+                                      color: Colors.white,
+                                      border: Border.all(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: const BorderRadius.only(
+                                          bottomRight: Radius.circular(10.0),
+                                          topRight: Radius.circular(10.0)),
+                                    ),
+                                    child: TextFormField(
+                                      maxLength: 10,
+                                      controller: _mobileController,
+                                      onChanged: (mobile) {
+                                        mobile_number=mobile;
+                                        isOtpVerified=false;
+
+                                        setState(() {});
+                                      },
+                                      keyboardType: TextInputType.phone,
+                                      autocorrect: true,
+                                      textAlign: TextAlign.left,
+                                      cursorColor: const Color(0xffF5591F),
+                                      decoration: const InputDecoration(
+                                        contentPadding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+                                        hintText: "Mobile Number",
+                                        enabledBorder: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )*/
+
+                      Container(
+                        child: IntlPhoneField(
+                          decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+                              hintText: 'Please enter your mobile no',
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.black, width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              )),
+                          focusNode: _focus,
+                          initialCountryCode: country_code,
+                          controller: _mobileControllerVendor,
+                          onCountryChanged: (country) {
+                            setState(() {
+                              country_code = country.code;
+                              phone_code = country.dialCode;
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            )),
+            isOtpVerified == true
+                ? Container(
+                    margin: const EdgeInsets.only(right: 20.0, top: 5),
+                    alignment: Alignment.centerRight,
+                    child: const Text(
+                      "Verified",
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  )
+                : Container(),
+            const SizedBox(height: 30.0),
+            isOtpVerified == true || isOtpSend == true
+                ? Container()
+                : isSendOtpApiProcessing == true
+                    ? Container(
+                        height: 60,
+                        alignment: Alignment.center,
+                        width: 80,
+                        child: const GFLoader(type: GFLoaderType.circle),
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          if (_mobileControllerVendor.text.isEmpty) {
+                            Fluttertoast.showToast(
+                              msg: "Please Enter mobile number",
+                              backgroundColor: Colors.grey,
+                            );
+                          } else {
+                            sendSignUpOtpApi(_mobileControllerVendor.text);
+                          }
+                        },
+                        child: Container(
+                          width: 200,
+                          alignment: Alignment.center,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: primaryButtonColor,
+                            boxShadow: const [
+                              BoxShadow(
+                                  offset: Offset(0, 10),
+                                  blurRadius: 50,
+                                  color: Color(0xffEEEEEE)),
+                            ],
+                          ),
+                          child: const Text(
+                            "Verify Mobile Number",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+            isOtpSend == true ? verifyOtpUi(_mobileControllerVendor.text) : Container(),
+            isOtpVerified == true ? showDetailsVendor() : Container()
           ],
         ),
       ),
@@ -845,7 +1125,14 @@ class BtoCSignupState extends State<BtoCSignup> {
               )
             : GestureDetector(
                 onTap: () {
-                  signUpApi();
+                  if (_mobileController.text.isEmpty) {
+                    Fluttertoast.showToast(
+                      msg: "Please Enter mobile number",
+                      backgroundColor: Colors.grey,
+                    );
+                  } else {
+                    signUpApi();
+                  }
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -863,6 +1150,44 @@ class BtoCSignupState extends State<BtoCSignup> {
                   ),
                   child: Text(
                     "SIGN UP",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              )
+      ],
+    );
+  }
+
+  Widget showDetailsVendor() {
+    return Column(
+      children: <Widget>[
+        isSignUpApiprocessing == true
+            ? Container(
+                height: 60,
+                alignment: Alignment.center,
+                width: 80,
+                child: const GFLoader(type: GFLoaderType.circle),
+              )
+            : GestureDetector(
+                onTap: () {
+                  signUpApiVendor();
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(left: 10, right: 10),
+                  height: 45,
+                  decoration: BoxDecoration(
+                    color: primaryButtonColor,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                      BoxShadow(
+                          offset: Offset(0, 10),
+                          blurRadius: 50,
+                          color: Color(0xffEEEEEE)),
+                    ],
+                  ),
+                  child: Text(
+                    "SIGN UP & NEXT",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
@@ -897,7 +1222,7 @@ class BtoCSignupState extends State<BtoCSignup> {
     );
   }
 
-  Widget verifyOtpUi() {
+  Widget verifyOtpUi(String mobile) {
     return Column(
       children: <Widget>[
         const Text('Please enter the otp sent to your mobile number '),
@@ -995,7 +1320,7 @@ class BtoCSignupState extends State<BtoCSignup> {
             : GestureDetector(
                 onTap: () {
                   if (validationOtp()) {
-                    verifySignUpOtpApi();
+                    verifySignUpOtpApi(mobile);
                   }
                 },
                 child: Container(
@@ -1057,23 +1382,26 @@ class BtoCSignupState extends State<BtoCSignup> {
     }
   }
 
-  Future verifySignUpOtpApi() async {
+  Future verifySignUpOtpApi(String mobile) async {
     setState(() {
       isVerifyOtpApiProcessing = true;
     });
 
     final body = {
-      "mobile_number": mobile_number,
+      "mobile_number": mobile,
       "otp": otp,
       "admin_auto_id": admin_auto_id,
     };
 
     var url = baseUrl + 'api/' + verify_registration_otp;
 
+    print("Url ${url}");
+    print("body ${body}");
+
     var uri = Uri.parse(url);
 
     final response = await http.post(uri, body: body);
-
+    print("res ${response.body}");
     if (response.statusCode == 200) {
       isVerifyOtpApiProcessing = false;
 
@@ -1110,11 +1438,13 @@ class BtoCSignupState extends State<BtoCSignup> {
       "update_on_whatsapp": 'no',
       "have_retail_shop": 'no',
       "user_type": userType,
-      "country_code": country_code + '-' + phone_code,
+      "country_code": c.countries[0].code + '-' + c.countries[0].dialCode,
       "country_name": country_name,
       "admin_auto_id": admin_auto_id,
       "token": token
     };
+
+    print("customer sign up body ${body}");
 
     var url = baseUrl + 'api/' + user_registration;
 
@@ -1129,12 +1459,64 @@ class BtoCSignupState extends State<BtoCSignup> {
       if (status == "1") {
         String userAutoId = resp['user_auto_id'];
         String userType = resp['user_type'];
-        String category_id = resp['category_id'];
+        // String category_id = resp['category_id'];
         Fluttertoast.showToast(
           msg: "You have signed up successfully",
           backgroundColor: Colors.grey,
         );
-        saveLoginSession(userAutoId, userType, category_id);
+        saveLoginSession(userAutoId, userType, '');
+      } else {
+        String msg = resp['msg'];
+        Fluttertoast.showToast(
+          msg: msg,
+          backgroundColor: Colors.grey,
+        );
+      }
+
+      setState(() {});
+    }
+  }
+
+  Future signUpApiVendor() async {
+    setState(() {
+      isSignUpApiprocessing = true;
+    });
+    if (_nameController == null) {
+      _nameController.text = '';
+    }
+    final body = {
+      "mobile_number": _mobileControllerVendor.text,
+      "name": _nameControllerVendor.text,
+      "email_id": _emailControllerVendor.text,
+      "update_on_whatsapp": 'no',
+      "have_retail_shop": 'no',
+      "user_type": "Vendor",
+      "country_code": c.countries[0].code + '-' + c.countries[0].dialCode,
+      "country_name": country_name,
+      "admin_auto_id": admin_auto_id,
+      "token": token
+    };
+
+    var url = baseUrl + 'api/' + user_registration;
+    print("vendor signup body ${body}");
+
+    var uri = Uri.parse(url);
+
+    final response = await http.post(uri, body: body);
+    if (response.statusCode == 200) {
+      isSignUpApiprocessing = false;
+
+      final resp = jsonDecode(response.body);
+      String status = resp['status'];
+      if (status == "1") {
+        String userAutoId = resp['user_auto_id'];
+        String userType = resp['user_type'];
+        // String category_id = resp['category_id'];
+        Fluttertoast.showToast(
+          msg: "You have signed up successfully",
+          backgroundColor: Colors.grey,
+        );
+        saveLoginSessionVendor(userAutoId, userType, '');
       } else {
         String msg = resp['msg'];
         Fluttertoast.showToast(
@@ -1182,6 +1564,25 @@ class BtoCSignupState extends State<BtoCSignup> {
 
     Navigator.of(context).pushNamedAndRemoveUntil(
         HomeScreen.routeName, (Route<dynamic> route) => false);
+  }
+
+  Future<void> saveLoginSessionVendor(
+      String userAutoId, String userType, String category_id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setBool('is_login', true);
+    prefs.setString('user_id', userAutoId);
+    prefs.setString('user_type', userType);
+    prefs.setString('app_type_id', category_id);
+
+    Fluttertoast.showToast(
+      msg: "Signed in successfully",
+      backgroundColor: Colors.grey,
+    );
+
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => VendorSignupCatagory()),
+    );
   }
 
   void generateFirebaseToken() async {

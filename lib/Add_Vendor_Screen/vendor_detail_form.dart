@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -31,11 +33,11 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
   bool isLocationAllowed = false, isLocationPermissionChecked = false;
   String businessDetailsId = '', businessName = '', businessLogo = '';
   String baseUrl = '', admin_auto_id = '';
-
+  late List<File> resume_file=[];
   late List<TextEditingController> textController = [];
 
   bool isApiProcessing = false;
-
+  bool isfileuploaded=false;
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -43,6 +45,9 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
         "Text editing lenth ${textController.length} field length ${widget.vendorData.fields.length}");
     widget.vendorData.fields.forEach((e) => textController.insert(
         textController.length, new TextEditingController()));
+
+    widget.vendorData.fields.forEach((e) => resume_file.insert(
+        resume_file.length, new File('')));
     getAppLogo();
 
     print(
@@ -140,13 +145,148 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: List.generate(
                         widget.vendorData.fields.length,
-                        (index) => Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                        (index) => widget.vendorData.fields[index].inputType == "File" ?
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            widget.vendorData.fields[index].required ==
+                                "Yes"
+                                ? Row(
                               children: [
                                 Text(
-                                    widget.vendorData.fields[index].fieldName.toLowerCase(),
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.black)),
+                                    "${widget.vendorData.fields[index].labels.toLowerCase()}",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black)),
+                                Text(" *",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.red)),
+                              ],
+                            )
+                                : Text(
+                                "${widget.vendorData.fields[index].labels.toLowerCase()}",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black)),
+                            const SizedBox(
+                              height: 1,
+                            ),
+                            !isfileuploaded?
+                            GestureDetector(
+                              onTap: () async {
+                                FilePickerResult? result = await FilePicker.platform.pickFiles(
+                                  type: FileType.custom,
+                                  allowedExtensions: [ 'jpg', 'png'],
+                                );
+                                if (result != null) {
+                                  PlatformFile file = result.files.first;
+                                  setState(() {
+                                    resume_file[index]=File(file.path!);
+                                    print("${resume_file[index].path.isEmpty}");
+                                    isfileuploaded=true;
+                                  });
+
+                                  print(file.name);
+                                  print(file.bytes);
+                                  print(file.size);
+                                  print(file.extension);
+                                  print(file.path);
+                                } else {
+                                  print('No file selected');
+                                }
+                              },
+                              // onTap: showImageDialog,
+                              child:
+                             //      resume_file[index].path.isEmpty
+                             // ?
+                                  Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                                      color: Colors.white,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Color.fromRGBO(0, 0, 0, 0.15),
+                                            offset: Offset(1, 6),
+                                            blurRadius: 12)
+                                      ],
+                                    border: Border.all(color: Colors.grey),
+                                  ),
+                                  child: Stack(children: [
+                                    resume_file[index].path.isEmpty? Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 120,
+                                      padding: EdgeInsets.all(30),
+                                      // color: Colors.white!,
+                                      child: Image.asset('assets/upload_cv.png'),
+                                    ):Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 120,
+                                      padding: EdgeInsets.all(30),
+                                      // color: Colors.white!,
+                                      child: Image.file(File( resume_file[index].path)),
+                                    ),
+                                    Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        //margin: EdgeInsets.only(top: 280),
+                                        //color: Colors.white!,
+                                        alignment: Alignment.center,
+                                        child:Text('Upload Image here',style: TextStyle(fontSize: 16),)
+                                    )
+                                  ],)
+                              )
+                              // :Container(
+                              //         margin: EdgeInsets.only(top: 5),
+                              //         decoration: BoxDecoration(
+                              //           borderRadius: BorderRadius.all(Radius.circular(10)),
+                              //           color: Colors.white,
+                              //           boxShadow: [
+                              //             BoxShadow(
+                              //                 color: Color.fromRGBO(0, 0, 0, 0.15),
+                              //                 offset: Offset(1, 6),
+                              //                 blurRadius: 12)
+                              //           ],
+                              //           border: Border.all(color: Colors.grey),
+                              //         ),
+                              //         child: Stack(children: [
+                              //           Container(
+                              //             width: MediaQuery.of(context).size.width,
+                              //             height: 120,
+                              //             padding: EdgeInsets.all(30),
+                              //             // color: Colors.white!,
+                              //             child: Image.file(File( resume_file[index].path),
+                              //           ),
+                              //           )
+                              //         ],)
+                              //     ),
+                            ):Text(resume_file[index].path.toString()),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        )
+                            :Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                widget.vendorData.fields[index].required ==
+                                        "Yes"
+                                    ? Row(
+                                        children: [
+                                          Text(
+                                              "${widget.vendorData.fields[index].labels.toLowerCase()}",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black)),
+                                          Text(" *",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.red)),
+                                        ],
+                                      )
+                                    : Text(
+                                        "${widget.vendorData.fields[index].labels.toLowerCase()}",
+                                        style: TextStyle(
+                                            fontSize: 16, color: Colors.black)),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -156,7 +296,9 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                     height: MediaQuery.of(context).size.height,
                                     child: TextFormField(
                                       controller: textController[index],
-                                      validator: (name) {},
+                                      validator: widget.vendorData.fields[index].required == 'Yes'?(name) {
+                                      }:(name) {
+                                      },
                                       decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Colors.white,
@@ -178,13 +320,26 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                 BorderRadius.circular(10),
                                           )),
                                       // style: AppTheme.form_field_text,
-                                      keyboardType: TextInputType.name,
+                                      keyboardType: widget.vendorData
+                                                  .fields[index].inputType ==
+                                              "Email"
+                                          ? TextInputType.emailAddress
+                                          : widget.vendorData
+                                          .fields[index].inputType ==
+                                          "Number"
+                                          ? TextInputType.number
+                                          :widget.vendorData
+                                          .fields[index].inputType ==
+                                          "Text"
+                                          ? TextInputType.text
+                                          : null,
                                     ),
                                   ),
                                 ),
                                 const SizedBox(height: 20.0),
                               ],
-                            ))),
+                            )
+                    )),
               ),
             ),
             Positioned(
@@ -194,31 +349,34 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
               child: Container(
                 padding: EdgeInsets.all(16),
                 color: Colors.white,
-                child: isApiProcessing == true?Container(
-                  height: 60,
-                  alignment: Alignment.center,
-                  width: 80,
-                  child: const GFLoader(type: GFLoaderType.circle),
-                )
-                      : InkWell(
-                  onTap: () async {
-                    await addVendor();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),    color: primaryButtonColor,),
-
-                    height: 40,
-                    padding: EdgeInsets.all(4),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      "Sign up",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+                child: isApiProcessing == true
+                    ? Container(
+                        height: 60,
+                        alignment: Alignment.center,
+                        width: 80,
+                        child: const GFLoader(type: GFLoaderType.circle),
+                      )
+                    : InkWell(
+                        onTap: () async {
+                          await addVendor();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: primaryButtonColor,
+                          ),
+                          height: 40,
+                          padding: EdgeInsets.all(4),
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Sign up",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
               ),
             )
           ],
@@ -229,34 +387,64 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
 
   Future addVendor() async {
     setState(() {
-      isApiProcessing=true;
+      isApiProcessing = true;
     });
 
-    Map<String,dynamic> body = {
-      "CATEGORY_AUTO_ID":widget.vendorData.id,
-      "ADMIN_AUTO_ID":widget.vendorData.adminAutoId,
-      "APP_TYPE_ID":widget.vendorData.appTypeId,
-    };
+    // Map<String, dynamic> body = {
+    //   request.fields["CATEGORY_AUTO_ID"]: widget.vendorData.id,
+    //   request.fields["ADMIN_AUTO_ID"]: widget.vendorData.adminAutoId,
+    //   request.fields["APP_TYPE_ID"]: widget.vendorData.appTypeId,
+    // };
 
-    for(int i = 0; i < widget.vendorData.fields.length;i++){
-      body['${widget.vendorData.fields[i].fieldName}'] = textController[i].text;
-    }
 
-    print("login body ${body}");
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    String? userID = prefs.getString('user_id');
+    // print("login body ${body}");
 
-    var url=AppConfig.grobizBaseUrl+add_pountry_vendor;
+    print("user id ${userID}");
+    var url = AppConfig.grobizBaseUrl + add_pountry_vendor;
 
     var uri = Uri.parse(url);
+    var request = http.MultipartRequest("POST", uri);
+    request.fields["CATEGORY_AUTO_ID"]= widget.vendorData.id;
+    request.fields["USER_AUTO_ID"]= userID!;
+    request.fields["ADMIN_AUTO_ID"]= widget.vendorData.adminAutoId;
+    request.fields["APP_TYPE_ID"]= widget.vendorData.appTypeId;
 
-    final response = await http.post(uri,body: body);
+    for (int i = 0; i < widget.vendorData.fields.length; i++) {
+     if (widget.vendorData.fields[i].inputType =="File") {
+       try {
+         if (resume_file != null) {
+           request.files.add(
+             http.MultipartFile(
+               '${widget.vendorData.fields[i].fieldName}',
+               resume_file[i].readAsBytes().asStream(),
+               await resume_file[i].length(),
+               filename: resume_file[i].path.split('/').last,
+             ),
+           );
+         } else {
+           request.fields["${widget.vendorData.fields[i].fieldName}"] = '';
+         }
+       } catch (exception) {
+         print('resume not selected');
+         request.fields["${widget.vendorData.fields[i].fieldName}"] = '';
+       }
+     }else{request.fields['${widget.vendorData.fields[i].fieldName}'] = textController[i].text;}
+    }
+
+
+    http.Response response =
+    await http.Response.fromStream(await request.send());
+
     print("login response  ${response.body}");
     if (response.statusCode == 200) {
       setState(() {
-        isApiProcessing=false;
+        isApiProcessing = false;
       });
 
-      final resp=jsonDecode(response.body);
-      int status=resp['status'];
+      final resp = jsonDecode(response.body);
+      int status = resp['status'];
 
       // if(status=="1"){
       //   Navigator.of(context).push(
@@ -265,18 +453,21 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
       // }
       // else if(status=="0"){
       Fluttertoast.showToast(msg: response.statusCode.toString());
-      Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      prefs.setBool('VENDOR_ADDED', true);
+
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          HomeScreen.routeName, (Route<dynamic> route) => false);
       // }
-    }
-    else{
+    } else {
       setState(() {
-        isApiProcessing=false;
+        isApiProcessing = false;
       });
 
       Fluttertoast.showToast(msg: response.statusCode.toString());
-      if(this.mounted){
-        setState(() {
-        });
+      if (this.mounted) {
+        setState(() {});
       }
     }
   }

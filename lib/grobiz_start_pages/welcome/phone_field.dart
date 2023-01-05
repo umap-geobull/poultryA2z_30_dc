@@ -342,8 +342,8 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
           countryList: _countryList,
           selectedCountry: _selectedCountry!=null ?_selectedCountry! : null,
           onCountryChanged: (Country country) {
-            _selectedCountry = country;
-            widget.onCountryChanged?.call(country);
+            _selectedCountry = countries[0];
+            widget.onCountryChanged?.call(countries[0]);
             setState(() {});
           },
         ),
@@ -405,19 +405,19 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
                     ),
                   );
                 },
-                onChanged: (value) async {
-                  final phoneNumber = PhoneNumber(
-                    countryISOCode: _selectedCountry!.code,
-                    countryCode: '+${_selectedCountry!.dialCode}',
-                    number: value,
-                  );
-
-                  if (widget.autovalidateMode != AutovalidateMode.disabled) {
-                    validatorMessage = await widget.validator?.call(phoneNumber);
-                  }
-
-                  widget.onChanged?.call(phoneNumber);
-                },
+                // onChanged: (value) async {
+                //   final phoneNumber = PhoneNumber(
+                //     countryISOCode: _selectedCountry!.code,
+                //     countryCode: '+${_selectedCountry!.dialCode}',
+                //     number: value,
+                //   );
+                //
+                //   if (widget.autovalidateMode != AutovalidateMode.disabled) {
+                //     validatorMessage = await widget.validator?.call(phoneNumber);
+                //   }
+                //
+                //   widget.onChanged?.call(phoneNumber);
+                // },
                 validator: (value) {
                   if(_selectedCountry!=null){
                     if (!widget.disableLengthCheck && value != null) {
@@ -493,7 +493,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
       child: InkWell(
         borderRadius: widget.dropdownDecoration.borderRadius as BorderRadius?,
         child:
-        _selectedCountry!=null?
+        // _selectedCountry!=null?
         Padding(
           padding: widget.flagsButtonPadding,
           child: Row(
@@ -503,12 +503,13 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
               if (widget.enabled &&
                   widget.showDropdownIcon &&
                   widget.dropdownIconPosition == IconPosition.leading) ...[
-                widget.dropdownIcon,
+                // widget.dropdownIcon,
                 SizedBox(width: 4),
               ],
               if (widget.showCountryFlag) ...[
                 Image.asset(
-                  'assets/flags/${_selectedCountry!.code.toLowerCase()}.png',
+                  'assets/flags/${countries[0]!.code.toLowerCase()}.png',
+                  // 'assets/flags/${_selectedCountry!.code.toLowerCase()}.png',
                   package: 'intl_phone_field',
                   width: 32,
                 ),
@@ -516,7 +517,8 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
               ],
               FittedBox(
                 child: Text(
-                  '+${_selectedCountry!.dialCode}',
+                  '+${countries[0]!.dialCode}',
+                  // '+${_selectedCountry!.dialCode}',
                   style: widget.dropdownTextStyle,
                 ),
               ),
@@ -529,26 +531,27 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
               SizedBox(width: 8),
             ],
           ),
-        ):
-        Padding(
-          padding: EdgeInsets.all(2),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              widget.dropdownIcon,
-              FittedBox(
-                child: Text(
-                  'Country Code',
-                  style:TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              SizedBox(width: 8),
-            ],
-          ),
         ),
-        onTap: widget.enabled ? _changeCountry : null,
+            // :
+        // Padding(
+        //   padding: EdgeInsets.all(2),
+        //   child: Row(
+        //     mainAxisSize: MainAxisSize.min,
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: <Widget>[
+        //       // widget.dropdownIcon,
+        //       FittedBox(
+        //         child: Text(
+        //           'Country Code',
+        //           style:TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.bold),
+        //           textAlign: TextAlign.center,
+        //         ),
+        //       ),
+        //       SizedBox(width: 8),
+        //     ],
+        //   ),
+        // ),
+        // onTap: widget.enabled ? _changeCountry : null,
       ),
 
     );

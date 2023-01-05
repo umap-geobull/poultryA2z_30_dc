@@ -23,6 +23,8 @@ import '../../Home/Home_Screen.dart';
 import 'dart:convert';
 import 'package:upgrader/upgrader.dart';
 
+import '../Sign_Up/vendor_signup_catagory.dart';
+
 
 class SplashScreen extends StatefulWidget{
   String admin_auto_id='63b2612f9821ce37456a4b31';
@@ -136,6 +138,7 @@ class _SplashScreenState extends State<SplashScreen>{
   }
 
   Future getAdminProfile(String admin_id) async {
+    print("Get admin profile");
     final body = {
       "user_auto_id":admin_id,
     };
@@ -147,6 +150,7 @@ class _SplashScreenState extends State<SplashScreen>{
     final response = await http.post(uri,body: body);
 
     if (response.statusCode == 200) {
+      print("Get admin profile ${response.body}");
       final resp=jsonDecode(response.body);
       int status=resp['status'];
       if(status==1){
@@ -176,6 +180,7 @@ class _SplashScreenState extends State<SplashScreen>{
   }
 
   Future getAppUiDetails() async {
+    print("Get UI");
     Rest_Apis restApis = Rest_Apis();
 
     restApis.getAppUi(admin_auto_id,app_base_url).then((value) {
@@ -189,8 +194,11 @@ class _SplashScreenState extends State<SplashScreen>{
           //saveAdminId();
           saveAppUiSession(appUiStyle);
 
+          print("Get UI user type ${user_type}");
           if(user_type == 'customer'){
             getCustomerLoginInfo();
+          }else if(user_type == 'Vendor'){
+            getVendorLoginInfo();
           }
           else{
             getAdminLoginInfo();
@@ -233,10 +241,11 @@ class _SplashScreenState extends State<SplashScreen>{
 
   checkAdminId(){
     if(widget.admin_auto_id.isNotEmpty){
+      print("user admin not empty");
       //saveDeepLinkAdminId();
       if(this.mounted){
         setState(() {
-          user_type = 'customer';
+          // user_type = 'customer';
           admin_auto_id = widget.admin_auto_id;
           getAdminProfile(admin_auto_id);
           //getAppUiDetails();
@@ -254,6 +263,7 @@ class _SplashScreenState extends State<SplashScreen>{
     //   }
     // }
     else{
+      print("user admin is empty");
       checkAdminIdStoredInSession();
     }
   }
@@ -263,8 +273,14 @@ class _SplashScreenState extends State<SplashScreen>{
     String? adminId =prefs.getString('admin_auto_id');
     String? userType =prefs.getString('user_type');
 
+    print("user type ${adminId} ${userType}");
+
+    this.user_type = userType!;
+
     if(adminId!=null && adminId.isNotEmpty){
+      print("admin Login info if main");
       if(userType!=null && userType!='Admin'){
+        print("admin Login info inside else");
         if(this.mounted){
           setState(() {
             admin_auto_id=adminId;
@@ -272,11 +288,21 @@ class _SplashScreenState extends State<SplashScreen>{
           });
         }
       }
-      else{
-        getAdminLoginInfo();
-      }
+      // else if(userType!=null && userType!='Vendor'){
+      //   if(this.mounted){
+      //     setState(() {
+      //       admin_auto_id=adminId;
+      //       getVendorLoginInfo();
+      //     });
+      //   }
+      // }
+      // else{
+      //   print("admin Login info inside else");
+      //   getAdminLoginInfo();
+      // }
     }
     else{
+      print("admin Login info final else");
       getAdminLoginInfo();
     }
   }
@@ -326,6 +352,41 @@ class _SplashScreenState extends State<SplashScreen>{
     if(isLogin !=null){
       if(isLogin ==true){
         Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
+      }
+      else{
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+      }
+    }
+    else{
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+    }
+  }
+
+  getVendorLoginInfo() async{
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    bool? isLogin =prefs.getBool('is_login');
+    bool? isAddVendor =prefs.getBool('VENDOR_ADDED');
+    print("login customer"+isLogin.toString() );
+    print("vendo customer"+isAddVendor.toString() );
+
+    if(isLogin !=null){
+      if(isLogin ==true){
+        if (isAddVendor !=null) {
+          if(isAddVendor != true) {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                HomeScreen.routeName, (Route<dynamic> route) => false);
+          }else{
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => VendorSignupCatagory()),
+            );
+          }
+        }else{
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) => VendorSignupCatagory()),
+          );
+        }
       }
       else{
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
