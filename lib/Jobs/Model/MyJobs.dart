@@ -1,17 +1,17 @@
-class JobsModel {
-  JobsModel({
+class MyJobs {
+  MyJobs({
     required this.status,
     required this.msg,
     required this.data,
   });
   late final String status;
   late final String msg;
-  late final List<GetJobDetails> data;
+  late final List<Data> data;
 
-  JobsModel.fromJson(Map<String, dynamic> json){
+  MyJobs.fromJson(Map<String, dynamic> json){
     status = json['status'];
     msg = json['msg'];
-    data = List.from(json['data']).map((e)=>GetJobDetails.fromJson(e)).toList();
+    data = List.from(json['data']).map((e)=>Data.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -23,8 +23,8 @@ class JobsModel {
   }
 }
 
-class GetJobDetails {
-  GetJobDetails({
+class Data {
+  Data({
     required this.id,
     required this.adminAutoId,
     required this.appTypeId,
@@ -32,10 +32,7 @@ class GetJobDetails {
     required this.experience,
     required this.salaryExpectations,
     required this.jobDescription,
-    required this.applied_job_count,
     required this.rdate,
-    // required this.updatedAt,
-    // required this.createdAt,
   });
   late final String id;
   late final String adminAutoId;
@@ -44,12 +41,9 @@ class GetJobDetails {
   late final String experience;
   late final String salaryExpectations;
   late final String jobDescription;
-  late final int applied_job_count;
   late final String rdate;
-  // late final String updatedAt;
-  // late final String createdAt;
 
-  GetJobDetails.fromJson(Map<String, dynamic> json){
+  Data.fromJson(Map<String, dynamic> json){
     id = json['_id'];
     adminAutoId = json['admin_auto_id'];
     appTypeId = json['app_type_id'];
@@ -57,10 +51,7 @@ class GetJobDetails {
     experience = json['experience'];
     salaryExpectations = json['salary_expectations'];
     jobDescription = json['job_description'];
-    applied_job_count = json['applied_job_count'];
     rdate = json['rdate'];
-    // updatedAt = json['updated_at'];
-    // createdAt = json['created_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -72,10 +63,7 @@ class GetJobDetails {
     _data['experience'] = experience;
     _data['salary_expectations'] = salaryExpectations;
     _data['job_description'] = jobDescription;
-    _data['applied_job_count'] = applied_job_count;
     _data['rdate'] = rdate;
-    // _data['updated_at'] = updatedAt;
-    // _data['created_at'] = createdAt;
     return _data;
   }
 }

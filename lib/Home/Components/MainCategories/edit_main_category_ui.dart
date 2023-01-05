@@ -113,7 +113,7 @@ class _EditMainCategory extends State<EditMainCategory> {
                               Container():
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                    primary: Colors.redAccent,
+                                    backgroundColor: Colors.redAccent,
                                     minimumSize: const Size(80, 25)
                                 ),
                                 child: const Text('Delete'),
@@ -151,7 +151,7 @@ class _EditMainCategory extends State<EditMainCategory> {
                       Container():
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            primary: Colors.orangeAccent,
+                            backgroundColor: Colors.orangeAccent,
                             minimumSize: const Size(200, 35)
                         ),
                         child: const Text('SAVE'),

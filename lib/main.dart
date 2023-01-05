@@ -138,7 +138,6 @@ class MyApp extends  StatelessWidget {
         ChangeNotifierProvider<CommunityProvider>(
           create: (_) => CommunityProvider(),
         ),
-
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -217,8 +217,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           },
                           child: const Text("Yes",style: TextStyle(color: Colors.black54,fontSize: 13)),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.blue,
+                            backgroundColor: Colors.blue,
                             minimumSize: const Size(70,30),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -235,8 +234,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           child: const Text("No",
                               style: TextStyle(color: Colors.black54,fontSize: 13)),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.blue,
+                            backgroundColor: Colors.blue,
                             minimumSize: const Size(70,30),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -282,7 +280,7 @@ class _ProfileScreen extends State<ProfileScreen> {
 
         Future.delayed(Duration.zero, () {
           Navigator.popUntil(context, ModalRoute.withName("/"));
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectOption()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen()));
         });
 
         // Navigator.push(context,  MaterialPageRoute(builder: (context) => GrobizLogin()));

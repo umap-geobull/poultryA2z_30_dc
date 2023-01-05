@@ -15,7 +15,8 @@ import '../Utils/coustom_bottom_nav_bar.dart';
 import '../Utils/enums.dart';
 
 class ApplyJobs extends StatefulWidget {
-
+String job_id;
+ApplyJobs(this.job_id);
   @override
   _ApplyJobs createState() => _ApplyJobs();
 }
@@ -23,6 +24,7 @@ class ApplyJobs extends StatefulWidget {
 Future<void> deleteData(String addressId) async {
 
 }
+
 class _ApplyJobs extends State<ApplyJobs> {
   late String cname, mobile, pincode, area, latitude='1.2546', longitude='2.4586',city,state='Maharashtra',country='India',address,addtype='Home';
 
@@ -353,6 +355,7 @@ class _ApplyJobs extends State<ApplyJobs> {
     request.fields["expected_salary"] = tv_expected_salary.text;
     request.fields["category"] = tv_category.text;
     request.fields["user_auto_id"] = user_id;
+    request.fields["job_auto_id"] = widget.job_id;
     print(request.fields.toString());
     http.Response response =
     await http.Response.fromStream(await request.send());
@@ -549,6 +552,7 @@ class _ApplyJobs extends State<ApplyJobs> {
                       } else {
                         print('No file selected');
                       }
+                      Navigator.pop(context);
                     },
                     child: const Text("File Manager",
                         style: TextStyle(color: Colors.black54, fontSize: 13)),

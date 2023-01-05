@@ -1501,13 +1501,13 @@ class _EditSubCategoryStyle extends State<EditSubCategoryStyle> {
                       color: Colors.grey,
                     ),
                     const SizedBox(height: 10,),
-                    web_view(),
-                    const Divider(
-                      height: 10,
-                      thickness: 1,
-                      color: Colors.grey,
-                    ),
-                    const SizedBox(height: 10,),
+                    // web_view(),
+                    // const Divider(
+                    //   height: 10,
+                    //   thickness: 1,
+                    //   color: Colors.grey,
+                    // ),
+                    // const SizedBox(height: 10,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -1643,10 +1643,10 @@ class _EditSubCategoryStyle extends State<EditSubCategoryStyle> {
         ),
         SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 400,
+          height: 600,
           child:  GridView.builder(
               itemCount: mainCategoryList.length,
-              physics: const NeverScrollableScrollPhysics(),
+              //physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 1/0.4,

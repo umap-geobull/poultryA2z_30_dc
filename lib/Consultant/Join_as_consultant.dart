@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:poultry_a2z/Utils/App_Apis.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,7 +25,7 @@ Future<void> deleteData(String addressId) async {
 }
 class _Join_As_Consultant extends State<Join_As_Consultant> {
   late String cname, mobile, pincode, area, latitude='1.2546', longitude='2.4586',city,state='Maharashtra',country='India',address,addtype='Home';
-
+  late File profile_img;
   TextEditingController tv_name = TextEditingController();
   TextEditingController tv_mobile = TextEditingController();
   TextEditingController tv_experience = TextEditingController();
@@ -44,12 +47,16 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   String selectedSpeciality='';
   late File resume_file;
   bool isfileuploaded=false;
+  String profile_pic_url='';
   Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
       secondaryButtonColor=Colors.orangeAccent;
-
+  String profile_pic='';
   Color bottomBarColor=Colors.white, bottomMenuIconColor=Color(0xFFFF7643);
   String user_id='';
   String baseUrl='', admin_auto_id='',app_type_id='';
+  bool isProfilePicSelected=false;
+  bool isProfilePicAvailable=false;
+  final ImagePicker _picker = ImagePicker();
   bool isApiCallProcessing=false;
   List<String> Category_list = [
     'Veterinarian',
@@ -131,7 +138,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                           ),
                         ),
                       ),*/
-
+                      uploadLogoUi(),
                       SizedBox(
                         height: 50,
                         child: TextField(
@@ -379,6 +386,183 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     );
   }
 
+  Widget uploadLogoUi() {
+    String profile_pic_url=baseUrl+profile_pic_base_url;
+    if(profile_pic !=null && profile_pic.isNotEmpty){
+      profile_pic_url=baseUrl+profile_pic_base_url+profile_pic;
+    }
+
+    return Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.only(bottom: 30),
+        child: Container(
+          alignment: Alignment.center,
+          child: Column(
+            children: <Widget>[
+              Container(
+                child: isProfilePicSelected ?
+                ClipRRect(
+                  child: Image.file(File(profile_img.path), height: 100,
+                    width: 100,),
+                ):
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child:
+                  profile_pic.isEmpty?
+                  Container(
+                    height: 100,
+                    width: 100,
+                    child: Image.asset('assets/ic_consultant.png'),
+                  ) :
+                  CachedNetworkImage(
+                    height: 100,
+                    width: 100,
+                    imageUrl: profile_pic_url,
+                    placeholder: (context, url) =>
+                        Container(decoration: BoxDecoration(
+                          color: Colors.grey[400],
+                        )),
+                    // progressIndicatorBuilder: (context, url, downloadProgress) => CircularProgressIndicator(value: downloadProgress.progress),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15,),
+              ElevatedButton(
+                onPressed: (){
+                  showProfileImageDialog();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.orangeAccent,
+                  minimumSize: Size(130,30),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
+                ),
+                child: const Text("Upload Profile Picture",style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 14 ,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Lato'),
+                ),
+              ),
+            ],
+          ),
+        )
+    );
+  }
+
+  showProfileImageDialog() async{
+    return showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+          backgroundColor: Colors.yellow[50],
+          title: const Text('Upload image from',style: TextStyle(color: Colors.black87),),
+          content: Container(
+            height: 110,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child:
+                  ElevatedButton(
+                    onPressed: (){
+                      getCameraImage();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: Size(150,30),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                    ),
+                    child: const Text("Camera",
+                        style: TextStyle(color: Colors.black54,fontSize: 13)),
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Container(
+                  child: ElevatedButton(
+                    onPressed: (){
+                      getGalleryImage();
+                    },
+                    child: Text("Gallery",
+                        style: TextStyle(color: Colors.black54,fontSize: 13)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: Size(150,30),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+          )
+      ),
+    ) ;
+  }
+
+  Future getCameraImage() async {
+    Navigator.of(context).pop(false);
+
+    var pickedFile  = await _picker.getImage(source: ImageSource.camera);
+
+    profile_img = File(pickedFile!.path);
+
+    if(profile_img!=null){
+      cropImage();
+    }
+  }
+
+  Future getGalleryImage() async {
+    Navigator.of(context).pop(false);
+
+    var pickedFile = await _picker.getImage(source: ImageSource.gallery);
+
+    profile_img = File(pickedFile!.path);
+
+    if(profile_img!=null){
+      cropImage();
+    }
+
+    /* setState(() {
+      logo_img = image!;
+      isLogoSelected=true;
+    });*/
+  }
+
+  cropImage () async {
+
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: profile_img.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      /* androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        )*/
+    );
+
+    if(croppedFile!=null){
+      setState(() {
+        profile_img = File(croppedFile.path);
+        isProfilePicSelected=true;
+      });
+    }
+  }
+
   Future add_consultant_api() async {
     if(mounted) {
       setState(() {
@@ -390,7 +574,23 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     var uri = Uri.parse(url);
 
     var request = http.MultipartRequest("POST", uri);
-
+    try {
+      if (profile_img != null) {
+        request.files.add(
+          http.MultipartFile(
+            'profile_photo',
+            profile_img.readAsBytes().asStream(),
+            await profile_img.length(),
+            filename: profile_img.path.split('/').last,
+          ),
+        );
+      } else {
+        request.fields["profile_photo"] = '';
+      }
+    } catch (exception) {
+      print('Profile Image not selected');
+      request.fields["profile_photo"] = '';
+    }
     try {
       if (resume_file != null) {
         request.files.add(

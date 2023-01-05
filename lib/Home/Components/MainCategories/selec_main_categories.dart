@@ -187,6 +187,7 @@ class _SelectMainCategory extends State<SelectMainCategory> {
                         crossAxisCount: 4,
                         mainAxisSpacing: 2,
                         crossAxisSpacing: 2,
+                        childAspectRatio:0.8,
                         physics: const ClampingScrollPhysics(),
                         //scrollDirection: Axis.horizontal,
                         children:categoryItems()
@@ -201,7 +202,7 @@ class _SelectMainCategory extends State<SelectMainCategory> {
             child: Container(
               child:  ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: kPrimaryColor,
+                  backgroundColor: kPrimaryColor,
                 ),
                 child: Text('Add Main Categories',style: TextStyle(color: Colors.white),),
                 onPressed: () {
@@ -228,26 +229,26 @@ class _SelectMainCategory extends State<SelectMainCategory> {
   categoryItems(){
     List<Widget> items=[];
 
-    items.add(
-        GestureDetector(
-            onTap: ()=>{
-              showAddCategory()
-            },
-            child: Column(
-              children: [
-                Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.black12
-                    ),
-                    margin: const EdgeInsets.all(5),
-                    height: 60,
-                    width: 60,
-                    child:const Icon(Icons.add,color: Colors.black87,))
-              ],
-            )
-        )
-    );
+    // items.add(
+    //     GestureDetector(
+    //         onTap: ()=>{
+    //           showAddCategory()
+    //         },
+    //         child: Column(
+    //           children: [
+    //             Container(
+    //                 decoration: BoxDecoration(
+    //                     borderRadius: BorderRadius.circular(5),
+    //                     color: Colors.black12
+    //                 ),
+    //                 margin: const EdgeInsets.all(5),
+    //                 height: 60,
+    //                 width: 60,
+    //                 child:const Icon(Icons.add,color: Colors.black87,))
+    //           ],
+    //         )
+    //     )
+    // );
 
     for(int index=0;index<mainCategoryList.length;index++){
       items.add(
@@ -317,7 +318,8 @@ class _SelectMainCategory extends State<SelectMainCategory> {
                   Text(
                     mainCategoryList[index].categoryName,
                     textAlign: TextAlign.center,
-                    maxLines: 2,
+                    maxLines: 3,
+                    overflow: TextOverflow.clip,
                     style: const TextStyle(color: Colors.black87,fontSize: 11),
                   )
                 ],
@@ -386,14 +388,14 @@ class _SelectMainCategory extends State<SelectMainCategory> {
       });
     }
     var url=baseUrl+'api/'+get_main_categories;
-    print(url);
+
     var uri = Uri.parse(url);
 
     final body = {
       "admin_auto_id":admin_auto_id,
       "app_type_id": app_type_id,
     };
-print(body.toString());
+
     final response = await http.post(uri, body: body);
     if (response.statusCode == 200) {
       isApiCallProcessing=false;
@@ -405,8 +407,6 @@ print(body.toString());
         MainCategoryModel mainCategoryModel=MainCategoryModel.fromJson(json.decode(response.body));
         mainCategoryList=mainCategoryModel.getmainCategorylist;
 
-        print(mainCategoryList.toString());
-        print("Size of shoes"+mainCategoryList.length.toString());
         if(mounted){
           setState(() {});
         }
@@ -454,18 +454,18 @@ print(body.toString());
       "app_type_id": app_type_id,
     };
 
-    print('body: '+body.toString());
+   // print('body: '+body.toString());
     var url=baseUrl+'api/'+add_home_maincategories;
     var uri = Uri.parse(url);
     final response = await http.post(uri,body: body);
 
-    print(response.toString());
+    //print(response.toString());
     if (response.statusCode == 200) {
       isAddProcessing=false;
 
     final resp=jsonDecode(response.body);
 
-      print('resp: '+resp.toString());
+      //print('resp: '+resp.toString());
 
       String status=resp['status'];
     if(status=="1"){

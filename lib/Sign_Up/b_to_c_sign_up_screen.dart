@@ -120,6 +120,7 @@ class BtoCSignupState extends State<BtoCSignup> {
       if (mounted) {
         setState(() {
           this.baseUrl = baseUrl;
+          print(baseUrl);
           this.admin_auto_id = adminId;
         });
       }

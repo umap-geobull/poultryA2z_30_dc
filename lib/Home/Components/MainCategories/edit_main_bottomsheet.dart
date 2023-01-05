@@ -35,13 +35,14 @@ class _EditMainCategoryStyle extends State<EditMainCategoryStyle> {
   double fontSize=14,web_fontSize=15;
   List<Widget> iconTypeList=[];
   List<Widget> webIconTypeList=[];
+  List<Widget> layoutTypeList=[];
   bool isEditApiProcessing=false,isApiCallProcessing=false,editHeaderVisible=false;
   late GetHomeComponentList homeComponentData;
   List<GetmainCategorylist> mainCategoryList=[];
   bool showOnHome=false;
   List<String> selectedMainCategory=[];
 
-  int app_icon=0,web_icon=0;
+  int app_icon=0,web_icon=0,app_layout=0;
   String appLabelFont = 'Lato',appHeaderFont='Lato',web_LabelFont = 'Lato',webHeaderFont='Lato',headerTitle='';
   double appFontSize=17,webFontSize=20;
   Color appLabelColor=const Color(0xff443a49),appHeaderColor=Colors.black87,webLabelColor=const Color(0xff443a49),
@@ -158,7 +159,7 @@ class _EditMainCategoryStyle extends State<EditMainCategoryStyle> {
           height: 400,
           child:  GridView.builder(
               itemCount: mainCategoryList.length,
-              physics: const NeverScrollableScrollPhysics(),
+              //physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: 1/0.4,
@@ -429,6 +430,7 @@ class _EditMainCategoryStyle extends State<EditMainCategoryStyle> {
 
     getBaseUrl();
     setIcons();
+    setLayouts();
   }
 
   onBackPressed() async{
@@ -476,13 +478,13 @@ class _EditMainCategoryStyle extends State<EditMainCategoryStyle> {
             child: Column(
               children: <Widget>[
                 app_view(),
-                Divider(
-                  height: 10,
-                  thickness: 1,
-                  color: Colors.grey,
-                ),
-                SizedBox(height: 10,),
-                web_view(),
+                // Divider(
+                //   height: 10,
+                //   thickness: 1,
+                //   color: Colors.grey,
+                // ),
+                //SizedBox(height: 10,),
+                //web_view(),
                 const Divider(
                   height: 10,
                   thickness: 1,
@@ -590,6 +592,9 @@ class _EditMainCategoryStyle extends State<EditMainCategoryStyle> {
     if(homeComponent.title.isNotEmpty){
       _HeaderTextController.text=homeComponent.title;
     }
+    if(homeComponent.layoutType.isNotEmpty){
+      app_layout=int.parse(homeComponent.layoutType);
+    }
     if(homeComponent.iconType.isNotEmpty){
       app_icon=int.parse(homeComponent.iconType);
     }
@@ -656,7 +661,7 @@ class _EditMainCategoryStyle extends State<EditMainCategoryStyle> {
       "background_color":backgroundColor.value.toString(),
       "height":'',
       "icon_type":app_icon.toString(),
-      "layout_type":'0',
+      "layout_type":app_layout.toString(),
       "title_font":appHeaderFont,
       "title_color":appHeaderColor.value.toString(),
       "title_size":appFontSize.toString(),
@@ -711,12 +716,1002 @@ class _EditMainCategoryStyle extends State<EditMainCategoryStyle> {
         const SizedBox(height: 10,),
         selectHeaderFont(),
         const SizedBox(height: 10,),
-        selectIconType(),
-        app_icon==0 || app_icon==2 || app_icon==4?
+        selectLayoutType(),
+        const SizedBox(height: 10,),
+        app_layout!=11 && app_layout!=10 && app_layout!=9 && app_layout!=8?selectIconType():Container(),
+        app_icon==1 || app_icon==3 || app_icon==5?
         selectLabelFont():
         Container()
       ],
     );
+  }
+
+  void appLayoutListener(int index){
+    setState(() {
+      app_layout = index;
+      if(app_layout==11 ) {
+        app_icon=4;
+      }
+      if(app_layout==10)
+      {
+        app_icon=2;
+      }
+    });
+  }
+
+  setLayouts(){
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                  child:
+                  GridView.builder(
+                    itemCount: 4,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                      crossAxisCount: 2,
+                    ),
+                    itemBuilder: (context, index) => Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]
+                      ),
+                    ),
+                  )
+              )
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(child: GridView.builder(
+                itemCount: 6,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 2,
+                  mainAxisSpacing: 2,
+                  crossAxisCount: 3,
+                ),
+                itemBuilder: (context, index) => Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.grey[300]
+                  ),
+                ),
+              )
+              )
+            ],
+          ),
+        )    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(child: GridView.builder(
+                itemCount: 8,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 2,
+                  mainAxisSpacing: 2,
+                  crossAxisCount: 4,
+                ),
+                itemBuilder: (context, index) => Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.grey[300]
+                  ),
+                ),
+              )
+              )
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(child: GridView.builder(
+                itemCount: 9,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 2,
+                  mainAxisSpacing: 2,
+                  crossAxisCount: 3,
+                ),
+                itemBuilder: (context, index) => Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.grey[300]
+                  ),
+                ),
+              )
+              )
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(child: GridView.builder(
+                itemCount: 16,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 2,
+                  mainAxisSpacing: 2,
+                  crossAxisCount: 4,
+                ),
+                itemBuilder: (context, index) => Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.grey[300]
+                  ),
+                ),
+              )
+              )
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          margin: const EdgeInsets.only(left: 10,right: 10),
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(child: GridView.builder(
+                itemCount: 6,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisSpacing: 2,
+                  mainAxisSpacing: 2,
+                  crossAxisCount: 2,
+                ),
+                itemBuilder: (context, index) => Container(
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: Colors.grey[300]
+                  ),
+                ),
+              )
+              )
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                  height: 30,
+                  child: GridView.builder(
+                    itemCount: 12,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 2,
+                      mainAxisSpacing: 2,
+                      crossAxisCount: 6,
+                    ),
+                    itemBuilder: (context, index) => Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]
+                      ),
+                    ),
+                  )
+              ),
+              Container(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.arrow_back,size: 12,
+                          color: Colors.grey[400]
+                      ),
+                      Icon(Icons.arrow_forward,size: 12,
+                          color: Colors.grey[400]
+                      ),
+                    ],
+                  )
+              )
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                  height: 30,
+                  child: GridView.builder(
+                    itemCount: 6,
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: 2,
+                        mainAxisSpacing: 2,
+                        crossAxisCount: 6,
+                        childAspectRatio: 1/1.4
+                    ),
+                    itemBuilder: (context, index) => Container(
+                      decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.grey[300]
+                      ),
+                    ),
+                  )
+              ),
+              Container(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.arrow_back,size: 12,
+                          color: Colors.grey[400]
+                      ),
+                      Icon(Icons.arrow_forward,size: 12,
+                          color: Colors.grey[400]
+                      ),
+                    ],
+                  )
+              )
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                  height: 60,
+                  width: 60,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                          flex:1,
+                          child:
+                          Container(
+                            margin: EdgeInsets.all(2),
+                            color: Colors.grey[300],
+                          )
+                      ),
+                      Expanded(
+                        flex:1,
+                        child: Container(
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child:Container(
+                                  margin: EdgeInsets.all(2),
+                                  color: Colors.grey[300],
+                                ),
+                              ),
+
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  margin: EdgeInsets.all(2),
+                                  color: Colors.grey[300],
+                                ),
+                              )
+
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+              ),
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                  height: 60,
+                  width: 60,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex:1,
+                        child: Container(
+                          child: Column(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child:Container(
+                                  margin: EdgeInsets.all(2),
+                                  color: Colors.grey[300],
+                                ),
+                              ),
+
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  margin: EdgeInsets.all(2),
+                                  color: Colors.grey[300],
+                                ),
+                              )
+
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                          flex:1,
+                          child:
+                          Container(
+                            margin: EdgeInsets.all(2),
+                            color: Colors.grey[300],
+                          )
+                      ),
+                    ],
+                  )
+              ),
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          alignment: Alignment.center,
+          child:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                  height: 60,
+                  width: 60,
+                  child:Column(
+                    children: <Widget>[
+                      Expanded(
+                        flex:2,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              flex:2,
+                              child: Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 1,
+                                      child:Container(
+                                        margin: EdgeInsets.all(2),
+                                        color: Colors.grey[300],
+                                      ),
+                                    ),
+
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        margin: EdgeInsets.all(2),
+                                        color: Colors.grey[300],
+                                      ),
+                                    )
+
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                                flex:4,
+                                child:
+                                Container(
+                                  margin: EdgeInsets.all(2),
+                                  color: Colors.grey[300],
+                                )
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Expanded(
+                        flex:1,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                                flex:1,
+                                child:
+                                Container(
+                                  margin: EdgeInsets.all(2),
+                                  color: Colors.grey[300],
+                                )
+                            ),
+                            Expanded(
+                                flex:1,
+                                child:
+                                Container(
+                                  margin: EdgeInsets.all(2),
+                                  color: Colors.grey[300],
+                                )
+                            ),
+                            Expanded(
+                                flex:1,
+                                child:
+                                Container(
+                                  margin: EdgeInsets.all(2),
+                                  color: Colors.grey[300],
+                                )
+                            )
+                          ],
+                        ),
+                      )
+
+                    ],
+                  )),
+            ],
+          ),
+        )
+    );
+
+    layoutTypeList.add(
+        Container(
+          height: 80,
+          width: 80,
+          margin: const EdgeInsets.only(left: 20,right: 20),
+          alignment: Alignment.center,
+          child:Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                child: GridView.builder(
+                  itemCount: 4,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: 2,
+                    mainAxisSpacing: 2,
+                    crossAxisCount: 1,
+                  ),
+                  itemBuilder: (context, index) => Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        color: Colors.grey[300]
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(Icons.arrow_upward,size: 12,
+                          color: Colors.grey[400]
+                      ),
+                      Icon(Icons.arrow_downward,size: 12,
+                          color: Colors.grey[400]
+                      ),
+                    ],
+                  )
+              )
+            ],
+          ),
+        )
+    );
+    //web layouts
+
+    // //0
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child:Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: <Widget>[
+    //           SizedBox(
+    //               height: 30,
+    //               child: GridView.builder(
+    //                 itemCount: 6,
+    //                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //                   crossAxisSpacing: 2,
+    //                   mainAxisSpacing: 2,
+    //                   crossAxisCount: 6,
+    //                 ),
+    //                 itemBuilder: (context, index) => Container(
+    //                   decoration: BoxDecoration(
+    //                       shape: BoxShape.rectangle,
+    //                       color: Colors.grey[300]
+    //                   ),
+    //                 ),
+    //               )
+    //           ),
+    //           Container(
+    //               child: Row(
+    //                 crossAxisAlignment: CrossAxisAlignment.center,
+    //                 mainAxisAlignment: MainAxisAlignment.center,
+    //                 children: <Widget>[
+    //                   Icon(Icons.arrow_back,size: 12,
+    //                       color: Colors.grey[400]
+    //                   ),
+    //                   Icon(Icons.arrow_forward,size: 12,
+    //                       color: Colors.grey[400]
+    //                   ),
+    //                 ],
+    //               )
+    //           )
+    //         ],
+    //       ),
+    //     )
+    // );
+    //
+    // //1
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child:Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: <Widget>[
+    //           SizedBox(
+    //               height: 30,
+    //               child: GridView.builder(
+    //                 itemCount: 12,
+    //                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //                   crossAxisSpacing: 2,
+    //                   mainAxisSpacing: 2,
+    //                   crossAxisCount: 6,
+    //                 ),
+    //                 itemBuilder: (context, index) => Container(
+    //                   decoration: BoxDecoration(
+    //                       shape: BoxShape.rectangle,
+    //                       color: Colors.grey[300]
+    //                   ),
+    //                 ),
+    //               )
+    //           ),
+    //           Container(
+    //               child: Row(
+    //                 crossAxisAlignment: CrossAxisAlignment.center,
+    //                 mainAxisAlignment: MainAxisAlignment.center,
+    //                 children: <Widget>[
+    //                   Icon(Icons.arrow_back,size: 12,
+    //                       color: Colors.grey[400]
+    //                   ),
+    //                   Icon(Icons.arrow_forward,size: 12,
+    //                       color: Colors.grey[400]
+    //                   ),
+    //                 ],
+    //               )
+    //           )
+    //         ],
+    //       ),
+    //     )
+    // );
+    //
+    // //2
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child:Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: <Widget>[
+    //           Expanded(child: GridView.builder(
+    //             itemCount: 9,
+    //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //               crossAxisSpacing: 2,
+    //               mainAxisSpacing: 2,
+    //               crossAxisCount: 3,
+    //             ),
+    //             itemBuilder: (context, index) => Container(
+    //               decoration: BoxDecoration(
+    //                   shape: BoxShape.rectangle,
+    //                   color: Colors.grey[300]
+    //               ),
+    //             ),
+    //           )
+    //           )
+    //         ],
+    //       ),
+    //     )
+    // );
+    //
+    // //3
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child:Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: <Widget>[
+    //           Expanded(child: GridView.builder(
+    //             itemCount: 16,
+    //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //               crossAxisSpacing: 2,
+    //               mainAxisSpacing: 2,
+    //               crossAxisCount: 4,
+    //             ),
+    //             itemBuilder: (context, index) => Container(
+    //               decoration: BoxDecoration(
+    //                   shape: BoxShape.rectangle,
+    //                   color: Colors.grey[300]
+    //               ),
+    //             ),
+    //           )
+    //           )
+    //         ],
+    //       ),
+    //     )
+    // );
+    //
+    // //4
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child:Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: <Widget>[
+    //           Expanded(child: GridView.builder(
+    //             itemCount: 36,
+    //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //               crossAxisSpacing: 2,
+    //               mainAxisSpacing: 2,
+    //               crossAxisCount: 6,
+    //             ),
+    //             itemBuilder: (context, index) => Container(
+    //               decoration: BoxDecoration(
+    //                   shape: BoxShape.rectangle,
+    //                   color: Colors.grey[300]
+    //               ),
+    //             ),
+    //           )
+    //           )
+    //         ],
+    //       ),
+    //     )
+    // );
+    //
+    // //5
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child: SizedBox(
+    //           height: 30,
+    //           child: GridView.builder(
+    //             itemCount: 7,
+    //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //               crossAxisSpacing: 2,
+    //               mainAxisSpacing: 2,
+    //               crossAxisCount: 7,
+    //             ),
+    //             itemBuilder: (context, index) => Container(
+    //               decoration: BoxDecoration(
+    //                   shape: BoxShape.rectangle,
+    //                   color: Colors.grey[300]
+    //               ),
+    //             ),
+    //           )
+    //       ),
+    //     )
+    // );
+    //
+    // //6
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child:Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: <Widget>[
+    //           Expanded(child: GridView.builder(
+    //             itemCount: 8,
+    //             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+    //               crossAxisSpacing: 2,
+    //               mainAxisSpacing: 2,
+    //               crossAxisCount: 4,
+    //             ),
+    //             itemBuilder: (context, index) => Container(
+    //               decoration: BoxDecoration(
+    //                   shape: BoxShape.rectangle,
+    //                   color: Colors.grey[300]
+    //               ),
+    //             ),
+    //           )
+    //           )
+    //         ],
+    //       ),
+    //     )
+    // );
+    //
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child:Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: <Widget>[
+    //           SizedBox(
+    //               height: 60,
+    //               width: 60,
+    //               child: Row(
+    //                 children: <Widget>[
+    //                   Expanded(
+    //                       flex:1,
+    //                       child:
+    //                       Container(
+    //                         margin: EdgeInsets.all(2),
+    //                         color: Colors.grey[300],
+    //                       )
+    //                   ),
+    //                   Expanded(
+    //                     flex:1,
+    //                     child: Container(
+    //                       child: Column(
+    //                         children: <Widget>[
+    //                           Expanded(
+    //                             flex: 1,
+    //                             child:Row(
+    //                               children: <Widget>[
+    //                                 Expanded(
+    //                                   flex: 1,
+    //                                   child: Container(
+    //                                     margin: EdgeInsets.all(2),
+    //                                     color: Colors.grey[300],
+    //                                   ),
+    //                                 ),
+    //                                 Expanded(
+    //                                   flex: 1,
+    //                                   child: Container(
+    //                                     margin: EdgeInsets.all(2),
+    //                                     color: Colors.grey[300],
+    //                                   ),
+    //                                 )
+    //                               ],
+    //                             ),
+    //                           ),
+    //
+    //                           Expanded(
+    //                             flex: 1,
+    //                             child:Row(
+    //                               children: <Widget>[
+    //                                 Expanded(
+    //                                   flex: 1,
+    //                                   child: Container(
+    //                                     margin: EdgeInsets.all(2),
+    //                                     color: Colors.grey[300],
+    //                                   ),
+    //                                 ),
+    //                                 Expanded(
+    //                                   flex: 1,
+    //                                   child: Container(
+    //                                     margin: EdgeInsets.all(2),
+    //                                     color: Colors.grey[300],
+    //                                   ),
+    //                                 )
+    //                               ],
+    //                             ),
+    //                           )
+    //                         ],
+    //                       ),
+    //                     ),
+    //                   ),
+    //                 ],
+    //               )
+    //           ),
+    //         ],
+    //       ),
+    //     )
+    // );
+    //
+    // webLayoutTypeList.add(
+    //     Container(
+    //       height: 80,
+    //       width: 80,
+    //       alignment: Alignment.center,
+    //       child:Column(
+    //         mainAxisAlignment: MainAxisAlignment.center,
+    //         crossAxisAlignment: CrossAxisAlignment.center,
+    //         children: <Widget>[
+    //           SizedBox(
+    //               height: 60,
+    //               width: 60,
+    //               child: Row(
+    //                 children: <Widget>[
+    //                   Expanded(
+    //                     flex:1,
+    //                     child: Container(
+    //                       child: Column(
+    //                         children: <Widget>[
+    //                           Expanded(
+    //                             flex: 1,
+    //                             child:Row(
+    //                               children: <Widget>[
+    //                                 Expanded(
+    //                                   flex: 1,
+    //                                   child: Container(
+    //                                     margin: EdgeInsets.all(2),
+    //                                     color: Colors.grey[300],
+    //                                   ),
+    //                                 ),
+    //                                 Expanded(
+    //                                   flex: 1,
+    //                                   child: Container(
+    //                                     margin: EdgeInsets.all(2),
+    //                                     color: Colors.grey[300],
+    //                                   ),
+    //                                 )
+    //                               ],
+    //                             ),
+    //                           ),
+    //
+    //                           Expanded(
+    //                             flex: 1,
+    //                             child:Row(
+    //                               children: <Widget>[
+    //                                 Expanded(
+    //                                   flex: 1,
+    //                                   child: Container(
+    //                                     margin: EdgeInsets.all(2),
+    //                                     color: Colors.grey[300],
+    //                                   ),
+    //                                 ),
+    //                                 Expanded(
+    //                                   flex: 1,
+    //                                   child: Container(
+    //                                     margin: EdgeInsets.all(2),
+    //                                     color: Colors.grey[300],
+    //                                   ),
+    //                                 )
+    //                               ],
+    //                             ),
+    //                           )
+    //                         ],
+    //                       ),
+    //                     ),
+    //                   ),
+    //                   Expanded(
+    //                       flex:1,
+    //                       child:
+    //                       Container(
+    //                         margin: EdgeInsets.all(2),
+    //                         color: Colors.grey[300],
+    //                       )
+    //                   ),
+    //                 ],
+    //               )
+    //           ),
+    //         ],
+    //       ),
+    //     )
+    // );
+  }
+
+  selectLayoutType() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 140,
+      margin: const EdgeInsets.only(left: 10,right: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('Select layout type',style: TextStyle(color: Colors.black87,fontSize: 16, ),),
+          const SizedBox(height: 20,),
+          Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: layoutTypeList.length,
+              itemBuilder: (context, index) => GestureDetector(
+                  onTap: ()=> {
+                    appLayoutListener(index),
+                  },
+                  child: Container(
+                    height: 90,
+                    width: 90,
+                    alignment: Alignment.center,
+                    margin: const EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(10),
+                    decoration: getAppLayoutDecoration(index),
+                    child: layoutTypeList[index],
+                  )
+              ),
+            ),)
+        ],
+      ),
+    );
+  }
+
+  BoxDecoration getAppLayoutDecoration(int index){
+    if(index==app_layout){
+      return BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+              color: Colors.orange,
+              width: 2));
+    }
+    else{
+      return BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+              color: Colors.blueGrey,
+              width: 1));
+    }
+
   }
 
   selectHeaderFont() {
