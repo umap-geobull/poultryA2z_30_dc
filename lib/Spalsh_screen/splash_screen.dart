@@ -372,7 +372,7 @@ class _SplashScreenState extends State<SplashScreen>{
     if(isLogin !=null){
       if(isLogin ==true){
         if (isAddVendor !=null) {
-          if(isAddVendor != true) {
+          if(isAddVendor == true) {
             Navigator.of(context).pushNamedAndRemoveUntil(
                 HomeScreen.routeName, (Route<dynamic> route) => false);
           }else{
