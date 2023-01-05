@@ -366,12 +366,13 @@ class _SplashScreenState extends State<SplashScreen>{
     SharedPreferences prefs= await SharedPreferences.getInstance();
     bool? isLogin =prefs.getBool('is_login');
     bool? isAddVendor =prefs.getBool('VENDOR_ADDED');
-    print("login customer"+isLogin.toString());
+    print("login customer"+isLogin.toString() );
+    print("vendo customer"+isAddVendor.toString() );
 
     if(isLogin !=null){
       if(isLogin ==true){
         if (isAddVendor !=null) {
-          if(isAddVendor == true) {
+          if(isAddVendor != true) {
             Navigator.of(context).pushNamedAndRemoveUntil(
                 HomeScreen.routeName, (Route<dynamic> route) => false);
           }else{
