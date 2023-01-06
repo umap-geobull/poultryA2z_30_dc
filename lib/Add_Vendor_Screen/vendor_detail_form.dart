@@ -17,6 +17,8 @@ import '../Utils/AppConfig.dart';
 import '../Utils/App_Apis.dart';
 import 'package:http/http.dart' as http;
 
+import '../poultry_vendor/Vendor_details_with_edit.dart';
+
 class VendorDetailsForm extends StatefulWidget {
   final VendorData vendorData;
   const VendorDetailsForm({Key? key, required this.vendorData})
@@ -268,8 +270,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                               EdgeInsets.all(
                                                                   30),
                                                           // color: Colors.white!,
-                                                          child: Image.asset(
-                                                              'assets/ic_consultant.png'),
+                                                          child: Icon(Icons.image,size: 70,color: Colors.grey,),
                                                         ),
                                                         Container(
                                                             width:
@@ -971,8 +972,12 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
 
       prefs.setBool('VENDOR_ADDED', true);
 
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          HomeScreen.routeName, (Route<dynamic> route) => false);
+      // Navigator.of(context).pushNamedAndRemoveUntil(
+      //     HomeScreen.routeName, (Route<dynamic> route) => false);
+      // Navigator.of(context).pushNamedAndRemoveUntil(
+      //     VendorDetailsWithEdit.routeName, (Route<dynamic> route) => false);
+      Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) =>  VendorDetailsWithEdit("0")));
       // }
     } else {
       setState(() {

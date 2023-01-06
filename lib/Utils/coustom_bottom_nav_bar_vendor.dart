@@ -14,7 +14,7 @@ import 'enums.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-class CustomBottomNavBar extends StatefulWidget {
+class CustomBottomNavBarVendor extends StatefulWidget {
   /* CustomBottomNavBar({
     Key? key,
     required this.selectedMenu,
@@ -23,18 +23,18 @@ class CustomBottomNavBar extends StatefulWidget {
   }) : super(key: key);
 */
 
-  MenuState selectedMenu;
+  MenuStateVendor selectedMenu;
   Color bototmBarColor, bottomMenuIconColor;
 
   @override
   _CustomBottomNavBar createState() => _CustomBottomNavBar(selectedMenu,bototmBarColor,bottomMenuIconColor);
 
-  CustomBottomNavBar(
+  CustomBottomNavBarVendor(
       this.selectedMenu, this.bototmBarColor, this.bottomMenuIconColor);
 }
 
-class _CustomBottomNavBar extends State<CustomBottomNavBar> {
-  final MenuState selectedMenu;
+class _CustomBottomNavBar extends State<CustomBottomNavBarVendor> {
+  final MenuStateVendor selectedMenu;
 
   _CustomBottomNavBar(this.selectedMenu,this.bototmBarColor,this.bottomMenuIconColor);
 
@@ -81,7 +81,7 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
       ),
       child: SafeArea(
           top: false,
-          child:userType == "Vendor"?
+          child:
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -89,7 +89,7 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
                   icon: Icon(
                     Icons.home_outlined,
                     size: 25,
-                    color: MenuState.home == selectedMenu
+                    color: MenuStateVendor.home == selectedMenu
                         ? bottomMenuIconColor
                         : inActiveIconColor,
                   ),
@@ -103,7 +103,7 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
                   icon: Icon(
                     Icons.person_outline,
                     size: 25,
-                    color: MenuState.profile == selectedMenu
+                    color: MenuStateVendor.profile == selectedMenu
                         ? bottomMenuIconColor
                         : inActiveIconColor,
                   ),
@@ -115,81 +115,7 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
               ),
             ],
           )
-              : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                  icon: Icon(
-                    Icons.home_outlined,
-                    size: 25,
-                    color: MenuState.home == selectedMenu
-                        ? bottomMenuIconColor
-                        : inActiveIconColor,
-                  ),
-                  onPressed: () =>
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) => const HomeScreen()))
 
-                // Navigator.pushNamed(context, HomeScreen.routeName),
-              ),
-
-              IconButton(
-                  icon: Icon(
-                    Icons.group,
-                    size: 25,
-                    color: MenuState.community == selectedMenu
-                        ? bottomMenuIconColor
-                        : inActiveIconColor,
-                  ),
-                  onPressed: () =>
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) => Community_Dashboard()))
-              ),
-
-              IconButton(
-                icon: Icon(
-                  Icons.contact_mail,
-                  size: 25,
-                  color: MenuState.consultant == selectedMenu
-                      ? bottomMenuIconColor
-                      : inActiveIconColor,
-                ),
-                onPressed: () =>
-                    Navigator.pushReplacement(context, MaterialPageRoute(
-                        builder: (context) => Consultant_Dashboard())),
-              ),
-
-              //For picture Editing
-              IconButton(
-                  icon: Icon(
-                    Icons.shopping_bag,
-                    size: 25,
-                    color: MenuState.jobs == selectedMenu
-                        ? bottomMenuIconColor
-                        : inActiveIconColor,
-                  ),
-                  onPressed: () =>
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) => Job_List()))
-
-                // Navigator.pushNamed(context, ProfileScreen.routeName),
-              ),
-              IconButton(
-                  icon: Icon(
-                    Icons.person_outline,
-                    size: 25,
-                    color: MenuState.profile == selectedMenu
-                        ? bottomMenuIconColor
-                        : inActiveIconColor,
-                  ),
-                  onPressed: () =>
-                      Navigator.pushReplacement(context, MaterialPageRoute(
-                          builder: (context) => ProfileScreen()))
-
-                // Navigator.pushNamed(context, ProfileScreen.routeName),
-              ),
-            ],
-          )
       ),
     );
   }

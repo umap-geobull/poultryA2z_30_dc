@@ -804,30 +804,53 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    height: 22,
-                    width: 22,
-                    child: Checkbox(
-                      onChanged: (value) {
+
+
+                  // Container(
+                  //   height: 22,
+                  //   width: 22,
+                  //   child: Checkbox(
+                  //     onChanged: (value) {
+                  //       if (mounted) {
+                  //         setState(() {
+                  //           if (isAdded(Category_list[index]) == true)
+                  //           {
+                  //             selected_categories.remove(Category_list[index]);
+                  //             //print(selected_manufacturer_id.toString());
+                  //            // widget.onSaveCallback(selected_manufacturer_id);
+                  //           }
+                  //           else {
+                  //             selected_categories.add(Category_list[index]);
+                  //            // widget.onSaveCallback(selected_manufacturer_id);
+                  //           }
+                  //         });
+                  //       }
+                  //     },
+                  //     value: isAdded(Category_list[index]),
+                  //   ),
+                  //   margin: const EdgeInsets.all(5),
+                  // ),
+
+                  InkWell(
+                      onTap: (){
                         if (mounted) {
                           setState(() {
                             if (isAdded(Category_list[index]) == true)
                             {
                               selected_categories.remove(Category_list[index]);
                               //print(selected_manufacturer_id.toString());
-                             // widget.onSaveCallback(selected_manufacturer_id);
+                              // widget.onSaveCallback(selected_manufacturer_id);
                             }
                             else {
                               selected_categories.add(Category_list[index]);
-                             // widget.onSaveCallback(selected_manufacturer_id);
+                              // widget.onSaveCallback(selected_manufacturer_id);
                             }
                           });
                         }
                       },
-                      value: isAdded(Category_list[index]),
-                    ),
-                    margin: const EdgeInsets.all(5),
-                  ),
+                      child:    selected_categories.contains(Category_list[index])?
+                          Icon(Icons.check_box)
+                          : Icon(Icons.check_box_outline_blank)),
                   Flexible(
                     child: Text(
                       Category_list[index],

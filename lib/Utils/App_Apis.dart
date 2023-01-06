@@ -354,3 +354,5 @@ const String get_post="get_post";
 
 //vendor poultry
 const String add_pountry_vendor="add_pountry_vendor";
+const String check_pountry_vendor_status="check_pountry_vendor_status";
+const String get_pountry_vendor_details="get_pountry_vendor_details";
