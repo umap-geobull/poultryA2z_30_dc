@@ -35,6 +35,7 @@ import 'package:poultry_a2z/grobiz_start_pages/verify_email/email_otp_screen.dar
 import '../Cart/Cart_Screen.dart';
 import '../Cart/model/cart_count_model.dart';
 import '../Product_Details/Product_List_User.dart';
+import '../Sign_Up/vendor_signup_catagory.dart';
 import '../Utils/App_Apis.dart';
 import '../grobiz_start_pages/welcome/type_app_base_model.dart';
 import 'Components/AddNewComponent/Offers/edit_offer.dart';
@@ -414,18 +415,19 @@ class _HomeScreen extends State<HomeScreen> {
                                       ),
                                     ),
 
-                                    // Container(
-                                    //   child:  ElevatedButton(
-                                    //     style: ElevatedButton.styleFrom(
-                                    //       primary: Colors.lightGreen,
-                                    //     ),
-                                    //     child: Text('Go Live',style: TextStyle(color: Colors.white,fontSize: 12)),
-                                    //     onPressed: ()=> {
-                                    //       checkPlanDetails()
-                                    //     },
-                                    //   ),
-                                    //   margin: EdgeInsets.all(5),
-                                    // ),
+                                    userType=='Admin'?Container(
+                                      child:  ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.grey[100],
+                                        ),
+                                        child: Text('Import Vendor',style: TextStyle(color: Colors.black87,fontSize: 12)),
+                                        onPressed: ()=> {
+                                          //checkPlanDetails()
+                                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VendorSignupCatagory()))
+                                        },
+                                      ),
+                                      margin: EdgeInsets.all(5),
+                                    ):Container(),
                                   ],
                                 ),
                               ),
@@ -2153,4 +2155,5 @@ print(body.toString());
           )),
     );
   }
+
 }

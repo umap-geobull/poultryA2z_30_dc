@@ -273,7 +273,7 @@ class _SplashScreenState extends State<SplashScreen>{
     String? adminId =prefs.getString('admin_auto_id');
     String? userType =prefs.getString('user_type');
 
-    print("user type ${adminId} ${userType}");
+    //print("user type ${adminId} ${userType}");
 
     if(adminId!=null && adminId.isNotEmpty){
       //print("admin Login info if main");
