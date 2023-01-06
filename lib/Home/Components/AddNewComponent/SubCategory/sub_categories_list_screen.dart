@@ -184,7 +184,7 @@ class _SubCategoriesListScreenState extends State<SubCategoriesListScreen> {
         // ]
       ),
       body:  Container(
-        child: VendorCatagoriesList(),
+        child: VendorCatagoriesList(categoryId: '',),
       ),
       // bottomSheet: filter_Section(context),
 

@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:poultry_a2z/Vendor_Module/Vendor_Home/Components/Show_Rating_Screen.dart';
 import 'package:poultry_a2z/Vendor_Module/Vendor_Home/Components/Vendor_Menu.dart';
+import 'package:poultry_a2z/poultry_vendor/product_model.dart';
 import 'package:poultry_a2z/poultry_vendor/vendor_details_vendor.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,6 +24,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Utils/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+
+import 'add_product dialgo.dart';
 
 class VendorDetailsWithEdit extends StatefulWidget {
   static String routeName = "/vendorDetailsEdit";
@@ -51,8 +56,11 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
       secondaryButtonColor = Colors.orangeAccent;
   Color bottomBarColor = Colors.white, bottomMenuIconColor = Color(0xFFFF7643);
   bool isApiCallProcessing = true;
+  bool isApiCallProcessingProduct = true;
   String admin_auto_id = '63b2612f9821ce37456a4b31';
 
+
+  List<ProductVListData> data =[];
   void getBaseUrl() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? baseUrl = prefs.getString('base_url');
@@ -63,6 +71,7 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
     }
 
     await getVendorDetails();
+     getProduct();
   }
   List<Vendor> vendor =[];
   getVendorDetails() async {
@@ -134,6 +143,54 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
     }
   }
 
+  void getProduct() async {
+    if (mounted) {
+      setState(() {
+        isApiCallProcessingProduct = true;
+      });
+    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userID = prefs.getString('user_id');
+
+    var url = AppConfig.grobizBaseUrl + get_vproduct;
+
+    var uri = Uri.parse(url);
+
+    final body = {
+      "user_auto_id": userID,
+    };
+
+    print("Body ${body}");
+    print("Url ${uri}");
+
+    final response = await http.post(uri, body: body);
+    print("Body response ${response.body}");
+    if (response.statusCode == 200) {
+      final resp = jsonDecode(response.body);
+      String status = resp['status'];
+      if (status == '1') {
+        ProductVListModel productVListModel = ProductVListModel.fromJson(json.decode(response.body));
+        data = productVListModel.data;
+
+        setState(() {
+          isApiCallProcessingProduct = false;
+        });
+      } else {  setState(() {
+        isApiCallProcessingProduct = false;
+      });}
+    } else if (response.statusCode == 500) {
+      if (this.mounted) {
+        setState(() {
+          isApiCallProcessingProduct = false;
+        });
+      }
+      Fluttertoast.showToast(
+        msg: "Server error in getting main categories",
+        backgroundColor: Colors.grey,
+      );
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -178,31 +235,31 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
           //   ), // here you can put the search bar
           // ),
           actions: [
-            // IconButton(
-            //   onPressed: () {
-            //     Update_Vendor();
-            //   },
-            //   icon: Container(
-            //     height: 35,
-            //     width: 35,
-            //     padding: const EdgeInsets.all(5),
-            //     decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         borderRadius: BorderRadius.circular(100),
-            //         border: Border.all(width: 2, color: Colors.white),
-            //         boxShadow: const [
-            //           BoxShadow(
-            //             color: Colors.grey,
-            //             blurRadius: 5.0,
-            //           )
-            //         ]),
-            //     child: const Icon(
-            //       Icons.edit,
-            //       size: 20,
-            //       color: appBarIconColor,
-            //     ),
-            //   ),
-            // ),
+            IconButton(
+              onPressed: () {
+                // Update_Vendor();
+              },
+              icon: Container(
+                height: 35,
+                width: 35,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(width: 2, color: Colors.white),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey,
+                        blurRadius: 5.0,
+                      )
+                    ]),
+                child:  Icon(
+                  Icons.edit,
+                  size: 20,
+                  color: appBarIconColor,
+                ),
+              ),
+            ),
           ]
       ),
       body: SingleChildScrollView(
@@ -219,17 +276,32 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
               // Container(
               //     margin: const EdgeInsets.only(top: 5, bottom: 5),
               //     child: Vendor_Menu(widget.Vendor_id)),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
+                  child: vendor[0].VENDORPROFILE.isEmpty? Image.asset(
                     vendorList[0].image,
                     fit: BoxFit.fill,
                     width: MediaQuery.of(context).size.width,
-                    height: 170,
+                    height: 200,
+                  ):  CachedNetworkImage(
+                  fit: BoxFit.fill,
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                  imageUrl:
+                  "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${vendor[0].VENDORPROFILE}",
+                  placeholder: (context, url) =>
+                  new Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    color: Colors.grey,
                   ),
+                  errorWidget: (context, url, error) =>
+                      Container(height: 70,
+                          width: 70,
+                          color: Colors.grey,child: new Icon(Icons.error)),
+                ),
                 ),
               ),
               Padding(
@@ -484,7 +556,23 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
                         child: Container(
                             height: 40,
                             width: 40,
-                            child: Image.asset('assets/consultant1.jpeg'),
+                            child:vendor[0].SUPPLIERPROFILE.isEmpty? Image.asset('assets/consultant1.jpeg'):CachedNetworkImage(
+                              fit: BoxFit.fill,
+                              width: MediaQuery.of(context).size.width,
+                              height: 170,
+                              imageUrl:
+                              "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${vendor[0].SUPPLIERPROFILE}",
+                              placeholder: (context, url) =>
+                              new Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 170,
+                                color: Colors.grey,
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Container(height: 70,
+                                      width: 70,
+                                      color: Colors.grey,child: new Icon(Icons.error)),
+                            ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               color: Colors.grey[400],
@@ -582,6 +670,7 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
                             EdgeInsets.only(left: 10, right: 10, bottom: 2),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             // Icon(Icons.location_on, color: kMainColor,size: 20,),
                             // SizedBox(width: 5,),
@@ -590,7 +679,35 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold)))
+                                        fontWeight: FontWeight.bold))),
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    showModalBottomSheet(
+                                        context: context,
+                                        builder: (builder){
+                                          return AddProduct(
+                                            getProduct: (){
+                                              getProduct();
+                                            },
+                                          );
+                                        }
+                                    );
+                                  },
+                                  child:Icon(Icons.add_circle,color: primaryButtonColor),
+                                ),
+                                // //const SizedBox(height: 2),
+                                // SizedBox(
+                                //   // width: 70,
+                                //     child: Text(
+                                //       "Add new Product",
+                                //       maxLines: 2,
+                                //       textAlign: TextAlign.center,
+                                //       style: TextStyle(color: Colors.black),
+                                //     ))
+                              ],
+                            ),
                           ],
                         ),
                       ))),
@@ -598,41 +715,21 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      //width: 90,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(2)),
-                      child: Column(
-                        children: [
-                          Container(
-                              padding: EdgeInsets.all(10),
-                              height: 70,
-                              width: 70,
-                              color: Colors.grey,
-                              child: Icon(Icons.add_circle,color: Colors.black,)),
-                          // //const SizedBox(height: 2),
-                          SizedBox(
-                              width: 70,
-                              child: Text(
-                                "Add new Product",
-                                maxLines: 2,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.black),
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
 
-                  Padding(
+                  isApiCallProcessingProduct == true
+                      ? Container(
+                    height: 100,
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width,
+                    child: const GFLoader(type: GFLoaderType.circle),
+                  )
+                      : Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       height: 130,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: popularProduct.length,
+                          itemCount: data.length,
                           itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {},
                                 // onLongPress: longpressed,
@@ -644,22 +741,42 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
                                     children: [
                                       Container(
                                           padding: EdgeInsets.all(5),
-                                          // height: 70,
-                                          //width: 70,
+                                          height: 70,
+                                          width: 70,
                                           child: ClipRRect(
                                             borderRadius: BorderRadius.circular(5),
-                                            child: Image.asset(
-                                              "${popularProduct[index].image}",
+                                            child:  data[index]
+                                                .productImage
+                                                .isEmpty
+                                                ? Image.asset(
+                                              "assets/images/default.png",
                                               height: 70,
                                               width: 70,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          )),
+                                            )
+                                                : CachedNetworkImage(
+                                              fit: BoxFit.fill,
+                                              height: 70,
+                                              width: 70,
+                                              imageUrl:
+                                              "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${data[index].productImage}",
+                                              placeholder: (context, url) =>
+                                              new Container(
+                                                height: 100,
+                                                width:
+                                                MediaQuery.of(context).size.width /
+                                                    2,
+                                                color: Colors.grey,
+                                              ),
+                                              errorWidget: (context, url, error) =>
+                                                  Container(height: 70,
+                                                      width: 70,
+                                                      color: Colors.grey,child: new Icon(Icons.error)),
+                                            ) )),
                                       //const SizedBox(height: 2),
                                       SizedBox(
                                           width: 70,
                                           child: Text(
-                                            "${popularProduct[index].name}",
+                                            "${data[index].productName}",
                                             maxLines: 2,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(color: Colors.black),
@@ -1063,7 +1180,14 @@ class _VendorDetailsWithEditState extends State<VendorDetailsWithEdit> {
       }
     });
   }
+
+
+
+  // Widget priorityDialog(BuildContext context) {
+  //   return
+  // }
 }
+
 
 class PopularProduct {
   String name;

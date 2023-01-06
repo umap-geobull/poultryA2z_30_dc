@@ -46,7 +46,7 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
     String? bottomBarColor =prefs.getString('bottomBarColor');
     String? bottombarIcon =prefs.getString('bottomBarIconColor');
    userType = prefs.getString('user_type');
-    print("bottom bar ${userType}");
+    // print("bottom bar ${userType}");
 
     if(bottomBarColor!=null){
       this.bototmBarColor=Color(int.parse(bottomBarColor));

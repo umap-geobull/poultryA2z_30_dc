@@ -400,11 +400,11 @@ class GetVendorListCategory {
     CATEGORYAUTOID = json['CATEGORY_AUTO_ID'];
     ADMINAUTOID = json['ADMIN_AUTO_ID'];
     APPTYPEID = json['APP_TYPE_ID'];
-    USERAUTOID = json['USER_AUTO_ID'];
-    MINORDERVALUE = json['MIN_ORDER_VALUE'];
-    PRICERANGE = json['PRICE_RANGE'];
-    VENDORPROFILE = json['VENDOR_PROFILE'];
-    SUPPLIERPROFILE = json['SUPPLIER_PROFILE'];
+    USERAUTOID = json['USER_AUTO_ID'] != null ?json['USER_AUTO_ID'] :'';
+    MINORDERVALUE = json['MIN_ORDER_VALUE']!= null ?json['MIN_ORDER_VALUE'] :'';
+    PRICERANGE = json['PRICE_RANGE']!= null ?json['PRICE_RANGE'] :'';
+    VENDORPROFILE = json['VENDOR_PROFILE']!= null ?json['VENDOR_PROFILE'] :'';
+    SUPPLIERPROFILE = json['SUPPLIER_PROFILE']!= null ?json['SUPPLIER_PROFILE'] :'';
     FIRMNAME = json['FIRM_NAME'];
     OWNERNAME = json['OWNER_NAME'];
     EMAILID = json['EMAIL_ID'];

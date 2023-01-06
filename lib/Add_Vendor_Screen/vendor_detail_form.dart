@@ -39,10 +39,11 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
   String businessDetailsId = '', businessName = '', businessLogo = '';
   String baseUrl = '', admin_auto_id = '',userType='';
   late List<File> resume_file = [];
+  List<bool> isfileuploaded = [];
   late List<TextEditingController> textController = [];
   bool iscsvProcessing=false;
   bool isApiProcessing = false;
-  List<bool> isfileuploaded = [];
+
   List<String> csvColumn=[];
   void initState() {
     // TODO: implement initState

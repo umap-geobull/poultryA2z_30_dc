@@ -120,15 +120,15 @@ class _ProfileScreen extends State<ProfileScreen> {
                     builder: (context) => Help(appBarColor,appBarIconColor,primaryButtonColor,secondaryButtonColor)))
               },
             ),
-            ProfileMenu(
-              primaryButtonColor: primaryButtonColor,
-              text: "My Addresses",
-              icon: Icon(Icons.location_on_outlined,color: primaryButtonColor,size: 25,),
-              press: () => {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => MyAddress()))
-              },
-            ),
+            // ProfileMenu(
+            //   primaryButtonColor: primaryButtonColor,
+            //   text: "My Addresses",
+            //   icon: Icon(Icons.location_on_outlined,color: primaryButtonColor,size: 25,),
+            //   press: () => {
+            //     Navigator.push(context, MaterialPageRoute(
+            //         builder: (context) => MyAddress()))
+            //   },
+            // ),
             userType=='Admin'?
             ProfileMenu(
               primaryButtonColor: primaryButtonColor,

@@ -13,6 +13,8 @@ import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../MainCategories/main_category_screen.dart';
+
 
 typedef OnDeleteCallBack =Function(String id);
 typedef OnGoToListCallBack =Function(String type, String main_cat_id, String sub_cat_id, String brand_id);
@@ -7379,6 +7381,11 @@ class _CategoriesState extends State<Categories> {
   }
 
   goToNextScreen(int index){
+    print("Catagory  Id ${mainCategoryList[index].categoryAutoId}");
+    print("Catagory  Id ${mainCategoryList[index].maincategoryAutoId}");
+    Navigator.push(context, MaterialPageRoute(builder: (context) =>
+        MainCategoryScreen(mainCategoryList[index].maincategoryAutoId,mainCategoryList[index].mainCategoryName,mainCategoryList[index])));
+
 
     // widget.onGoToListCallBack("category",
     //     mainCategoryList[index].mainCategoryAutoId);
