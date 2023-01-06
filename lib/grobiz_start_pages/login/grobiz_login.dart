@@ -32,7 +32,7 @@ class _GrobizLogin extends State<GrobizLogin> {
 
   bool isApiProcessing=false;
   final _formKey = GlobalKey < FormState > ();
-  String app_base_url='https://gruzen.in/GrobizEcommerceAppBuilder/';
+  String app_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/';
 
   String error_msg="";
 

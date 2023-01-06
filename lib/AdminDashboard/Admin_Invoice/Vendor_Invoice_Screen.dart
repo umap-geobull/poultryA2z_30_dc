@@ -887,8 +887,8 @@ class _Vendor_Invoice_ScreenState extends State<Vendor_Invoice_Screen> {
         AdminProfileModel adminProfileModel=AdminProfileModel.fromJson(json.decode(response.body));
 
         admin_business_name=adminProfileModel.data[0].name;
-        admin_email=adminProfileModel.data[0].email;
-        admin_mb=adminProfileModel.data[0].countryCode+ ' '+adminProfileModel.data[0].contact!;
+        admin_email=adminProfileModel.data[0].emailId;
+        admin_mb=adminProfileModel.data[0].countryCode+ ' '+adminProfileModel.data[0].mobileNumber!;
         if(this.mounted){
           setState(() {});
         }

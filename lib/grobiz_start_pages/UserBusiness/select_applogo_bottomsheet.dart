@@ -478,11 +478,11 @@ class _SelectLogo extends State<SelectLogo> {
     request.fields["app_name"] = adminProfileModel.data[0].appName;
     request.fields["app_type"] = adminProfileModel.data[0].appType;
     request.fields["country_code"] = adminProfileModel.data[0].countryCode;
-    request.fields["contact"] = adminProfileModel.data[0].contact;
+    request.fields["mobile_number"] = adminProfileModel.data[0].mobileNumber;
     request.fields["country"] = adminProfileModel.data[0].country;
     request.fields["city"] = adminProfileModel.data[0].city;
     request.fields["name"] = adminProfileModel.data[0].name;
-    request.fields["email"] = adminProfileModel.data[0].email;
+    request.fields["email_id"] = adminProfileModel.data[0].emailId;
     request.fields["app_type_id"] = adminProfileModel.data[0].appTypeId!;
 
     http.Response response = await http.Response.fromStream(await request.send());

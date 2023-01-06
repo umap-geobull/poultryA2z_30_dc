@@ -16,7 +16,7 @@ const String view_icon='assets/images/view.svg';
 const String share_icon='assets/images/share_icon.svg';
 const String send_icon='assets/images/send_icon.svg';
 const String like_fill_icon='assets/images/like_fill.svg';
-
+const String profile_pic_base_url = "images/profiles/";
 
 const String send_login_otp = "send_login_otp";
 const String login = "login";
@@ -29,6 +29,7 @@ const String get_main_cat_component_list = "get_main_category_components";
 const String get_main_category_brands = "get_main_category_brands";
 
 const String get_main_categories = "get_main_category_list";
+const String get_main_category_lists = "get_main_category_lists";
 const String add_main_categories = "add_main_category";
 const String edit_main_categories = "edit_main_category";
 const String delete_main_categories = "delete_main_category";
@@ -282,10 +283,10 @@ const String get_Finance_Reports = "get_Vendor_finance_Reports";
 
 
 //grobiz apis
-const String app_base_type_base_url='https://gruzen.in/GrobizEcommerceSuperAdmin/images/app_data/';
-const String app_logo_base_url='https://gruzen.in/GrobizEcommerceSuperAdmin/images/admin_logo/';
-const String demo_logo_base_url='https://gruzen.in/GrobizEcommerceSuperAdmin/images/logos/';
-const String gallery_image_base_url='https://gruzen.in/GrobizEcommerceSuperAdmin/images/grobiz_banner_images/';
+const String app_base_type_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/app_data/';
+const String app_logo_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/admin_logo/';
+const String demo_logo_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/logos/';
+const String gallery_image_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/grobiz_banner_images/';
 
 
 const String get_all_app_base = "get_all_app_base";
@@ -333,3 +334,25 @@ const String image_subscriptions_history="image_subscriptions_history";
 const String get_product_formui="get_product_formui";
 const String update_product_formui="update_product_formui";
 const String add_product_formui="add_product_formui";
+
+
+//poultry job vacancy
+const String add_job_vacancy="add_job_vacancy";
+const String get_job_vacancy="get_job_vacancy";
+const String delete_job_vacancy="delete_job_vacancy";
+const String apply_jobs="apply_jobs";
+const String get_applied_jobs="get_applied_jobs";
+
+
+//Consultant
+const String add_consultant="add_consultant";
+const String get_consultants="get_consultants";
+
+//community post
+const String upload_post="upload_post";
+const String get_post="get_post";
+
+//vendor poultry
+const String add_pountry_vendor="add_pountry_vendor";
+const String check_pountry_vendor_status="check_pountry_vendor_status";
+const String get_pountry_vendor_details="get_pountry_vendor_details";

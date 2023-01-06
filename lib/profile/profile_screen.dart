@@ -10,7 +10,7 @@ import 'package:poultry_a2z/grobiz_start_pages/order_history/grobiz_plans_histor
 import 'package:poultry_a2z/grobiz_start_pages/plans/grobiz_plans.dart';
 import 'package:poultry_a2z/grobiz_start_pages/profile/admin_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../MyOrders/order_screen.dart';
+import '../grobiz_start_pages/profile/admin_profile.dart';
 import 'Myaccount/MyProfile.dart';
 import '../Wishlist/Wishlist.dart';
 import 'components/address/MyAddresses.dart';
@@ -85,12 +85,12 @@ class _ProfileScreen extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
-        backgroundColor: appBarColor,
-        title: Text("My Account" ,style: TextStyle(color:appBarIconColor,fontSize: 18)),
-        automaticallyImplyLeading: false,
-      ),
+        appBar: AppBar(
+          toolbarHeight: 50,
+          backgroundColor: appBarColor,
+          title: Text("My Account" ,style: TextStyle(color:appBarIconColor,fontSize: 18)),
+          automaticallyImplyLeading: false,
+        ),
       body:
       SingleChildScrollView(
         padding: const EdgeInsets.only(top:20,bottom: 50,left: 10,right: 10),
@@ -120,24 +120,15 @@ class _ProfileScreen extends State<ProfileScreen> {
                     builder: (context) => Help(appBarColor,appBarIconColor,primaryButtonColor,secondaryButtonColor)))
               },
             ),
-            // ProfileMenu(
-            //   primaryButtonColor: primaryButtonColor,
-            //   text: "Order History",
-            //   icon: Icon(Icons.list_alt_sharp,color: primaryButtonColor,size: 25,),
-            //   press: () => {
-            //     Navigator.push(context, MaterialPageRoute(
-            //         builder: (context) => OrderScreen()))
-            //   },
-            // ),
-            // ProfileMenu(
-            //   primaryButtonColor: primaryButtonColor,
-            //   text: "My Addresses",
-            //   icon: Icon(Icons.location_on_outlined,color: primaryButtonColor,size: 25,),
-            //   press: () => {
-            //     Navigator.push(context, MaterialPageRoute(
-            //         builder: (context) => MyAddress()))
-            //   },
-            // ),
+            ProfileMenu(
+              primaryButtonColor: primaryButtonColor,
+              text: "My Addresses",
+              icon: Icon(Icons.location_on_outlined,color: primaryButtonColor,size: 25,),
+              press: () => {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => MyAddress()))
+              },
+            ),
             userType=='Admin'?
             ProfileMenu(
               primaryButtonColor: primaryButtonColor,
@@ -226,8 +217,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           },
                           child: const Text("Yes",style: TextStyle(color: Colors.black54,fontSize: 13)),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.blue,
+                            backgroundColor: Colors.blue,
                             minimumSize: const Size(70,30),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -244,8 +234,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           child: const Text("No",
                               style: TextStyle(color: Colors.black54,fontSize: 13)),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                            onPrimary: Colors.blue,
+                            backgroundColor: Colors.blue,
                             minimumSize: const Size(70,30),
                             shape: const RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -291,7 +280,7 @@ class _ProfileScreen extends State<ProfileScreen> {
 
         Future.delayed(Duration.zero, () {
           Navigator.popUntil(context, ModalRoute.withName("/"));
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SelectOption()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginScreen()));
         });
 
         // Navigator.push(context,  MaterialPageRoute(builder: (context) => GrobizLogin()));

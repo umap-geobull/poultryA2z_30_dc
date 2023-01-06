@@ -1,5 +1,5 @@
 
-const String main_categories_base_url = "https://gruzen.in/GrobizEcommerceAppBuilder/images/categories/";
+const String main_categories_base_url = "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/categories/";
 const String sub_categories_base_url="images/subcategories/";
 const String brands_base_url="images/brands/";
 const String subcategories_url="images/subcategories/";

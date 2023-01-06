@@ -3,6 +3,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:poultry_a2z/grobiz_start_pages/profile/admin_profile_model.dart';
 import 'package:poultry_a2z/main.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
@@ -23,9 +24,12 @@ import '../../Home/Home_Screen.dart';
 import 'dart:convert';
 import 'package:upgrader/upgrader.dart';
 
+import '../Sign_Up/vendor_signup_catagory.dart';
+import '../poultry_vendor/Vendor_details_with_edit.dart';
+
 
 class SplashScreen extends StatefulWidget{
-  String admin_auto_id='636371e2bd3e6182c00869d2';
+  String admin_auto_id='63b2612f9821ce37456a4b31';
 
   SplashScreen(this.admin_auto_id);
 
@@ -34,10 +38,10 @@ class SplashScreen extends StatefulWidget{
 }
 
 class _SplashScreenState extends State<SplashScreen>{
-  String admin_auto_id = '636371e2bd3e6182c00869d2';
+  String admin_auto_id = '63b2612f9821ce37456a4b31';
   
   String businessDetailsId='',businessName='',businessLogo='';
-  String app_base_url='https://gruzen.in/GrobizEcommerceAppBuilder/';
+  String app_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/';
   bool iSApiCallProcessing=false;
 
   String user_type='';
@@ -59,7 +63,8 @@ class _SplashScreenState extends State<SplashScreen>{
     saveAppBaseUrl();
     getAppLogo();
     //getDeepLinkAdminId();
-    getAppMaintenanceStatus();
+    //getAppMaintenanceStatus();
+    checkAdminId();
   }
 
   saveAppBaseUrl() async{
@@ -135,6 +140,7 @@ class _SplashScreenState extends State<SplashScreen>{
   }
 
   Future getAdminProfile(String admin_id) async {
+    print("Get admin profile");
     final body = {
       "user_auto_id":admin_id,
     };
@@ -146,6 +152,7 @@ class _SplashScreenState extends State<SplashScreen>{
     final response = await http.post(uri,body: body);
 
     if (response.statusCode == 200) {
+      print("Get admin profile ${response.body}");
       final resp=jsonDecode(response.body);
       int status=resp['status'];
       if(status==1){
@@ -175,6 +182,7 @@ class _SplashScreenState extends State<SplashScreen>{
   }
 
   Future getAppUiDetails() async {
+    print("Get UI");
     Rest_Apis restApis = Rest_Apis();
 
     restApis.getAppUi(admin_auto_id,app_base_url).then((value) {
@@ -188,8 +196,11 @@ class _SplashScreenState extends State<SplashScreen>{
           //saveAdminId();
           saveAppUiSession(appUiStyle);
 
+          print("Get UI user type ${user_type}");
           if(user_type == 'customer'){
             getCustomerLoginInfo();
+          }else if(user_type == 'Vendor'){
+            getVendorLoginInfo();
           }
           else{
             getAdminLoginInfo();
@@ -201,7 +212,7 @@ class _SplashScreenState extends State<SplashScreen>{
 
   // saveDeepLinkAdminId() async{
   //   SharedPreferences prefs= await SharedPreferences.getInstance();
-  //   prefs.setString('deep_link_admin_id','636371e2bd3e6182c00869d2');
+  //   prefs.setString('deep_link_admin_id','63b2612f9821ce37456a4b31');
   // }
   //
   // getDeepLinkAdminId() async{
@@ -211,7 +222,7 @@ class _SplashScreenState extends State<SplashScreen>{
   //   if(id!=null){
   //     if(this.mounted){
   //       setState(() {
-  //         deep_link_admin_auto_id_session = '636371e2bd3e6182c00869d2';
+  //         deep_link_admin_auto_id_session = '63b2612f9821ce37456a4b31';
   //       });
   //     }
   //   }
@@ -232,10 +243,11 @@ class _SplashScreenState extends State<SplashScreen>{
 
   checkAdminId(){
     if(widget.admin_auto_id.isNotEmpty){
+      print("user admin not empty");
       //saveDeepLinkAdminId();
       if(this.mounted){
         setState(() {
-          user_type = 'customer';
+          // user_type = 'customer';
           admin_auto_id = widget.admin_auto_id;
           getAdminProfile(admin_auto_id);
           //getAppUiDetails();
@@ -253,6 +265,7 @@ class _SplashScreenState extends State<SplashScreen>{
     //   }
     // }
     else{
+      print("user admin is empty");
       checkAdminIdStoredInSession();
     }
   }
@@ -262,20 +275,37 @@ class _SplashScreenState extends State<SplashScreen>{
     String? adminId =prefs.getString('admin_auto_id');
     String? userType =prefs.getString('user_type');
 
+    //print("user type ${adminId} ${userType}");
+
     if(adminId!=null && adminId.isNotEmpty){
+      //print("admin Login info if main");
       if(userType!=null && userType!='Admin'){
+        print("admin Login info inside else");
         if(this.mounted){
           setState(() {
             admin_auto_id=adminId;
+            this.user_type = userType!;
             getAdminProfile(admin_auto_id);
           });
         }
-      }
-      else{
+      }else{
         getAdminLoginInfo();
       }
+      // else if(userType!=null && userType!='Vendor'){
+      //   if(this.mounted){
+      //     setState(() {
+      //       admin_auto_id=adminId;
+      //       getVendorLoginInfo();
+      //     });
+      //   }
+      // }
+      // else{
+      //   print("admin Login info inside else");
+      //   getAdminLoginInfo();
+      // }
     }
     else{
+      print("admin Login info final else");
       getAdminLoginInfo();
     }
   }
@@ -325,6 +355,102 @@ class _SplashScreenState extends State<SplashScreen>{
     if(isLogin !=null){
       if(isLogin ==true){
         Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
+      }
+      else{
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+      }
+    }
+    else{
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+    }
+  }
+
+  bool isvendorProcessing = false;
+  String isVendorCreated = '';
+
+  Future checkIsVendorAdded() async {
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+
+    String? userID = prefs.getString('user_id');
+    String? apptypeId = prefs.getString('app_type_id');
+
+    final body = {
+
+      "ADMIN_AUTO_ID":admin_auto_id,
+      "APP_TYPE_ID": apptypeId,
+      "USER_AUTO_ID":userID,
+
+    };
+    print(body.toString());
+
+    var url= AppConfig.grobizBaseUrl +check_pountry_vendor_status;
+    print('baseurl'+url);
+    var uri = Uri.parse(url);
+
+    final response = await http.post(uri,body: body);
+
+    print("Vendor verify ${response.body}");
+    if (response.statusCode == 200) {
+      isvendorProcessing=false;
+
+      final resp=jsonDecode(response.body);
+      String status=resp['status'];
+
+      isVendorCreated = resp['is_created'];
+      print("is vendor created ${isVendorCreated}");
+
+      // if(status=="1"){
+      //   print(resp.toString());
+      //
+      //   // Fluttertoast.showToast(msg: 'Signed in successfully', backgroundColor: Colors.grey,);
+      //   // String userAutoId=resp['user_id'];
+      //   // String userType=resp['user_type'];
+      //   // String admin_auto_id=resp['admin_auto_id'];
+      //   // String category_id=resp['category_id'];
+      //   // saveLoginSession(userAutoId,userType,admin_auto_id,category_id);
+      // }
+      // else {
+      //   String msg=resp['msg'];
+      //   Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey,);
+      // }
+
+      setState(() {});
+    }
+  }
+
+
+  getVendorLoginInfo() async{
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    bool? isLogin =prefs.getBool('is_login');
+    bool? isAddVendor =prefs.getBool('VENDOR_ADDED');
+    print("login customer"+isLogin.toString() );
+    print("vendo customer"+isAddVendor.toString() );
+
+    if(isLogin !=null){
+      if(isLogin ==true){
+        await checkIsVendorAdded();
+        if(isVendorCreated.isNotEmpty){
+          print("inside yes empry");
+          if(isVendorCreated == "Yes"){
+            print("inside yes");
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                VendorDetailsWithEdit.routeName, (Route<dynamic> route) => false);
+            // Navigator.of(context).pushNamedAndRemoveUntil(
+            //     HomeScreen.routeName, (Route<dynamic> route) => false);
+            // Navigator.pushReplacement(context, MaterialPageRoute(
+            //     builder: (context) =>  VendorDetailsWithEdit("0")));
+          }else{
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => VendorSignupCatagory()),
+            );
+          }
+        }else{
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) => VendorSignupCatagory()),
+          );
+        }
       }
       else{
         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));

@@ -7,6 +7,7 @@ import '../Consultant/Consultant_Dashboard.dart';
 import '../Jobs/Add_Vacancy.dart';
 import '../Jobs/ApplyJobs.dart';
 import '../Jobs/Jobs_Dashboard.dart';
+import '../poultry_vendor/Vendor_details_with_edit.dart';
 import '../Wishlist/Wishlist.dart';
 import '../profile/profile_screen.dart';
 import 'enums.dart';
@@ -39,11 +40,13 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
 
   Color bototmBarColor, bottomMenuIconColor;
   Color inActiveIconColor = Color(0xFFB6B6B6);
-
+  String? userType = '';
   void getappUi() async {
     SharedPreferences prefs= await SharedPreferences.getInstance();
     String? bottomBarColor =prefs.getString('bottomBarColor');
     String? bottombarIcon =prefs.getString('bottomBarIconColor');
+   userType = prefs.getString('user_type');
+    print("bottom bar ${userType}");
 
     if(bottomBarColor!=null){
       this.bototmBarColor=Color(int.parse(bottomBarColor));
@@ -78,7 +81,41 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
       ),
       child: SafeArea(
           top: false,
-          child: Row(
+          child:userType == "Vendor"?
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              IconButton(
+                  icon: Icon(
+                    Icons.home_outlined,
+                    size: 25,
+                    color: MenuState.home == selectedMenu
+                        ? bottomMenuIconColor
+                        : inActiveIconColor,
+                  ),
+                  onPressed: () =>
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) =>  VendorDetailsWithEdit("0")))
+
+                // Navigator.pushNamed(context, HomeScreen.routeName),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.person_outline,
+                    size: 25,
+                    color: MenuState.profile == selectedMenu
+                        ? bottomMenuIconColor
+                        : inActiveIconColor,
+                  ),
+                  onPressed: () =>
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) => ProfileScreen()))
+
+                // Navigator.pushNamed(context, ProfileScreen.routeName),
+              ),
+            ],
+          )
+              : Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
@@ -152,7 +189,8 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
                 // Navigator.pushNamed(context, ProfileScreen.routeName),
               ),
             ],
-          )),
+          )
+      ),
     );
   }
 

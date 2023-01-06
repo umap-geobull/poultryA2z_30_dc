@@ -41,7 +41,7 @@ class _GrobizSignup extends State<GrobizSignup> {
   FocusNode _focus = FocusNode();
 
   String user_type='Admin';
-  String app_base_url='https://gruzen.in/GrobizEcommerceAppBuilder/';
+  String app_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/';
 
   Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
       secondaryButtonColor=Colors.orangeAccent;

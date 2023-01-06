@@ -13,6 +13,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:getwidget/getwidget.dart';
 
+import '../Sign_Up/vendor_signup_catagory.dart';
+import '../Utils/AppConfig.dart';
+import '../poultry_vendor/Vendor_details_with_edit.dart';
+
 class OtpScreen extends StatefulWidget {
   String mobile_number;
   String country_code;
@@ -36,18 +40,17 @@ class _OtpScreen extends State<OtpScreen> {
   FocusNode? pin4FocusNode;
   String otp='',token='';
   String val_one='',val_two='',val_three='',val_four='';
-  String app_base_url='https://gruzen.in/GrobizEcommerceAppBuilder/';
+  String app_base_url='https://grobiz.app/GRBCRM2022/PoultryEcommerce/';
   bool isVerifyOtpApiProcessing=false,isResendApiProcessing=false;
 
-  String admin_auto_id='636bafd640e19ce8b70a92e2';
+  String admin_auto_id='63b2612f9821ce37456a4b31';
 
   late Timer _timer;
   int _start = 40;
   bool showTimer=true;
   bool showResendButton=false;
 
-  Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
-      secondaryButtonColor=Colors.orangeAccent;
+  Color appBarColor=Colors.white,appBarIconColor=Colors.black, primaryButtonColor=Colors.orange, secondaryButtonColor=Colors.orangeAccent;
 
   void getappUi() async {
     SharedPreferences prefs= await SharedPreferences.getInstance();
@@ -422,10 +425,59 @@ class _OtpScreen extends State<OtpScreen> {
         // Fluttertoast.showToast(msg: 'Signed in successfully', backgroundColor: Colors.grey,);
         String userAutoId=resp['user_id'];
         String userType=resp['user_type'];
-        // String admin_auto_id=resp['admin_auto_id'];
+        String admin_auto_id=resp['admin_auto_id'];
         String category_id=resp['category_id'];
+        saveLoginSession(userAutoId,userType,admin_auto_id,category_id);
+      }
+      else {
+        String msg=resp['msg'];
+        Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey,);
+      }
 
-        saveLoginSession(userAutoId,userType,"636bafd640e19ce8b70a92e2",category_id);
+      setState(() {});
+    }
+  }
+
+bool isvendorProcessing = false;
+  String isVendorCreated = '';
+
+  Future checkIsVendorAdded(String apptypeId,String userId,) async {
+
+
+    final body = {
+
+      "ADMIN_AUTO_ID":admin_auto_id,
+      "APP_TYPE_ID": apptypeId,
+      "USER_AUTO_ID":userId,
+
+    };
+    print(body.toString());
+
+    var url= AppConfig.grobizBaseUrl +check_pountry_vendor_status;
+    print('baseurl'+url);
+    var uri = Uri.parse(url);
+
+    final response = await http.post(uri,body: body);
+
+    print("Vendor verify ${response.body}");
+    if (response.statusCode == 200) {
+      isvendorProcessing=false;
+
+      final resp=jsonDecode(response.body);
+      String status=resp['status'];
+
+
+
+      if(status=="1"){
+        print(resp.toString());
+        isVendorCreated = resp['is_created'];
+        print("is vendor created ${isVendorCreated}");
+        // Fluttertoast.showToast(msg: 'Signed in successfully', backgroundColor: Colors.grey,);
+        // String userAutoId=resp['user_id'];
+        // String userType=resp['user_type'];
+        // String admin_auto_id=resp['admin_auto_id'];
+        // String category_id=resp['category_id'];
+        // saveLoginSession(userAutoId,userType,admin_auto_id,category_id);
       }
       else {
         String msg=resp['msg'];
@@ -444,14 +496,38 @@ class _OtpScreen extends State<OtpScreen> {
     prefs.setString('user_type', userType);
     prefs.setString('admin_auto_id', admin_auto_id);
     prefs.setString('app_type_id',category_id);
-    print("userType"+userType);
+    print("userType "+userType);
     print("app type id "+ category_id);
     print("set");
-
+    String? userID = prefs.getString('user_id');
+    print("user id ${userID}");
     Fluttertoast.showToast(msg: "Signed in successfully", backgroundColor: Colors.grey,);
-
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
+    if(userType == "Vendor"){
+      await checkIsVendorAdded(category_id,userID!);
+      if(isVendorCreated.isNotEmpty){
+        print("inside yes empry");
+        if(isVendorCreated == "Yes"){
+          print("inside yes");
+          // Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
+          Navigator.of(context).pushNamedAndRemoveUntil(VendorDetailsWithEdit.routeName, (Route<dynamic> route) => false);
+          // Navigator.pushReplacement(context, MaterialPageRoute(
+          //     builder: (context) =>  VendorDetailsWithEdit("0")));
+        }else{
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+                builder: (context) => VendorSignupCatagory()),
+          );
+        }
+      }else{
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+              builder: (context) => VendorSignupCatagory()),
+        );
+      }
+    }else {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          HomeScreen.routeName, (Route<dynamic> route) => false);
+    }
   }
 
   void getBaseUrl() async {

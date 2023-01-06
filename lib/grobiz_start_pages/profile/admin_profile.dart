@@ -112,11 +112,11 @@ class AdminProfileState extends State<AdminProfile> {
     request.fields["app_name"] = tv_businessName.text;
     request.fields["app_type"] = adminProfileModel.data[0].appType;
     request.fields["country_code"] = adminProfileModel.data[0].countryCode;
-    request.fields["contact"] = adminProfileModel.data[0].contact;
+    request.fields["contact"] = adminProfileModel.data[0].mobileNumber;
     request.fields["country"] = adminProfileModel.data[0].country;
     request.fields["city"] = adminProfileModel.data[0].city;
     request.fields["name"] = tv_name.text;
-    request.fields["email"] = tv_email.text;
+    request.fields["email_id"] = tv_email.text;
     request.fields["app_type_id"] = adminProfileModel.data[0].appTypeId!;
 
     http.Response response = await http.Response.fromStream(await request.send());
@@ -225,8 +225,8 @@ class AdminProfileState extends State<AdminProfile> {
         adminProfileModel=AdminProfileModel.fromJson(json.decode(response.body));
 
         tv_name.text=adminProfileModel.data[0].name;
-        tv_email.text=adminProfileModel.data[0].email;
-        tv_mobile.text=adminProfileModel.data[0].countryCode+ ' '+adminProfileModel.data[0].contact!;
+        tv_email.text=adminProfileModel.data[0].emailId;
+        tv_mobile.text=adminProfileModel.data[0].countryCode+ ' '+adminProfileModel.data[0].mobileNumber!;
         tv_businessName.text=adminProfileModel.data[0].appName;
         if(this.mounted){
           setState(() {});

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,12 +9,14 @@ import '../../Product_Details/model/Product_Model.dart';
 import '../../Utils/App_Apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
-
+import 'package:http/http.dart' as http;
 import '../Utils/coustom_bottom_nav_bar.dart';
 import '../Utils/enums.dart';
 import 'Add_Vacancy.dart';
 import 'ApplyJobs.dart';
+import 'Model/Jobs_Model.dart';
 import 'Model/job_result_model.dart';
+import 'MyAppliedJobs.dart';
 
 class Job_List extends StatefulWidget {
   Job_List(
@@ -42,16 +46,17 @@ class _Job_ListState extends State<Job_List> {
   late Route routes;
   bool isApiCallProcessing=false;
   bool isDeleteProcessing=false;
-  String baseUrl='',user_id='', admin_auto_id='',app_type_id='';
+  String baseUrl='',user_id='', admin_auto_id='',app_type_id='',user_type='';
   List<String> categories = [];
   bool isfilter=false;
-  //filter
-  String colors='', size='', moq='',  brand='',  min_price='', max_price='', sort_by='',manufacturer='',
-      material='',min_thickness='',max_thickness='',firmness='',max_height='', min_height='',min_width='',max_width='',min_depth='',max_depth='',min_discount='',max_discount='',stock='',min_trial_priod='',max_trial_period='';
-
+  late File icon_img;
+  late XFile pickedImageFile;
   Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
       secondaryButtonColor=Colors.orangeAccent;
+
   Color bottomBarColor=Colors.white, bottomMenuIconColor=Color(0xFFFF7643);
+
+  List<GetJobDetails> job_list=[];
 
   void getappUi() async {
     SharedPreferences prefs= await SharedPreferences.getInstance();
@@ -99,18 +104,64 @@ class _Job_ListState extends State<Job_List> {
     String? apptypeid= prefs.getString('app_type_id');
     String? userType =prefs.getString('user_type');
 
-    if(baseUrl!=null && userId!=null && adminId!=null && apptypeid!=null){
+    if(baseUrl!=null && userId!=null && adminId!=null && apptypeid!=null && userType!=null){
       if(this.mounted){
         this.admin_auto_id=adminId;
         this.baseUrl=baseUrl;
         this.user_id=userId;
         this.app_type_id=apptypeid;
-
-        // getData();
+        this.user_type=userType;
+         getJobsData();
         // getFilterList();
       }
     }
   }
+
+  void getJobsData() async {
+    if(mounted){
+      setState(() {
+        isApiCallProcessing=true;
+      });
+    }
+
+    var url=baseUrl+'api/'+get_job_vacancy;
+
+    var uri = Uri.parse(url);
+
+    final body = {
+      "admin_auto_id":admin_auto_id,
+      "app_type_id": app_type_id,
+    };
+
+    final response = await http.post(uri, body: body);
+    if (response.statusCode == 200) {
+      isApiCallProcessing=false;
+
+      final resp=jsonDecode(response.body);
+      String status=resp['status'];
+      if(status=='1'){
+        JobsModel Jobsmodel=JobsModel.fromJson(json.decode(response.body));
+        job_list=Jobsmodel.data;
+
+        print(job_list.toString());
+        if(mounted){
+          setState(() {});
+        }
+      }else
+        {
+
+        }
+    }
+    else if(response.statusCode==500){
+      if(this.mounted){
+        setState(() {
+          isApiCallProcessing=false;
+        });
+      }
+      Fluttertoast.showToast(msg: "Server error in getting main categories", backgroundColor: Colors.grey,);
+    }
+  }
+
 
   @override
   void initState() {
@@ -134,12 +185,6 @@ class _Job_ListState extends State<Job_List> {
                     color: appBarIconColor,
                     fontSize: 18,
                     fontWeight: FontWeight.bold)),
-            // leading: IconButton(
-            //   onPressed: ()=>{
-            //     Navigator.of(context).pop()
-            //   },
-            //   icon: Icon(Icons.arrow_back, color: appBarIconColor),
-            // ),
             actions: [
               IconButton(
                   onPressed: ()=>{
@@ -174,30 +219,30 @@ class _Job_ListState extends State<Job_List> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        child: Container(
-                            alignment: Alignment.center,
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 35,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                color: secondaryButtonColor,
-                                shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                              ),
-                              child: Text("  Apply Jobs   ",textAlign: TextAlign.center,style: TextStyle(color: appBarIconColor)),
-                            )
-                        ),
-                        onTap: (){
-                          Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs()));
-                        },
-                      )
-                  ),
+                  // Expanded(
+                  //     flex: 1,
+                  //     child: GestureDetector(
+                  //       child: Container(
+                  //           alignment: Alignment.center,
+                  //           child: Container(
+                  //             alignment: Alignment.center,
+                  //             height: 35,
+                  //             width: 100,
+                  //             decoration: BoxDecoration(
+                  //               color: secondaryButtonColor,
+                  //               shape: BoxShape.rectangle,
+                  //               borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  //             ),
+                  //             child: Text("  Apply Jobs   ",textAlign: TextAlign.center,style: TextStyle(color: appBarIconColor)),
+                  //           )
+                  //       ),
+                  //       onTap: (){
+                  //         Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs()));
+                  //       },
+                  //     )
+                  // ),
 
-                  Expanded(
+                  user_type=='Admin'?Expanded(
                       flex: 1,
                       child: GestureDetector(
                         child: Container(
@@ -218,7 +263,33 @@ class _Job_ListState extends State<Job_List> {
                           Navigator.push(context,  MaterialPageRoute(builder: (context) => AddVacancyScreen()));
                         },
                       )
+                  ):Container(),
+
+                  //user_type!='Admin'?
+                  Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        child: Container(
+                            alignment: Alignment.center,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 35,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: secondaryButtonColor,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              child: Text("  My Applied Jobs  ",textAlign: TextAlign.center,style: TextStyle(color: appBarIconColor)),
+                            )
+                        ),
+                        onTap: (){
+                         Navigator.push(context,  MaterialPageRoute(builder: (context) => MyAppliedJobs()));
+                        },
+                      )
                   )
+                      //:Container(),
+
                 ],
               ),),
             SingleChildScrollView(
@@ -227,7 +298,7 @@ class _Job_ListState extends State<Job_List> {
                   padding: const EdgeInsets.only(top: 0),
                   child: ListView.builder(
                       scrollDirection: Axis.vertical,
-                      itemCount: searchList.length,
+                      itemCount: job_list.length,
                       itemBuilder: (context, index) =>
                           Container(
                             height: 250,
@@ -238,88 +309,6 @@ class _Job_ListState extends State<Job_List> {
                             ),
                             child: Row(
                               children: [
-                                // GestureDetector(
-                                //   child: SizedBox(
-                                //     width: 120,
-                                //     child: Stack(children: [
-                                //       SizedBox(
-                                //           width: 120,
-                                //           height: 170,
-                                //           child: Container(
-                                //               color: Colors.grey[100],
-                                //               child: ClipRRect(
-                                //                 borderRadius: const BorderRadius.only(
-                                //                   bottomLeft: Radius.circular(8),
-                                //                   topLeft: Radius.circular(8),
-                                //                 ),
-                                //                 child: productList.productImages.isNotEmpty
-                                //                     ? CachedNetworkImage(
-                                //                   fit: BoxFit.fill,
-                                //                   imageUrl: baseUrl+product_base_url + product.productImages[0].productImage,
-                                //                   placeholder: (context, url) => Container(
-                                //                       decoration: BoxDecoration(
-                                //                         color: Colors.grey[400],
-                                //                       )),
-                                //                   errorWidget: (context, url, error) =>
-                                //                   const Icon(Icons.error),
-                                //                 ) :
-                                //                 Container(
-                                //                     child: const Icon(Icons.error),
-                                //                     decoration: BoxDecoration(
-                                //                       color: Colors.grey[400],
-                                //                     )),
-                                //               )
-                                //           )
-                                //       ),
-                                //       product.offerData.isNotEmpty && product.offerData[0].offer.isNotEmpty && product.offerData[0].offer!='0'?
-                                //       Container(
-                                //         height: 15,
-                                //         width: 45,
-                                //         alignment: Alignment.center,
-                                //         decoration: const BoxDecoration(
-                                //           borderRadius: BorderRadius.only(
-                                //             topLeft: Radius.circular(8),
-                                //           ),
-                                //           color: Colors.green,
-                                //         ),
-                                //         child: Text(
-                                //           product.offerData[0].offer + "% off",
-                                //           style: const TextStyle(
-                                //               color: Colors.white, fontSize: 11),
-                                //         ),
-                                //       ):
-                                //       product.offerPercentage.isNotEmpty && product.offerPercentage!='0'?
-                                //       Container(
-                                //         height: 15,
-                                //         width: 45,
-                                //         alignment: Alignment.center,
-                                //         decoration: const BoxDecoration(
-                                //           borderRadius: BorderRadius.only(
-                                //             topLeft: Radius.circular(8),
-                                //           ),
-                                //           color: Colors.green,
-                                //         ),
-                                //         child: Text(
-                                //           product.offerPercentage + "% off",
-                                //           style: const TextStyle(
-                                //               color: Colors.white, fontSize: 11),
-                                //         ),
-                                //       ):
-                                //       Container(),
-                                //       Align(
-                                //           alignment: Alignment.bottomRight,
-                                //           child:product.totalNoOfReviews!=0?Container(
-                                //             width: 65,
-                                //             height: 30,
-                                //             alignment: Alignment.bottomRight,
-                                //             child: totalRatingUi(product.avgRating,product.totalNoOfReviews),
-                                //           ):Container())
-                                //     ]),
-                                //   ),
-                                //   onTap: ()=>{
-                                //     showProductDetails(product.productAutoId)
-                                //   },
-                                // ),
                                 Expanded(
                                     flex: 1,
                                     child: Container(
@@ -335,18 +324,25 @@ class _Job_ListState extends State<Job_List> {
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: <Widget>[
-                                                  Text(
-                                                    searchList[index].job_name,
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                    job_list[index].jobTitle,
                                                     overflow: TextOverflow.ellipsis,
                                                     style: const TextStyle(
                                                         fontWeight: FontWeight.w600, fontSize: 18,color: Colors.blue),
                                                   ),
+                                                  user_type=='Admin'?IconButton(onPressed: ()=>{showAlert(job_list[index].id)},
+                                                      icon: Icon(Icons.delete, color: appBarIconColor)):Container()
+                                                    ],),
+
                                                   Container(
                                                     margin: const EdgeInsets.only(top: 5),
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                          "Experience: "+searchList[index].experience,
+                                                          "Experience: "+job_list[index].experience,
                                                           style:
                                                           const TextStyle(color: Colors.black, fontSize: 14),
                                                         )
@@ -358,7 +354,7 @@ class _Job_ListState extends State<Job_List> {
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                          "Salary: " + searchList[index].salary,
+                                                          "Salary: " + job_list[index].salaryExpectations,
                                                           style:
                                                           const TextStyle(color: Colors.black, fontSize: 14),
                                                         ),
@@ -373,12 +369,12 @@ class _Job_ListState extends State<Job_List> {
                                                         mainAxisAlignment: MainAxisAlignment.start,
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
-                                                          Text(
+                                                          const Text(
                                                             "Description: ",
                                                             style: TextStyle(color: Colors.black, fontSize: 14),
                                                           ),
                                                           SizedBox(height: 3,),
-                                                          Text(searchList[index].description,
+                                                          Text(job_list[index].jobDescription,
                                                             style: const TextStyle(
                                                                 color: Colors.black54,
                                                                 fontSize: 13,
@@ -388,7 +384,6 @@ class _Job_ListState extends State<Job_List> {
                                                         ],
                                                       )
                                                   ),
-
                                                 ],
                                               ),
                                             ),
@@ -398,30 +393,24 @@ class _Job_ListState extends State<Job_List> {
                                                   alignment: Alignment.bottomCenter,
                                                   child: Row(
                                                     crossAxisAlignment: CrossAxisAlignment.end,
-                                                    mainAxisAlignment: MainAxisAlignment.end,
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                     children: [
-                                                      Flexible(
+                                                       Flexible(
                                                         flex: 1,
                                                         child: SizedBox(
                                                           height: 35,
-                                                          //child:
-                                                          /* ElevatedButton(
-                                                          style: ElevatedButton.styleFrom(
-                                                              primary: primaryButtonColor,
-                                                              textStyle: const TextStyle(fontSize: 20)),
-                                                          onPressed: () {
-                                                            //showEditPage(product.productAutoId);
-                                                          },
-                                                          child: const Center(
-                                                            child: Text(
-                                                              'Edit',
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Colors.white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),*/
+                                                          child:
+                                                          job_list[index].applied_job_count.toString()==''||job_list[index].applied_job_count==0?
+                                                            const Text("Total Applicants : 0",
+                                                             style: TextStyle(
+                                                             fontSize: 14,
+                                                             color: Colors.black,
+                                                           ),):
+                                                          Text("Total Applicants : "+job_list[index].applied_job_count.toString()!,
+                                                            style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Colors.black,
+                                                            ),)
                                                         ),
                                                       ),
                                                       const SizedBox(
@@ -436,6 +425,7 @@ class _Job_ListState extends State<Job_List> {
                                                                 backgroundColor: secondaryButtonColor,
                                                                 textStyle: const TextStyle(fontSize: 20)),
                                                             onPressed: () {
+                                                              Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs(job_list[index].id)));
                                                               //showAlert(product.productAutoId);
                                                             },
                                                             child: const Center(
@@ -448,7 +438,6 @@ class _Job_ListState extends State<Job_List> {
                                                               ),
                                                             ),
                                                           ) ,
-
                                                         ),
                                                       ),
                                                     ],
@@ -465,30 +454,152 @@ class _Job_ListState extends State<Job_List> {
                           )
                   )
               ),
-            )
+            ),
 
-            // isApiCallProcessing==false && productList.isEmpty?
-            // Container(
-            //   alignment: Alignment.center,
-            //   width: MediaQuery.of(context).size.width,
-            //   child: const Text('No products available')
-            // ):
-            // Container(),
-            //
-            // isApiCallProcessing==true?
-            // Container(
-            //   alignment: Alignment.center,
-            //   width: MediaQuery.of(context).size.width,
-            //   child: const GFLoader(
-            //       type:GFLoaderType.circle
-            //   ),
-            // ):
-            // Container()
+            isApiCallProcessing==false && job_list.isEmpty?
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              child: const Text('No Jobs available')
+            ):
+            Container(),
+
+            isApiCallProcessing==true?
+            Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width,
+              child: const GFLoader(
+                  type:GFLoaderType.circle
+              ),
+            ):
+            Container()
           ],
         ),
       bottomSheet: CustomBottomNavBar(MenuState.jobs,
         bottomBarColor,bottomMenuIconColor,),
     )
+    );
+  }
+
+  Future<void> Delete_Job(String job_id) async {
+    if(mounted){
+      setState(() {
+        isApiCallProcessing=true;
+      });
+    }
+
+    final body = {
+      "job_auto_id": job_id,
+      "admin_auto_id":admin_auto_id,
+      "app_type_id":app_type_id,
+    };
+    var url = baseUrl+'api/' + delete_job_vacancy;
+    print(body.toString());
+    print(url);
+    Uri uri=Uri.parse(url);
+
+    final response = await http.post(uri, body: body);
+    print(response.statusCode.toString());
+    if (response.statusCode == 200) {
+      isApiCallProcessing=false;
+
+      final resp = jsonDecode(response.body);
+      int  status = resp['status'];
+      print("status=>"+status.toString());
+      if (status == 1) {
+        Fluttertoast.showToast(
+          msg: "Job deleted successfully",
+          backgroundColor: Colors.grey,
+        );
+        job_list.clear();
+       getJobsData();
+      }
+      else {
+        print('empty');
+      }
+      // if(mounted){
+      //   setState(() {});
+      // }
+    }else if(response.statusCode==500)
+    {
+      isApiCallProcessing=false;
+      Fluttertoast.showToast(
+        msg: "server error",
+        backgroundColor: Colors.grey,
+      );
+    }
+  }
+
+  Future<bool> showAlert(String jobid) async {
+    return await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+          backgroundColor: Colors.yellow[50],
+          title: const Text(
+            'Are you sure?',
+            style: TextStyle(color: Colors.black87),
+          ),
+          content: Wrap(
+            children: <Widget>[
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    const Text(
+                      'Do you want delete this Job post',
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Delete_Job(jobid);
+                              },
+                              child: const Text("Yes",
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 13)),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green[200],
+                                //minimumSize: Size(70, 30),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(2.0)),
+                                ),
+                              ),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text("No",
+                                  style: TextStyle(
+                                      color: Colors.black54, fontSize: 13)),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blue[200],
+                                // minimumSize: Size(70, 30),
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(2.0)),
+                                ),
+                              ),
+                            )),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          )),
     );
   }
 
@@ -562,8 +673,7 @@ class _Job_ListState extends State<Job_List> {
     );
   }
 
-
   FutureOr onGoBack(dynamic value) {
-    //getData();
+    getJobsData();
   }
 }
