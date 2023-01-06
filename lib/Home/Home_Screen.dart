@@ -34,6 +34,7 @@ import 'package:poultry_a2z/grobiz_start_pages/profile/admin_profile_model.dart'
 import 'package:poultry_a2z/grobiz_start_pages/verify_email/email_otp_screen.dart';
 import '../Cart/Cart_Screen.dart';
 import '../Cart/model/cart_count_model.dart';
+import '../MainCategories/catagories_list.dart';
 import '../Product_Details/Product_List_User.dart';
 import '../Sign_Up/vendor_signup_catagory.dart';
 import '../Utils/App_Apis.dart';
@@ -364,20 +365,20 @@ class _HomeScreen extends State<HomeScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    eraseDataStatus=='No'?
-                                    Container(
-                                      margin: EdgeInsets.all(5),
-                                      child:  ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent,
-                                        ),
-                                        child: Text('Erase Data',style: TextStyle(color: Colors.white,fontSize: 12)),
-                                        onPressed: ()=> {
-                                          showAlertErase()
-                                        },
-                                      ),
-                                    ):
-                                    Container(),
+                                    // eraseDataStatus=='No'?
+                                    // Container(
+                                    //   margin: EdgeInsets.all(5),
+                                    //   child:  ElevatedButton(
+                                    //     style: ElevatedButton.styleFrom(
+                                    //       backgroundColor: Colors.redAccent,
+                                    //     ),
+                                    //     child: Text('Erase Data',style: TextStyle(color: Colors.white,fontSize: 12)),
+                                    //     onPressed: ()=> {
+                                    //       showAlertErase()
+                                    //     },
+                                    //   ),
+                                    // ):
+                                    // Container(),
 
                                     Container(
                                       margin: const EdgeInsets.all(5),
@@ -970,6 +971,32 @@ class _HomeScreen extends State<HomeScreen> {
             brand_id: brand_id,
             home_componet_id: '',
             offer_id: '',));
+
+    }
+    else{
+      // routes = MaterialPageRoute(
+      //     builder: (context) => Product_List_User(type: type,main_cat_id: main_cat_id,
+      //         sub_cat_id:sub_cat_id,
+      //         brand_id: brand_id,
+      //         home_componet_id: "",
+      //     offer_id: '',));
+      routes = MaterialPageRoute(
+          builder: (context) => SubCategoriesListScreen());
+    }
+
+    Navigator.push(context, routes).then(onGoBackFromCart);
+  }
+
+  goToProductScreen1(String type,String main_cat_id){
+    if(userType=='Admin'){
+      // routes = MaterialPageRoute(
+      //     builder: (context) => Product_List(type: type,main_cat_id: main_cat_id,
+      //       sub_cat_id:sub_cat_id,
+      //       brand_id: brand_id,
+      //       home_componet_id: '',
+      //       offer_id: '',));
+      routes = MaterialPageRoute(
+          builder: (context) => VendorCatagoriesList(type: type,main_cat_id:main_cat_id ));
     }
     else{
       // routes = MaterialPageRoute(
@@ -1088,7 +1115,7 @@ class _HomeScreen extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             // gotProducListScreen(),
-            Categories('',iseditSwitched,showAlert,goToProductScreen,homecomponent.id,userType,homecomponent.iconType,
+            Categories('',iseditSwitched,showAlert,goToProductScreen1,homecomponent.id,userType,homecomponent.iconType,
                 homecomponent.layoutType)
           ],
         ),
@@ -2005,10 +2032,9 @@ class _HomeScreen extends State<HomeScreen> {
     final body={
       'user_auto_id':user_id,
     };
-print(body.toString());
+
     Uri uri=Uri.parse(url);
     final response = await http.post(uri,body: body);
-    print(response.toString());
     if (response.statusCode == 200) {
       final resp = jsonDecode(response.body);
       int  status = resp['status'];

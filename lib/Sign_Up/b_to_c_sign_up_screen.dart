@@ -1446,7 +1446,7 @@ class BtoCSignupState extends State<BtoCSignup> {
 
     print("customer sign up body ${body}");
 
-    var url = baseUrl + 'api/' + user_registration;
+    var url = AppConfig.grobizBaseUrl + user_registration;
 
     var uri = Uri.parse(url);
 

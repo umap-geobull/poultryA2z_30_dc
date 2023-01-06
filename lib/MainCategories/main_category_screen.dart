@@ -246,7 +246,7 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
                         Container(
                           child:  ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.grey[100],
+                              backgroundColor: Colors.grey[100],
                             ),
                             child: const Text('Add Component',style: TextStyle(color: Colors.black87),),
                             onPressed: () {
@@ -268,7 +268,7 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
                   ),
                 ):
                 Container(
-                  // child: VendorCatagoriesList(),
+                  child: VendorCatagoriesList(type:'category',main_cat_id: widget.mainCategory_auto_id,),
                 ),
 
                 //Categories(false, iseditSwitched,mainCategory_auto_id),
@@ -306,7 +306,7 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
           HomeLoader():
           // Container(),
           Container(
-            child: VendorCatagoriesList(),
+            child: VendorCatagoriesList(type: 'category',main_cat_id: widget.mainCategory_auto_id,),
           ),
           isServerError==true?
           Container(
@@ -527,7 +527,7 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
         child: Column(
           children: <Widget>[
             // gotProducListScreen(),
-            Categories(mainCategory_auto_id,iseditSwitched,showAlert,goToProductScreen,homecomponent.id,userType,homecomponent.iconType,
+            Categories(mainCategory_auto_id,iseditSwitched,showAlert,goToProductScreen1,homecomponent.id,userType,homecomponent.iconType,
                 homecomponent.layoutType)
           ],
         ),
@@ -869,6 +869,20 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
                 home_componet_id: '',
                 offer_id: '',
               ));
+    }
+
+    Navigator.push(context, routes).then(onGoBackFromCart);
+  }
+
+  goToProductScreen1(String type,String main_cat_id){
+
+    if(userType=='Admin'){
+      routes = MaterialPageRoute(
+          builder: (context) => VendorCatagoriesList(type: type,main_cat_id:main_cat_id ));
+    }
+    else{
+      routes = MaterialPageRoute(
+          builder: (context) => VendorCatagoriesList(type: type,main_cat_id:main_cat_id ));
     }
 
     Navigator.push(context, routes).then(onGoBackFromCart);

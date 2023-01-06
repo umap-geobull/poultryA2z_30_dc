@@ -183,9 +183,9 @@ class _SubCategoriesListScreenState extends State<SubCategoriesListScreen> {
         //   _shoppingCartBadge(),
         // ]
       ),
-      body:  Container(
-        child: VendorCatagoriesList(),
-      ),
+      // body:  Container(
+      //   child: VendorCatagoriesList(type: 'category',main_cat_id: widget.,),
+      // ),
       // bottomSheet: filter_Section(context),
 
     );

@@ -782,8 +782,6 @@ print(body.toString());
     getData();
   }
 
-
-
   showEditPage(String productId){
     routes = MaterialPageRoute(builder: (context) => Update_Product(product_id: productId,));
     Navigator.push(context, routes).then(onGoBack);

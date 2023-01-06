@@ -41,12 +41,13 @@ class _CustomBottomNavBar extends State<CustomBottomNavBar> {
   Color bototmBarColor, bottomMenuIconColor;
   Color inActiveIconColor = Color(0xFFB6B6B6);
   String? userType = '';
+
   void getappUi() async {
     SharedPreferences prefs= await SharedPreferences.getInstance();
     String? bottomBarColor =prefs.getString('bottomBarColor');
     String? bottombarIcon =prefs.getString('bottomBarIconColor');
    userType = prefs.getString('user_type');
-    print("bottom bar ${userType}");
+    //print("bottom bar ${userType}");
 
     if(bottomBarColor!=null){
       this.bototmBarColor=Color(int.parse(bottomBarColor));

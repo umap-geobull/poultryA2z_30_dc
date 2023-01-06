@@ -47,7 +47,8 @@ class _Whatsapp extends State<MessageOnWhatsApp>{
   }
 
   openwhatsapp() async{
-    var whatsapp ="7875642402";
+    // var whatsapp ="7875642402";
+    var whatsapp ="";
 
     var whatappURL_ios ="https://wa.me/$whatsapp?text=";
 

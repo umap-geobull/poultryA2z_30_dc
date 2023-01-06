@@ -15,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 typedef OnDeleteCallBack =Function(String id);
-typedef OnGoToListCallBack =Function(String type, String main_cat_id, String sub_cat_id, String brand_id);
+typedef OnGoToListCallBack =Function(String type, String main_cat_id);
 
 class Categories extends StatefulWidget {
   String mainCategory_auto_id;
@@ -7380,8 +7380,8 @@ class _CategoriesState extends State<Categories> {
 
   goToNextScreen(int index){
 
-    // widget.onGoToListCallBack("category",
-    //     mainCategoryList[index].mainCategoryAutoId);
+    widget.onGoToListCallBack("category",
+        mainCategoryList[index].maincategoryAutoId);
   }
 
   showAddCategory(){
