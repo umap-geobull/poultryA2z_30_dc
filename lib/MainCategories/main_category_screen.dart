@@ -21,6 +21,7 @@ import '../Home/Components/AddNewComponent/Recommended_Products/RecommendedNew.d
 import '../Home/Components/AddNewComponent/Sliders/Slider.dart';
 import '../Home/Components/AddNewComponent/Sliders/edit_slider.dart';
 import '../Home/Components/AddNewComponent/SubCategory/edit_subcategory_bottomsheet.dart';
+import '../Home/Components/AddNewComponent/models/home_main_category_details.dart';
 import '../Home/Components/AddNewComponent/select_type_bottomsheet.dart';
 import '../Home/Components/MainCategories/categories.dart';
 import '../Home/Components/component_constants.dart';
@@ -37,7 +38,8 @@ class MainCategoryScreen extends StatefulWidget {
   String mainCategory_auto_id;
   String mainCategory_name;
   String user_id = '';
-  MainCategoryScreen(this.mainCategory_auto_id,this.mainCategory_name);
+   Content category;
+  MainCategoryScreen(this.mainCategory_auto_id,this.mainCategory_name,this.category);
 
   @override
   _MainCategoryScreen createState() => _MainCategoryScreen(mainCategory_auto_id,mainCategory_name);
@@ -306,7 +308,7 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
           HomeLoader():
           // Container(),
           Container(
-            child: VendorCatagoriesList(),
+            child: VendorCatagoriesList(categoryId: '${widget.mainCategory_auto_id}', ),
           ),
           isServerError==true?
           Container(

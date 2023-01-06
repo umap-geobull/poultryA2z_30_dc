@@ -45,7 +45,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
   late Route routes;
   bool isApiCallProcessing = false;
   bool isDeleteProcessing = false;
-  String baseUrl = '', user_id = '', admin_auto_id = '', app_type_id = '';
+  String baseUrl = '', user_id = '', admin_auto_id = '', app_type_id = '',userType ='';
   List<String> categories = [];
   bool isfilter = false;
   //filter
@@ -130,13 +130,14 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
     if (baseUrl != null &&
         userId != null &&
         adminId != null &&
-        apptypeid != null) {
+        apptypeid != null && userType != null) {
       if (this.mounted) {
         this.admin_auto_id = adminId;
         this.baseUrl = baseUrl;
         this.user_id = userId;
         this.app_type_id = apptypeid;
-
+        this.userType = userType;
+        print("Use type ${this.userType}");
         // getData();
         // getFilterList();
         getConsultant();
@@ -167,7 +168,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
     final body = {
       "admin_auto_id": admin_auto_id,
       "app_type_id": app_type_id,
-      "user_auto_id": user_id,
+      // "user_auto_id": user_id,
     };
 
     print("Body ${body}");
@@ -234,8 +235,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                       Icons.filter_alt_outlined,
                       color: appBarIconColor,
                     )),
-
-                IconButton(
+              userType =="Customer" ?SizedBox(): IconButton(
                   onPressed: () {
                     Navigator.push(
                         context,
