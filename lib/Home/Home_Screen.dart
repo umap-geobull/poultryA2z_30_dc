@@ -371,9 +371,24 @@ class _HomeScreen extends State<HomeScreen> {
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.redAccent,
                                         ),
-                                        child: Text('Erase Data',style: TextStyle(color: Colors.white,fontSize: 12)),
+                                        child: Text('Consultant Type',style: TextStyle(color: Colors.white,fontSize: 12)),
                                         onPressed: ()=> {
-                                          showAlertErase()
+                                          //showAlertErase()
+                                        },
+                                      ),
+                                    ):
+                                    Container(),
+
+                                    eraseDataStatus=='No'?
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      child:  ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.redAccent,
+                                        ),
+                                        child: Text('Specialization',style: TextStyle(color: Colors.white,fontSize: 12)),
+                                        onPressed: ()=> {
+                                          //showAlertErase()
                                         },
                                       ),
                                     ):

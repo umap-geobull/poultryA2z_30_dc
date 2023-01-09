@@ -38,7 +38,7 @@ class MainCategoryScreen extends StatefulWidget {
   String mainCategory_auto_id;
   String mainCategory_name;
   String user_id = '';
-   Content category;
+  Content category;
   MainCategoryScreen(this.mainCategory_auto_id,this.mainCategory_name,this.category);
 
   @override
@@ -166,15 +166,15 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
             onPressed: ()=>{Navigator.of(context).pop()},
           ),
           actions: [
-            userType=='Admin'?
-            Switch(
-              onChanged: toggleSwitch,
-              value: iseditSwitched,
-              activeColor: Colors.grey,
-              activeTrackColor: Colors.grey,
-              inactiveThumbColor: Colors.grey,
-              inactiveTrackColor: Colors.grey[300],
-            )            : Container(),
+            // userType=='Admin'?
+            // Switch(
+            //   onChanged: toggleSwitch,
+            //   value: iseditSwitched,
+            //   activeColor: Colors.grey,
+            //   activeTrackColor: Colors.grey,
+            //   inactiveThumbColor: Colors.grey,
+            //   inactiveTrackColor: Colors.grey[300],
+            // )            : Container(),
 
             // IconButton(
             //   visualDensity: VisualDensity(horizontal: -2.0, vertical: -2.0),
@@ -183,7 +183,7 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
             //   icon: Icon(Icons.search, color: homeMenuIconColor),
             // ),
 
-          /*  IconButton(
+            /*  IconButton(
               visualDensity: VisualDensity(horizontal: -2.0, vertical: -2.0),
               padding: EdgeInsets.zero,
               onPressed: () {},
@@ -206,72 +206,72 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
             padding: EdgeInsets.only(bottom: 40),
             child:Column(
               children: [
-                iseditSwitched==true?
-                Container(
-                  child:  isShutterOpen==false?
-                  GestureDetector(
-                    onTap: ()=>{
-                      showHideSetting()
-                    },
-                    child: Container(
-                      child: Icon(Icons.keyboard_arrow_down,color: Colors.orange,size: 20,),
-                      decoration: BoxDecoration(
-                          boxShadow: <BoxShadow>[
-                            BoxShadow(
-                                color: Colors.black54,
-                                blurRadius: 15.0,
-                                offset: Offset(0.0, 0.75)
-                            )
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(5),
-                              bottomRight: Radius.circular(5)
-                          )
-                      ),
-                      width: 50,
-                    ),):
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                            color: Colors.black54,
-                            blurRadius: 15.0,
-                            offset: Offset(0.0, 0.75)
-                        )
-                      ],
-                      color: Colors.white,
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          child:  ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.grey[100],
-                            ),
-                            child: const Text('Add Component',style: TextStyle(color: Colors.black87),),
-                            onPressed: () {
-                              showAddComponent();
-                            },
-                          ),
-                          margin: const EdgeInsets.all(5),
-                        ),
-                        GestureDetector(
-                          onTap: ()=>{
-                            showHideSetting()
-                          },
-                          child: Container(
-                            child: Icon(Icons.keyboard_arrow_up,color: Colors.orange,size: 30,),
-                            width: 50,
-                          ),)
-                      ],
-                    ),
-                  ),
-                ):
-                Container(
-                  // child: VendorCatagoriesList(),
-                ),
+                // iseditSwitched==true?
+                // Container(
+                //   child:  isShutterOpen==false?
+                //   GestureDetector(
+                //     onTap: ()=>{
+                //       showHideSetting()
+                //     },
+                //     child: Container(
+                //       child: Icon(Icons.keyboard_arrow_down,color: Colors.orange,size: 20,),
+                //       decoration: BoxDecoration(
+                //           boxShadow: <BoxShadow>[
+                //             BoxShadow(
+                //                 color: Colors.black54,
+                //                 blurRadius: 15.0,
+                //                 offset: Offset(0.0, 0.75)
+                //             )
+                //           ],
+                //           color: Colors.white,
+                //           borderRadius: BorderRadius.only(
+                //               bottomLeft: Radius.circular(5),
+                //               bottomRight: Radius.circular(5)
+                //           )
+                //       ),
+                //       width: 50,
+                //     ),):
+                //   Container(
+                //     width: MediaQuery.of(context).size.width,
+                //     decoration: BoxDecoration(
+                //       boxShadow: <BoxShadow>[
+                //         BoxShadow(
+                //             color: Colors.black54,
+                //             blurRadius: 15.0,
+                //             offset: Offset(0.0, 0.75)
+                //         )
+                //       ],
+                //       color: Colors.white,
+                //     ),
+                //     child: Column(
+                //       children: <Widget>[
+                //         // Container(
+                //         //   child:  ElevatedButton(
+                //         //     style: ElevatedButton.styleFrom(
+                //         //       primary: Colors.grey[100],
+                //         //     ),
+                //         //     child: const Text('Add Component',style: TextStyle(color: Colors.black87),),
+                //         //     onPressed: () {
+                //         //       showAddComponent();
+                //         //     },
+                //         //   ),
+                //         //   margin: const EdgeInsets.all(5),
+                //         // ),
+                //         GestureDetector(
+                //           onTap: ()=>{
+                //             showHideSetting()
+                //           },
+                //           child: Container(
+                //             child: Icon(Icons.keyboard_arrow_up,color: Colors.orange,size: 30,),
+                //             width: 50,
+                //           ),)
+                //       ],
+                //     ),
+                //   ),
+                // ):
+                // Container(
+                //   // child: VendorCatagoriesList(),
+                // ),
 
                 //Categories(false, iseditSwitched,mainCategory_auto_id),
 
@@ -343,11 +343,11 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
 
         ],
       ),
-        // bottomSheet:
-        // CustomBottomNavBar(
-        //   MenuState.home,
-        //   bototmBarColor,bottomMenuIconColor,
-        // )  //  bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
+      // bottomSheet:
+      // CustomBottomNavBar(
+      //   MenuState.home,
+      //   bototmBarColor,bottomMenuIconColor,
+      // )  //  bottomNavigationBar: CustomBottomNavBar(selectedMenu: MenuState.home),
     );
   }
 
@@ -507,7 +507,7 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
         child: Column(
           children: <Widget>[
             RecommendedNew(iseditSwitched,showAlert,homecomponent.id,userType,getAdminCartProductLists,addProductToCart,
-            homecomponent.iconType,homecomponent.layoutType)
+                homecomponent.iconType,homecomponent.layoutType)
           ],
         ),
       );
@@ -555,8 +555,8 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
     else{
       routes = MaterialPageRoute(
           builder: (context) => Product_List_User(type: type,main_cat_id: '',
-              sub_cat_id:'',
-              brand_id: '',
+            sub_cat_id:'',
+            brand_id: '',
             home_componet_id: '',
             offer_id: '',));
     }
@@ -866,8 +866,8 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
       routes = MaterialPageRoute(
           builder: (context) =>
               Product_List_User(type: type,main_cat_id: main_cat_id,
-              sub_cat_id:sub_cat_id,
-              brand_id: brand_id,
+                sub_cat_id:sub_cat_id,
+                brand_id: brand_id,
                 home_componet_id: '',
                 offer_id: '',
               ));

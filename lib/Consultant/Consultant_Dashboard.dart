@@ -17,7 +17,7 @@ import 'Join_as_consultant.dart';
 import 'Model/consultModel.dart';
 import 'Model/consultant_result_model.dart';
 import 'package:http/http.dart' as http;
-
+import 'dart:io';
 class Consultant_Dashboard extends StatefulWidget {
   Consultant_Dashboard({
     Key? key,
@@ -227,14 +227,14 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
               //   icon: Icon(Icons.arrow_back, color: appBarIconColor),
               // ),
               actions: [
-                IconButton(
-                    onPressed: () => {
-                          //showFilter()
-                        },
-                    icon: Icon(
-                      Icons.filter_alt_outlined,
-                      color: appBarIconColor,
-                    )),
+                // IconButton(
+                //     onPressed: () => {
+                //           //showFilter()
+                //         },
+                //     icon: Icon(
+                //       Icons.filter_alt_outlined,
+                //       color: appBarIconColor,
+                //     )),
               userType =="Customer" ?SizedBox(): IconButton(
                   onPressed: () {
                     Navigator.push(
@@ -342,7 +342,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                                                       child: Text(
                                                           consultList[index]
                                                                   .experience +
-                                                              ' years of experience'))
+                                                              ' of experience'))
                                                 ],
                                               ),
                                             ))),
@@ -437,21 +437,22 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                                                 // color: primaryButtonColor,
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    var url =
-                                                        "tel:${consultList[index].mobileNo}";
-                                                    if (await canLaunch(url)) {
-                                                      await launch(url);
-                                                    } else {
-                                                      throw 'Could not launch $url';
-                                                    }
+                                                    // var url =
+                                                    //     "tel:${consultList[index].mobileNo}";
+                                                    // if (await canLaunch(url)) {
+                                                    //   await launch(url);
+                                                    // } else {
+                                                    //   throw 'Could not launch $url';
+                                                    // }
+                                                    openwhatsapp(consultList[index].mobileNo);
                                                   },
-                                                  child: const Text('Call'),
+                                                  child: const Text('Whatsapp'),
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     minimumSize:
                                                         const Size(200, 50),
                                                     backgroundColor:
-                                                        primaryButtonColor,
+                                                        Colors.green,
                                                     shape:
                                                         const StadiumBorder(),
                                                     shadowColor: Colors.grey,
@@ -467,23 +468,24 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                                                 height: 35,
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    var uri =
-                                                        'sms:+ ${consultList[index].mobileNo}?body=hello%20there';
-                                                    if (await canLaunch(uri)) {
-                                                      await launch(uri);
-                                                    } else {
-                                                      // iOS
-                                                      const uri =
-                                                          'sms:0039-222-060-888?body=hello%20there';
-                                                      if (await canLaunch(
-                                                          uri)) {
-                                                        await launch(uri);
-                                                      } else {
-                                                        throw 'Could not launch $uri';
-                                                      }
-                                                    }
+                                                    // var uri =
+                                                    //     'sms:+ ${consultList[index].mobileNo}?body=hello%20there';
+                                                    // if (await canLaunch(uri)) {
+                                                    //   await launch(uri);
+                                                    // } else {
+                                                    //   // iOS
+                                                    //   const uri =
+                                                    //       'sms:0039-222-060-888?body=hello%20there';
+                                                    //   if (await canLaunch(
+                                                    //       uri)) {
+                                                    //     await launch(uri);
+                                                    //   } else {
+                                                    //     throw 'Could not launch $uri';
+                                                    //   }
+                                                    // }
+                                                    _sendMail(consultList[index].mobileNo);
                                                   },
-                                                  child: const Text('Message'),
+                                                  child: const Text('Mail'),
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                     minimumSize:
@@ -547,6 +549,52 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
             bottomMenuIconColor,
           ),
         ));
+  }
+
+  Future<void> _sendMail(String mail_id) async {
+    final mailtoUri = Uri(
+      scheme: 'mailto',
+      path: mail_id,
+    );
+
+    await launchUrl(mailtoUri);
+  }
+
+  openwhatsapp(String whatsapp_no) async{
+    var whatsapp =whatsapp_no;
+
+    var whatappURL_ios ="https://wa.me/$whatsapp?text=";
+
+    var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=";
+
+    if(Platform.isIOS){
+      // for iOS phone only
+      if( await canLaunchUrl(Uri.parse(whatappURL_ios))){
+        await launchUrl(Uri.parse(whatappURL_ios));
+      }
+      else{
+        Fluttertoast.showToast(
+          msg: 'Whatsapp is not installed',
+          backgroundColor: Colors.grey,
+        );
+      }
+    }
+    else{
+      // android , web
+      if( await canLaunchUrl(Uri.parse(whatsappURl_android))){
+        await launchUrl(Uri.parse(whatsappURl_android));
+      }
+      else{
+        Fluttertoast.showToast(
+          msg: 'Whatsapp is not installed',
+          backgroundColor: Colors.grey,
+        );
+
+      }
+
+
+    }
+
   }
 
   totalRatingUi() {

@@ -265,7 +265,7 @@ class _Job_ListState extends State<Job_List> {
                       )
                   ):Container(),
 
-                  //user_type!='Admin'?
+                  user_type!='Admin'?
                   Expanded(
                       flex: 1,
                       child: GestureDetector(
@@ -288,7 +288,7 @@ class _Job_ListState extends State<Job_List> {
                         },
                       )
                   )
-                      //:Container(),
+                      :Container(),
 
                 ],
               ),),

@@ -182,11 +182,6 @@ class _Community_DashboardState extends State<Community_Dashboard> {
               //   icon: Icon(Icons.arrow_back, color: appBarIconColor),
               // ),
               actions: [
-                // IconButton(
-                //     onPressed: ()=>{
-                //       //showFilter()
-                //     },
-                //     icon: Icon(Icons.filter_alt_outlined,color: appBarIconColor,)),
 
                 IconButton(
                   onPressed: () {
@@ -238,7 +233,12 @@ class _Community_DashboardState extends State<Community_Dashboard> {
                                 width: 10,
                               ),
                               InkWell(
-
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddPoatScreen()));
+                                },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width - 100,
                                   height: 40,
@@ -273,7 +273,8 @@ class _Community_DashboardState extends State<Community_Dashboard> {
                                                     left: 15, right: 15),
                                                 fillColor: Colors.white,
                                                 hintText: "Add a post.."),
-                                          )),
+                                          )
+                                      ),
                                       // Padding(
                                       //   padding: const EdgeInsets.only(
                                       //       top: 10.0, bottom: 8),
@@ -361,82 +362,82 @@ class _Community_DashboardState extends State<Community_Dashboard> {
 
                   // Expanded(flex: 1,
                   //     child:
-                  Container(
-                    margin: const EdgeInsets.only(top: 5, bottom: 5),
-                    // child: Community_Menu()
-                    child: SizedBox(
-                      height: 40,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: vendor_menu_List.length,
-                          itemBuilder: (context, index) => CategoryCard(
-                                text: vendor_menu_List[index]["text"],
-                                press: () {
-                                  if (vendor_menu_List[index]["text"] ==
-                                      "About Disease") {
-                                    setState(() {
-                                      communitypostList = disease;
-                                    });
-                                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Vendor_Order_Screen()),);
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "About Management") {
-                                    setState(() {
-                                      communitypostList = management;
-                                    });
-                                    //Navigator.push(context, MaterialPageRoute(builder: (context) => Approval_Screen()));
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "About Feed") {
-                                    setState(() {
-                                      communitypostList = feed;
-                                    });
-                                    //Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "About Farm") {
-                                    setState(() {
-                                      communitypostList = farm;
-                                    });
-                                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Vendors_List()),);
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Customer List") {
-                                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Customer_List()));
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Products") {
-                                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Admin_Product_List()),);
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Sales") {
-                                    /*Navigator.of(context).push(MaterialPageRoute(builder: (context) => Venders_Sales(s_date: '',e_date: '',
-                        s_date1: '',e_date1: '',vendor_id:user_id)),);*/
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Finance") {
-                                    /*Navigator.of(context).push(MaterialPageRoute(builder: (context) => Admin_Finance(s_date: '',e_date: '',
-                        s_date1: '',e_date1: '',vendor_id:user_id)),);*/
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Inventory") {
-                                    /* Navigator.of(context).push(MaterialPageRoute(builder: (context) => Venders_Invetory(vendor_id:user_id,
-                      admin_id: admin_id,)),);*/
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Invoice") {
-                                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Vendor_Invoice_Screen()));
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Coupons") {
-                                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Vendor_Coupen_code(Vendor_id: user_id,)));
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Payment Gateway") {
-                                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Select_Payment_Merchant()));
-                                  } else if (vendor_menu_List[index]["text"] ==
-                                      "Delivery Partner") {
-                                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Select_Delivery_Merchant()));
-                                  }
-                                },
-                              )),
-                    ),
-                  ),
+                  // Container(
+                  //   margin: const EdgeInsets.only(top: 5, bottom: 5),
+                  //   // child: Community_Menu()
+                  //   child: SizedBox(
+                  //     height: 40,
+                  //     child: ListView.builder(
+                  //         scrollDirection: Axis.horizontal,
+                  //         itemCount: vendor_menu_List.length,
+                  //         itemBuilder: (context, index) => CategoryCard(
+                  //               text: vendor_menu_List[index]["text"],
+                  //               press: () {
+                  //                 if (vendor_menu_List[index]["text"] ==
+                  //                     "About Disease") {
+                  //                   setState(() {
+                  //                     communitypostList = disease;
+                  //                   });
+                  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Vendor_Order_Screen()),);
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "About Management") {
+                  //                   setState(() {
+                  //                     communitypostList = management;
+                  //                   });
+                  //                   //Navigator.push(context, MaterialPageRoute(builder: (context) => Approval_Screen()));
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "About Feed") {
+                  //                   setState(() {
+                  //                     communitypostList = feed;
+                  //                   });
+                  //                   //Navigator.push(context, MaterialPageRoute(builder: (context) => SettingScreen()));
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "About Farm") {
+                  //                   setState(() {
+                  //                     communitypostList = farm;
+                  //                   });
+                  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Vendors_List()),);
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Customer List") {
+                  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Customer_List()));
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Products") {
+                  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Admin_Product_List()),);
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Sales") {
+                  //                   /*Navigator.of(context).push(MaterialPageRoute(builder: (context) => Venders_Sales(s_date: '',e_date: '',
+                  //       s_date1: '',e_date1: '',vendor_id:user_id)),);*/
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Finance") {
+                  //                   /*Navigator.of(context).push(MaterialPageRoute(builder: (context) => Admin_Finance(s_date: '',e_date: '',
+                  //       s_date1: '',e_date1: '',vendor_id:user_id)),);*/
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Inventory") {
+                  //                   /* Navigator.of(context).push(MaterialPageRoute(builder: (context) => Venders_Invetory(vendor_id:user_id,
+                  //     admin_id: admin_id,)),);*/
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Invoice") {
+                  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Vendor_Invoice_Screen()));
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Coupons") {
+                  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Vendor_Coupen_code(Vendor_id: user_id,)));
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Payment Gateway") {
+                  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Select_Payment_Merchant()));
+                  //                 } else if (vendor_menu_List[index]["text"] ==
+                  //                     "Delivery Partner") {
+                  //                   //Navigator.of(context).push(MaterialPageRoute(builder: (context) => Select_Delivery_Merchant()));
+                  //                 }
+                  //               },
+                  //             )),
+                  //   ),
+                  // ),
                   // ),
                   // Expanded(
                   //     flex: 10,
                   //     child:
                   Container(
-                      height: MediaQuery.of(context).size.height / 1.6,
+                      height: MediaQuery.of(context).size.height / 1.4,
                       padding: const EdgeInsets.only(top: 5),
                       margin: EdgeInsets.only(left: 15, right: 15, bottom: 5),
                       child: ListView.builder(

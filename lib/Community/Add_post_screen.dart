@@ -96,6 +96,7 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
       }
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -286,13 +287,13 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                         Container(
                             margin:
                             EdgeInsets.only(top: 5),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               borderRadius:
-                              const BorderRadius.all(
+                              BorderRadius.all(
                                   Radius.circular(
                                       10)),
                               color: Colors.white,
-                              boxShadow: const [
+                              boxShadow: [
                                 BoxShadow(
                                     color:
                                     Color.fromRGBO(0, 0, 0, 0.15),
@@ -405,7 +406,7 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                           height: 40,
                           padding: EdgeInsets.all(4),
                           alignment: Alignment.center,
-                          child: Text(
+                          child: const Text(
                             "Post",
                             style: TextStyle(
                                 color: Colors.white,
@@ -421,4 +422,67 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
       ),
     );
   }
+  Future addMainCategoryApi() async {
+    setState(() {
+      isApiCallProcessing=true;
+    });
+
+    var url=baseUrl+'api/'+add_main_categories;
+
+    var uri = Uri.parse(url);
+
+    var request = http.MultipartRequest("POST", uri);
+
+    try{
+      if(icon_img!=null){
+        request.files.add(
+          http.MultipartFile(
+            'image',
+            icon_img.readAsBytes().asStream(),
+            await icon_img.length(),
+            filename: icon_img.path.split('/').last,),);
+      }
+      else{
+        request.fields["image"] = '';
+      }
+    }
+    catch(exception){
+      print('profile pic not selected');
+      request.fields["image"] = '';
+    }
+
+    request.fields["category_name"] = _textEditingController.text;
+    request.fields["category_image_web"] = '';
+    request.fields["admin_auto_id"] =admin_auto_id;
+    request.fields["app_type_id"] =app_type_id;
+
+    http.Response response = await http.Response.fromStream(await request.send());
+
+    if (response.statusCode == 200) {
+      setState(() {
+        isApiCallProcessing=false;
+      });
+      final resp=jsonDecode(response.body);
+      print(resp.toString());
+      //String message=resp['msg'];
+      String status=resp['status'];
+      if(status=='1'){
+        Fluttertoast.showToast(msg: "Category added successfully", backgroundColor: Colors.grey,);
+        widget.onSaveCallback();
+      }
+      else{
+        Fluttertoast.showToast(msg: "Something went wrong.Please try later", backgroundColor: Colors.grey,);
+      }
+    }
+    else if(response.statusCode==500){
+      if(this.mounted){
+        setState(() {
+          isApiCallProcessing=false;
+        });
+      }
+      Fluttertoast.showToast(msg: "Server Error", backgroundColor: Colors.grey,);
+    }
+  }
+
+
 }
