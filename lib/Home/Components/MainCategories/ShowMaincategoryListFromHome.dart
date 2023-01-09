@@ -123,8 +123,10 @@ class _ShowMaincategoryFromHome extends State<ShowMaincategoryFromHome> {
   }
 
   goToNextScreen(int index){
+    print("Catagory  Id ${maincategoryList[index].categoryAutoId}");
+    print("Catagory  Id ${maincategoryList[index].maincategoryAutoId}");
     Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        MainCategoryScreen(maincategoryList[index].maincategoryAutoId,maincategoryList[index].mainCategoryName)));
+        MainCategoryScreen(maincategoryList[index].maincategoryAutoId,maincategoryList[index].mainCategoryName,maincategoryList[index])));
   }
 
   @override
@@ -206,11 +208,12 @@ class _ShowMaincategoryFromHome extends State<ShowMaincategoryFromHome> {
     };
 
     var url=baseUrl+'api/'+get_home_component_details;
+    print("Home component ${url}");
 
     var uri = Uri.parse(url);
 
     final response = await http.post(uri,body: body);
-
+    print("Home component ${response.body}");
     if (response.statusCode == 200) {
       isApiCallProcessing=false;
 

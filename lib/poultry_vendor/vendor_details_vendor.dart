@@ -400,7 +400,7 @@ class Vendor {
     CATEGORYAUTOID = json['CATEGORY_AUTO_ID'];
     ADMINAUTOID = json['ADMIN_AUTO_ID'];
     APPTYPEID = json['APP_TYPE_ID'];
-    USERAUTOID = json['USER_AUTO_ID'];
+    USERAUTOID = json['USER_AUTO_ID'] != null ? json['USER_AUTO_ID']:'';
     MINORDERVALUE = json['MIN_ORDER_VALUE'];
     PRICERANGE = json['PRICE_RANGE'];
     VENDORPROFILE = json['VENDOR_PROFILE'];

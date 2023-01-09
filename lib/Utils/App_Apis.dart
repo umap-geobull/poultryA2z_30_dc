@@ -352,7 +352,14 @@ const String get_consultants="get_consultants";
 const String upload_post="upload_post";
 const String get_post="get_post";
 
+
+//Add product
+const String add_vproduct="add_vproduct";
+const String get_vproduct="get_vproduct";
+
 //vendor poultry
 const String add_pountry_vendor="add_pountry_vendor";
 const String check_pountry_vendor_status="check_pountry_vendor_status";
 const String get_pountry_vendor_details="get_pountry_vendor_details";
+const String get_pountry_vendor_customer="get_pountry_vendor_customer";
+const String get_pountry_vendor="get_pountry_vendor";
