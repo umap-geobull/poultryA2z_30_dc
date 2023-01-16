@@ -172,7 +172,7 @@ const String delete_firmness="delete_firmness";
 const String get_express_delivery_details="get_express_delivery_details";
 const String update_express_delivery_details="update_express_delivery_details";
 
-//currecy
+//currency
 const String get_currecy_list="get_currecy_list";
 const String add_currency="add_currency";
 const String delete_currency="delete_currency";
@@ -181,6 +181,15 @@ const String delete_currency="delete_currency";
 const String get_delivery_time="get_expected_delivery_days";
 const String add_delivery_time="add_expected_delivery_time";
 
+//specializaion
+const String add_specialization="add_specialization";
+const String get_specialization="get_specialization";
+const String delete_specialization="delete_specialization";
+
+//consultant_type
+const String add_consultant_type="add_consultant_type";
+const String get_consultant_type="get_consultant_type";
+const String delete_consultant_type="delete_consultant_type";
 
 //address
 const String get_user_address="get_user_address";
@@ -342,6 +351,7 @@ const String get_job_vacancy="get_job_vacancy";
 const String delete_job_vacancy="delete_job_vacancy";
 const String apply_jobs="apply_jobs";
 const String get_applied_jobs="get_applied_jobs";
+const String get_jobs_details="get_jobs_details";
 
 
 //Consultant

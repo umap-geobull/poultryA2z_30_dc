@@ -109,7 +109,7 @@ class _AddMainCategory extends State<AddMainCategory> {
                   ):
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.orangeAccent,
+                      backgroundColor: Colors.orangeAccent,
                     ),
                     child: const Text('ADD'),
                     onPressed: () {
@@ -230,8 +230,7 @@ class _AddMainCategory extends State<AddMainCategory> {
                     child: const Text("Camera",
                         style: TextStyle(color: Colors.black54,fontSize: 13)),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      onPrimary: Colors.blue,
+                      backgroundColor: Colors.blue,
                       minimumSize: const Size(150,30),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -248,8 +247,8 @@ class _AddMainCategory extends State<AddMainCategory> {
                     child: const Text("Gallery",
                         style: TextStyle(color: Colors.black54,fontSize: 13)),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      onPrimary: Colors.blue,
+                      backgroundColor: Colors.blue,
+
                       minimumSize: const Size(150,30),
                       shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),

@@ -14,6 +14,7 @@ import '../Utils/coustom_bottom_nav_bar.dart';
 import '../Utils/enums.dart';
 import 'Add_Vacancy.dart';
 import 'ApplyJobs.dart';
+import 'Candidate_list.dart';
 import 'Model/Jobs_Model.dart';
 import 'Model/job_result_model.dart';
 import 'MyAppliedJobs.dart';
@@ -242,7 +243,7 @@ class _Job_ListState extends State<Job_List> {
                   //     )
                   // ),
 
-                  user_type=='Admin'?Expanded(
+                  Expanded(
                       flex: 1,
                       child: GestureDetector(
                         child: Container(
@@ -263,7 +264,7 @@ class _Job_ListState extends State<Job_List> {
                           Navigator.push(context,  MaterialPageRoute(builder: (context) => AddVacancyScreen()));
                         },
                       )
-                  ):Container(),
+                  ),
 
                   user_type!='Admin'?
                   Expanded(
@@ -289,7 +290,6 @@ class _Job_ListState extends State<Job_List> {
                       )
                   )
                       :Container(),
-
                 ],
               ),),
             SingleChildScrollView(
@@ -319,7 +319,7 @@ class _Job_ListState extends State<Job_List> {
                                           children: [
                                             GestureDetector(
                                               onTap: ()=>{
-                                                //showProductDetails(product.productAutoId)
+                                              Navigator.push(context,  MaterialPageRoute(builder: (context) => Candidate_List(job_list[index].id)))
                                               },
                                               child: Column(
                                                 crossAxisAlignment: CrossAxisAlignment.start,

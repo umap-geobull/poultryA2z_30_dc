@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -11,8 +12,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
 
+import '../settings/Add_Specialization/Components/Rest_Apis.dart';
 import '../Utils/coustom_bottom_nav_bar.dart';
 import '../Utils/enums.dart';
+import '../settings/Add_Specialization/Add_Specialization_Screen.dart';
+import '../settings/Add_Specialization/Components/SpecializationModel.dart';
 
 class Join_As_Consultant extends StatefulWidget {
 
@@ -34,7 +38,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   TextEditingController tv_category = TextEditingController();
   // TextEditingController tv_state = TextEditingController();
   // TextEditingController tv_country = TextEditingController();
-  // TextEditingController tv_address_type = TextEditingController();
+  TextEditingController tv_email = TextEditingController();
   TextEditingController tv_consultant_type = TextEditingController();
   TextEditingController tv_location = TextEditingController();
   TextEditingController tv_speciality = TextEditingController();
@@ -68,12 +72,13 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     'Other'
   ];
   List<String> speciality_list = [
-    'Breeder Consultant',
-    'Broiler Consultant',
-    'Layer Consultant',
-    'Feed Consultant',
-    'Other'
+    // 'Breeder Consultant',
+    // 'Broiler Consultant',
+    // 'Layer Consultant',
+    // 'Feed Consultant',
+    // 'Other'
   ];
+  List<SpecializationList>? getspecialization_List = [];
   String category='Select Category';
   String speciality='Select speciality';
   TimeOfDay _time = TimeOfDay.now();
@@ -92,6 +97,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
           this.baseUrl=baseUrl;
           this.admin_auto_id=adminId;
           this.app_type_id=apptypeid;
+          get_specialization_List();
         });
       }
     }
@@ -171,6 +177,21 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                           keyboardType: TextInputType.number,
                         ),
                       ),
+                      const SizedBox(height: 15),
+                      SizedBox(
+                        height: 50,
+                        child: TextField(
+                          controller: tv_email,
+                          textAlignVertical: TextAlignVertical.center,
+                          decoration: const InputDecoration(
+                            labelText: "Email ",
+                            contentPadding: EdgeInsets.all(15),
+                            border: OutlineInputBorder(),
+                            // hintText: 'Mobile No.',
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                      ),
                       const SizedBox(height: 10),
                       SizedBox(
                         height: 50,
@@ -220,20 +241,41 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                       const SizedBox(height: 15),
                       GestureDetector(
                         onTap: showSpecialization,
-                        child: SizedBox(
-                          height: 50,
-                          child: TextField(
-                            controller: tv_speciality,
-                            enabled: false,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(15),
-                              // prefixIcon: Icon(Icons.description),
-                              border: OutlineInputBorder(),
-                              labelText: 'Select Specialization',
+                        child: Container(
+                          child:
+                        Row(
+                          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              width: MediaQuery.of(context).size.width/1.2,
+                              child: TextField(
+                                controller: tv_speciality,
+                                enabled: false,
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.all(15),
+                                  // prefixIcon: Icon(Icons.description),
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Select Specialization',
+                                ),
+                                keyboardType: TextInputType.text,
+                              ),
                             ),
-                            keyboardType: TextInputType.text,
-                          ),
-                        ),
+                            SizedBox(
+                                height: 50,
+                                width: 20,
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  alignment: Alignment.centerRight,
+                                  child: IconButton(
+                                    icon: Icon(Icons.add_circle,color: Colors.blue),
+                                    onPressed: ()=>{
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Add_Specialization_Screen())).then(onGoBackFromSpecification)
+                                    },
+                                  ),
+                                )),
+                          ],),)
                       ),
                       const SizedBox(height: 15),
                       SizedBox(
@@ -384,6 +426,39 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
       bottomSheet: CustomBottomNavBar(MenuState.profile,
         bottomBarColor,bottomMenuIconColor,),
     );
+  }
+
+  FutureOr onGoBackFromSpecification(dynamic value) {
+    get_specialization_List();
+    setState(() {});
+  }
+
+  void get_specialization_List() async {
+    if(mounted){
+      setState(() {
+        isApiCallProcessing=true;
+      });
+    }
+
+    Rest_Apis restApis = Rest_Apis();
+
+    restApis.Get_Specialization_List(admin_auto_id, baseUrl).then((value) {
+      print(value.toString());
+      if (value != null) {
+        isApiCallProcessing = false;
+        getspecialization_List=value;
+        for (var element in getspecialization_List!) {
+          speciality_list.add(element.specialization);
+        }
+        //speciality_list = value;
+
+        if(this.mounted){
+          setState(() {
+
+          });
+        }
+      }
+    });
   }
 
   Widget uploadLogoUi() {
@@ -610,6 +685,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     }
     request.fields["full_name"] = tv_name.text;
     request.fields["mobile_no"] = tv_mobile.text;
+    request.fields["consultant_email_id"] = tv_email.text;
     request.fields["location"] = tv_location.text;
     request.fields["consutant_type"] = tv_consultant_type.text;
     request.fields["specialization"] = tv_speciality.text;
@@ -661,16 +737,20 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
       if(this.mounted) {
         setState(() {
           _time = picked;
+          _time.format(context);
           if(type=='from')
-          tv_available_from.text =
-              _time.hour.toString() + ":" + _time.minute.toString() ;
+          tv_available_from.text =getformattedTime(_time);
+              //_time.hour.toString() + ":" + _time.minute.toString() ;
           else
-            tv_available_to.text =
-                _time.hour.toString() + ":" + _time.minute.toString() ;
+            tv_available_to.text =getformattedTime(_time);
+                //_time.hour.toString() + ":" + _time.minute.toString() ;
           //print(_time.format(context).toString());
         });
       }
     }
+  }
+  getformattedTime(TimeOfDay time) {
+    return '${time.hourOfPeriod}:${time.minute} ${time.period.toString().split('.')[1]}';
   }
 
   showSelectcategory() {
@@ -1014,6 +1094,13 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
       );
       return false;
     }
+    else  if(tv_email.text.isEmpty){
+      Fluttertoast.showToast(
+        msg: 'Please add Email',
+        backgroundColor: Colors.black,
+      );
+      return false;
+    }
     else  if(tv_experience.text.isEmpty){
       Fluttertoast.showToast(
         msg: 'Please add experience',
@@ -1071,60 +1158,6 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
       return false;
     }
     return true;
-  }
-
-  showImageDialog() async {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-          backgroundColor: Colors.yellow[50],
-          title: const Text(
-            'Upload document or image from',
-            style: TextStyle(color: Colors.black87),
-          ),
-          content: SizedBox(
-            height: 110,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                     // getImage(ImageSource.camera);
-                    },
-                    child: const Text("File Manager",
-                        style: TextStyle(color: Colors.black54, fontSize: 13)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryButtonColor,
-                      minimumSize: const Size(150, 30),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      //getImage(ImageSource.gallery);
-                    },
-                    child: const Text("Drive",
-                        style: TextStyle(color: Colors.white, fontSize: 13)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: secondaryButtonColor,
-                      minimumSize: const Size(150, 30),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )),
-    );
   }
 
   void getappUi() async {

@@ -447,21 +447,21 @@ class _BuyNowScreen extends State<BuyNowScreen> {
                               fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 5,),
-                        Row(
+                        cartModel.colorName.isNotEmpty?Row(
                           children: const [
                             Text('Color:'),
                             SizedBox(
                               width: 5,
                             ),
                             Text(
-                              'Black',
+                              '',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
-                        ),
+                        ):Container(),
                         const SizedBox(height: 5,),
                         Row(
                           children: [
@@ -609,6 +609,7 @@ class _BuyNowScreen extends State<BuyNowScreen> {
       ],
     );
   }
+
   void _showMyDialog(BuildContext context,String productId,String cartProductAutoId) async {
     return showDialog<void>(
       context: context,

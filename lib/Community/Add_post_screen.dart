@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,14 +11,17 @@ import '../Utils/App_Apis.dart';
 import '../profile/Myaccount/Myprofile_model.dart';
 import 'package:http/http.dart' as http;
 
-class AddPoatScreen extends StatefulWidget {
-  const AddPoatScreen({Key? key}) : super(key: key);
+typedef OnSaveCallback = void Function();
 
+class AddPostScreen extends StatefulWidget {
+  OnSaveCallback onSaveCallback;
+
+  AddPostScreen(this.onSaveCallback);
   @override
-  State<AddPoatScreen> createState() => _AddPoatScreenState();
+  State<AddPostScreen> createState() => _AddPostScreenState();
 }
 
-class _AddPoatScreenState extends State<AddPoatScreen> {
+class _AddPostScreenState extends State<AddPostScreen> {
   Color appBarColor = Colors.white,
       appBarIconColor = Colors.black,
       primaryButtonColor = Colors.orange,
@@ -29,8 +33,8 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
   TextEditingController tv_name = TextEditingController();
   TextEditingController tv_email = TextEditingController();
   TextEditingController tv_mobile = TextEditingController();
-  TextEditingController post = TextEditingController();
-  late File resume_file;
+  TextEditingController post_description_controller = TextEditingController();
+  late File image_file;
   bool isfileuploaded = false;
   bool isApiProcessing = false;
 
@@ -190,10 +194,10 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                             PlatformFile file =
                                 result.files.first;
                             setState(() {
-                              resume_file =
+                              image_file =
                                   File(file.path!);
                               print(
-                                  "${resume_file.path.isEmpty}");
+                                  "${image_file.path.isEmpty}");
                               isfileuploaded = true;
                             });
 
@@ -208,7 +212,7 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                         },
                         // onTap: showImageDialog,
                         child:
-                        //      resume_file[index].path.isEmpty
+                        //      image_file[index].path.isEmpty
                         // ?
                         Container(
                             margin:
@@ -267,10 +271,10 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                             PlatformFile file =
                                 result.files.first;
                             setState(() {
-                              resume_file =
+                              image_file =
                                   File(file.path!);
                               print(
-                                  "${resume_file.path.isEmpty}");
+                                  "${image_file.path.isEmpty}");
                               isfileuploaded = true;
                             });
 
@@ -323,7 +327,7 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                                         Radius.circular(
                                             10)),
                                     child: Image.file(
-                                        File(resume_file
+                                        File(image_file
                                             .path),fit: BoxFit.fill,),
                                   ),
                                 ),
@@ -333,12 +337,12 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                     ),
 
                     SizedBox(height: 20,),
-                    const Text("Add Post description",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
+                    const Text("Post description",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),),
 
                     SizedBox(height: 10,),
 
                     TextFormField(
-                      controller: post,
+                      controller: post_description_controller,
                       decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
@@ -346,7 +350,7 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                           const EdgeInsets.fromLTRB(
                               10, 15, 0, 0),
                           hintText:
-                          'Add post description',
+                          'Enter description',
                           focusedBorder: OutlineInputBorder(
                             borderSide: const BorderSide(
                                 color: Colors.grey, width: 1),
@@ -397,6 +401,12 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
                           //   print("Validate number");
                           //   await addVendor();
                           // }
+                          if(post_description_controller.text.isEmpty){
+                            Fluttertoast.showToast(msg: "Please enter description", backgroundColor: Colors.grey,);
+                          }
+                          else{
+                            addPostApi();
+                          }
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -422,25 +432,26 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
       ),
     );
   }
-  Future addMainCategoryApi() async {
+
+  Future addPostApi() async {
     setState(() {
       isApiCallProcessing=true;
     });
 
-    var url=baseUrl+'api/'+add_main_categories;
+    var url=baseUrl+'api/'+upload_post;
 
     var uri = Uri.parse(url);
 
     var request = http.MultipartRequest("POST", uri);
 
     try{
-      if(icon_img!=null){
+      if(image_file!=null){
         request.files.add(
           http.MultipartFile(
             'image',
-            icon_img.readAsBytes().asStream(),
-            await icon_img.length(),
-            filename: icon_img.path.split('/').last,),);
+            image_file.readAsBytes().asStream(),
+            await image_file.length(),
+            filename: image_file.path.split('/').last,),);
       }
       else{
         request.fields["image"] = '';
@@ -450,9 +461,26 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
       print('profile pic not selected');
       request.fields["image"] = '';
     }
+    // try{
+    //   if(icon_img!=null){
+    //     request.files.add(
+    //       http.MultipartFile(
+    //         'video',
+    //         icon_img.readAsBytes().asStream(),
+    //         await icon_img.length(),
+    //         filename: icon_img.path.split('/').last,),);
+    //   }
+    //   else{
+    //     request.fields["video"] = '';
+    //   }
+    // }
+    // catch(exception){
+    //   print('video not selected');
+    //   request.fields["video"] = '';
+    // }
 
-    request.fields["category_name"] = _textEditingController.text;
-    request.fields["category_image_web"] = '';
+    request.fields["post_desription"] = post_description_controller.text;
+    request.fields["video"] = '';
     request.fields["admin_auto_id"] =admin_auto_id;
     request.fields["app_type_id"] =app_type_id;
 
@@ -467,7 +495,7 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
       //String message=resp['msg'];
       String status=resp['status'];
       if(status=='1'){
-        Fluttertoast.showToast(msg: "Category added successfully", backgroundColor: Colors.grey,);
+        Fluttertoast.showToast(msg: "Post added successfully", backgroundColor: Colors.grey,);
         widget.onSaveCallback();
       }
       else{
@@ -483,6 +511,4 @@ class _AddPoatScreenState extends State<AddPoatScreen> {
       Fluttertoast.showToast(msg: "Server Error", backgroundColor: Colors.grey,);
     }
   }
-
-
 }

@@ -243,7 +243,9 @@ class _ApplyJobs extends State<ApplyJobs> {
                           shadowColor: Colors.grey,
                           elevation: 5,
                         ),
-                      ),)
+                      ),
+
+                      )
                     ],
                   )),
 
@@ -528,7 +530,7 @@ class _ApplyJobs extends State<ApplyJobs> {
             style: TextStyle(color: Colors.black87),
           ),
           content: SizedBox(
-            height: 110,
+            height: 90,
             child: Column(
               children: <Widget>[
                 Container(

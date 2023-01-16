@@ -203,7 +203,7 @@ class _Community_DashboardState extends State<Community_Dashboard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddPoatScreen()));
+                              builder: (context) => AddPostScreen(onGoBacklistener)));
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -237,7 +237,7 @@ class _Community_DashboardState extends State<Community_Dashboard> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AddPoatScreen()));
+                                          builder: (context) => AddPostScreen(onGoBacklistener)));
                                 },
                                 child: Container(
                                   width: MediaQuery.of(context).size.width - 100,
@@ -761,7 +761,10 @@ class _Community_DashboardState extends State<Community_Dashboard> {
       ),
     );
   }
-
+  onGoBacklistener(){
+    Navigator.pop(context);
+    //getMainCategories();
+  }
   shareUi() {
     return Container(
       height: 20,

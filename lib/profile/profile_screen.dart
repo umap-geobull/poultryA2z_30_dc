@@ -129,39 +129,39 @@ class _ProfileScreen extends State<ProfileScreen> {
             //         builder: (context) => MyAddress()))
             //   },
             // ),
-            userType=='Admin'?
-            ProfileMenu(
-              primaryButtonColor: primaryButtonColor,
-              text: "Grobiz Help & Support",
-              icon: Icon(Icons.support_agent,color: primaryButtonColor,size: 25,),
-              press: () => {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => GrobizHelp()))
-              },
-            ):
-            Container(),
-            userType=='Admin'?
-            ProfileMenu(
-              primaryButtonColor: primaryButtonColor,
-              text: "Plan Purchase History",
-              icon: Icon(Icons.list_alt,color: primaryButtonColor,size: 25,),
-              press: () => {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => GrobizPlanHistory()))
-              },
-            ):
-            Container(),
-
-            userType=='Admin'?
-            ProfileMenu(
-              primaryButtonColor: primaryButtonColor,
-              text: "Upgrade Plan",
-              icon: Icon(Icons.money,color: primaryButtonColor,size: 25,),
-              press: () => {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => GrobizPlans()))
-              },
-            ):
-            Container(),
+            // userType=='Admin'?
+            // ProfileMenu(
+            //   primaryButtonColor: primaryButtonColor,
+            //   text: "Grobiz Help & Support",
+            //   icon: Icon(Icons.support_agent,color: primaryButtonColor,size: 25,),
+            //   press: () => {
+            //     Navigator.push(context, MaterialPageRoute(
+            //         builder: (context) => GrobizHelp()))
+            //   },
+            // ):
+            // Container(),
+            // userType=='Admin'?
+            // ProfileMenu(
+            //   primaryButtonColor: primaryButtonColor,
+            //   text: "Plan Purchase History",
+            //   icon: Icon(Icons.list_alt,color: primaryButtonColor,size: 25,),
+            //   press: () => {
+            //     Navigator.push(context, MaterialPageRoute(
+            //         builder: (context) => GrobizPlanHistory()))
+            //   },
+            // ):
+            // Container(),
+            //
+            // userType=='Admin'?
+            // ProfileMenu(
+            //   primaryButtonColor: primaryButtonColor,
+            //   text: "Upgrade Plan",
+            //   icon: Icon(Icons.money,color: primaryButtonColor,size: 25,),
+            //   press: () => {
+            //     Navigator.push(context, MaterialPageRoute(builder: (context) => GrobizPlans()))
+            //   },
+            // ):
+            // Container(),
 
             userType=='Admin'?
             ProfileMenu(
