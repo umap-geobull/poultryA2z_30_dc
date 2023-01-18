@@ -81,7 +81,7 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
       });
     }
     var url = AppConfig.grobizBaseUrl + get_main_category_lists;
-    print(url);
+    //print(url);
     var uri = Uri.parse(url);
     print("url ${uri}");
 
@@ -89,7 +89,7 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
       // "admin_auto_id":admin_auto_id,
       // "app_type_id": app_type_id,
     };
-    print(body.toString());
+    //print(body.toString());
     final response = await http.get(uri);
     print("response ${response.body}");
     if (response.statusCode == 200) {

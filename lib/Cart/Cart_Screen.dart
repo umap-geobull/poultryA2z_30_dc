@@ -1075,10 +1075,10 @@ class _Cart_ScreenState extends State<Cart_Screen> {
       "admin_auto_id" : admin_auto_id,
     };
 
-    // print(body.toString());
+    // //print(body.toString());
 
     var url = baseUrl+'api/' + get_cart_list;
-    print(url);
+    //print(url);
     Uri uri=Uri.parse(url);
 
     final response = await http.post(uri, body: body);

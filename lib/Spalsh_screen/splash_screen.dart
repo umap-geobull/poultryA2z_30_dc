@@ -381,7 +381,7 @@ class _SplashScreenState extends State<SplashScreen>{
       "USER_AUTO_ID":userID,
 
     };
-    print(body.toString());
+    //print(body.toString());
 
     var url= AppConfig.grobizBaseUrl +check_pountry_vendor_status;
     print('baseurl'+url);

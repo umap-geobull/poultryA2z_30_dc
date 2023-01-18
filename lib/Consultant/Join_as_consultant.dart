@@ -9,14 +9,17 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:poultry_a2z/Utils/App_Apis.dart';
 import 'package:http/http.dart' as http;
+import 'package:poultry_a2z/settings/Add_Consultant_Type/Add_Consultant_Type_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
 
+import '../settings/Add_Consultant_Type/Components/Consultant_Type_model.dart';
 import '../settings/Add_Specialization/Components/Rest_Apis.dart';
 import '../Utils/coustom_bottom_nav_bar.dart';
 import '../Utils/enums.dart';
 import '../settings/Add_Specialization/Add_Specialization_Screen.dart';
 import '../settings/Add_Specialization/Components/SpecializationModel.dart';
+import 'ConsultantProvider.dart';
 
 class Join_As_Consultant extends StatefulWidget {
 
@@ -63,13 +66,13 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   final ImagePicker _picker = ImagePicker();
   bool isApiCallProcessing=false;
   List<String> Category_list = [
-    'Veterinarian',
-    'Feed Plant',
-    'Breeder and Hatchery',
-    'Pharma',
-    'Integration',
-    'Farm Manager',
-    'Other'
+    // 'Veterinarian',
+    // 'Feed Plant',
+    // 'Breeder and Hatchery',
+    // 'Pharma',
+    // 'Integration',
+    // 'Farm Manager',
+    // 'Other'
   ];
   List<String> speciality_list = [
     // 'Breeder Consultant',
@@ -81,6 +84,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   List<SpecializationList>? getspecialization_List = [];
   String category='Select Category';
   String speciality='Select speciality';
+  late ConsultantProvider consltantProvider;
   TimeOfDay _time = TimeOfDay.now();
 
   Future<String?> getUserId() async {
@@ -98,6 +102,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
           this.admin_auto_id=adminId;
           this.app_type_id=apptypeid;
           get_specialization_List();
+          get_consultant_List();
         });
       }
     }
@@ -209,20 +214,40 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                       const SizedBox(height: 15),
                       GestureDetector(
                         onTap: showSelectcategory,
-                        child: SizedBox(
-                          height: 50,
-                          child: TextField(
-                            controller: tv_consultant_type,
-                            enabled: false,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(15),
-                              // prefixIcon: Icon(Icons.description),
-                              border: OutlineInputBorder(),
-                              labelText: 'Select Consultant Type',
-                            ),
-                            keyboardType: TextInputType.text,
-                          ),
-                        ),
+                        child: Container(
+                          child: Row(
+                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              SizedBox(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width/1.2,
+                                child: TextField(
+                                  controller: tv_consultant_type,
+                                  enabled: false,
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.all(15),
+                                    // prefixIcon: Icon(Icons.description),
+                                    border: OutlineInputBorder(),
+                                    labelText: 'Select Consultant Type',
+                                  ),
+                                  keyboardType: TextInputType.text,
+                                ),
+                              ),
+                              SizedBox(
+                                  height: 50,
+                                  width: 20,
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    alignment: Alignment.centerRight,
+                                    child: IconButton(
+                                      icon: Icon(Icons.add_circle,color: Colors.blue),
+                                      onPressed: ()=>{
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => Add_Consultant_Type_Screen())).then(onGoBackFromConsulant)
+                                      },
+                                    ),
+                                  )),
+                            ],),)
                       ),
                       const SizedBox(height: 15),
                       SizedBox(
@@ -241,9 +266,9 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                       const SizedBox(height: 15),
                       GestureDetector(
                         onTap: showSpecialization,
-                        child: Container(
-                          child:
-                        Row(
+                        child:
+                        Container(
+                          child: Row(
                           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.max,
                           children: [
@@ -363,7 +388,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                               print('No file selected');
                             }
                           },
-                          // onTap: showImageDialog,
+
                             child:
                             Container(
                                 margin: EdgeInsets.only(top: 20),
@@ -394,7 +419,6 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                       child: ElevatedButton(
                         onPressed: () {
                           if(checkValidations()==true){
-                            //addUserAddress();
                             add_consultant_api();
                           }
                         },
@@ -433,6 +457,11 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     setState(() {});
   }
 
+  FutureOr onGoBackFromConsulant(dynamic value) {
+    get_consultant_List();
+    setState(() {});
+  }
+
   void get_specialization_List() async {
     if(mounted){
       setState(() {
@@ -447,6 +476,10 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
       if (value != null) {
         isApiCallProcessing = false;
         getspecialization_List=value;
+        if(speciality_list.isNotEmpty)
+        {
+          speciality_list.clear();
+        }
         for (var element in getspecialization_List!) {
           speciality_list.add(element.specialization);
         }
@@ -459,6 +492,64 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
         }
       }
     });
+  }
+
+  void get_consultant_List() async {
+    if(mounted){
+      setState(() {
+        isApiCallProcessing=true;
+      });
+    }
+
+    // Rest_Apis restApis = Rest_Apis();
+    //
+    // restApis.Get_ConsultantType_List(admin_auto_id, baseUrl).then((value) {
+    //   print(value.toString());
+    //   if (value != null) {
+    //     isApiCallProcessing = false;
+    //     getconsultant_List = value;
+    //     if(this.mounted){
+    //       setState(() {
+    //
+    //       });
+    //     }
+    //   }
+    // });
+
+    var url = baseUrl+'api/' + get_consultant_type;
+
+    Uri uri=Uri.parse(url);
+
+    final body={
+      "admin_auto_id":admin_auto_id,
+    };
+
+    final response = await http.post(uri, body: body);
+
+    if (response.statusCode == 200) {
+      final resp = jsonDecode(response.body);
+
+      int  status = resp['status'];
+
+      if (status == 1) {
+        isApiCallProcessing=false;
+        Consulant_Type_model consultantListModel=Consulant_Type_model.fromJson(json.decode(response.body));
+        List<Consultant_typeList> getconsultant=consultantListModel.data;
+        if(Category_list.isNotEmpty)
+        Category_list.clear();
+        for (var element in getconsultant) {
+          Category_list.add(element.consultant_type);
+        }
+      }
+      else {
+        isApiCallProcessing=false;
+        print('empty');
+      }
+
+      if(mounted){
+        setState(() {});
+      }
+    }
   }
 
   Widget uploadLogoUi() {
@@ -819,7 +910,6 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
             style: TextStyle(color: Colors.black87,fontSize: 15),
           ),
           content:
-          //!allAppTypes.isEmpty?
           Container(
             height: 260,
             width: MediaQuery.of(context).size.width,
@@ -831,6 +921,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                   scrollDirection: Axis.vertical,
                   child: showspecializationlistUi(),
                 ),
+                speciality_list.isNotEmpty?
                 Container(
                   child: ElevatedButton(
                     onPressed: () {
@@ -847,10 +938,10 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                       ),
                     ),
                   ),
-                ),
+                ):Container(),
 
-                // getmanufaturer_List.isEmpty && isApiCallProcessing == false ?
-                // Center(child: Text('No Manufacturers')) :
+                // speciality_list.isEmpty && isApiCallProcessing == false ?
+                // Center(child: Text('No specialization')) :
                 // Container(
                 //   alignment: Alignment.center,
                 //   width: MediaQuery.of(context).size.width,
@@ -884,8 +975,6 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
-
                   // Container(
                   //   height: 22,
                   //   width: 22,
@@ -911,10 +1000,33 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                   //   margin: const EdgeInsets.all(5),
                   // ),
 
-                  InkWell(
-                      onTap: (){
-                        if (mounted) {
-                          setState(() {
+                  // InkWell(
+                  //     onTap: (){
+                  //       if (isAdded(Category_list[index]) == true)
+                  //       {
+                  //         selected_categories.remove(Category_list[index]);
+                  //         //print(selected_manufacturer_id.toString());
+                  //         // widget.onSaveCallback(selected_manufacturer_id);
+                  //       }
+                  //       else {
+                  //         selected_categories.add(Category_list[index]);
+                  //         // widget.onSaveCallback(selected_manufacturer_id);
+                  //       }
+                  //       if (mounted) {
+                  //         setState(() {
+                  //         });
+                  //       }
+                  //     },
+                  //     child:    selected_categories.contains(Category_list[index])?
+                  //         Icon(Icons.check_box)
+                  //         : Icon(Icons.check_box_outline_blank)),
+                  Container(
+                    height: 25,
+                    width: 25,
+                    child: Checkbox(
+                      onChanged: (value) {
+                        // if(mounted){
+                        //   setState(() {
                             if (isAdded(Category_list[index]) == true)
                             {
                               selected_categories.remove(Category_list[index]);
@@ -925,12 +1037,15 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                               selected_categories.add(Category_list[index]);
                               // widget.onSaveCallback(selected_manufacturer_id);
                             }
-                          });
-                        }
+                        //   });
+                        // }
+                        setState(() {
+                        });
                       },
-                      child:    selected_categories.contains(Category_list[index])?
-                          Icon(Icons.check_box)
-                          : Icon(Icons.check_box_outline_blank)),
+                      value: isAdded(Category_list[index]),
+                    ),
+                    margin: const EdgeInsets.all(5),
+                  ),
                   Flexible(
                     child: Text(
                       Category_list[index],
@@ -967,26 +1082,23 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                   Container(
                     height: 22,
                     width: 22,
+                    margin: const EdgeInsets.all(5),
                     child: Checkbox(
                       onChanged: (value) {
                         if (mounted) {
                           setState(() {
-                            if (isAdded(speciality_list[index]) == true)
+                            if (isAdded1(speciality_list[index]) == true)
                             {
                               selected_speciality.remove(speciality_list[index]);
-                              //print(selected_manufacturer_id.toString());
-                              // widget.onSaveCallback(selected_manufacturer_id);
                             }
                             else {
                               selected_speciality.add(speciality_list[index]);
-                              // widget.onSaveCallback(selected_manufacturer_id);
                             }
                           });
                         }
                       },
                       value: isAdded1(speciality_list[index]),
                     ),
-                    margin: const EdgeInsets.all(5),
                   ),
                   Flexible(
                     child: Text(
@@ -1037,8 +1149,10 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   }
 
   setCategory(){
+    tv_consultant_type.text='';
+    selectedJobs='';
     for(int index=0;index<selected_categories.length;index++){
-      selectedJobs='';
+
       if(index==0 || index==1){
         if(selectedJobs!='') {
           selectedJobs += ','+selected_categories[index];
@@ -1058,20 +1172,26 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   }
 
   setSpeciality(){
+    tv_speciality.text='';
     selectedSpeciality='';
-    for(int index=0;index<selected_speciality.length;index++){
-      if(index==0 || index==1){
-        if(selectedSpeciality!='') {
-          selectedSpeciality += ','+selected_speciality[index];
-        }else{
-          selectedSpeciality+=selected_speciality[index];
+    setState(() {
+    });
+    // if(selected_speciality.length==0) {
+      for (int index = 0; index < selected_speciality.length; index++) {
+
+        if (index == 0 || index == 1) {
+          if (selectedSpeciality != '') {
+            selectedSpeciality += ',' + selected_speciality[index];
+          } else {
+            selectedSpeciality += selected_speciality[index];
+          }
+        }
+        else {
+          selectedSpeciality += ',' + selected_speciality[index];
         }
       }
-      else{
-        selectedSpeciality+= ','+selected_speciality[index];
-      }
-    }
-    tv_speciality.text=selectedSpeciality;
+      tv_speciality.text=selectedSpeciality;
+
     if(this.mounted){
       setState(() {
       });

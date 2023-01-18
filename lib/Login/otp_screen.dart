@@ -321,7 +321,7 @@ class _OtpScreen extends State<OtpScreen> {
       "admin_auto_id":admin_auto_id,
     };
 
-    print(body.toString());
+    //print(body.toString());
 
     var url=app_base_url+'api/'+send_login_otp;
 
@@ -405,7 +405,7 @@ class _OtpScreen extends State<OtpScreen> {
       "country_code":country_code,
       "admin_auto_id":admin_auto_id,
     };
-    print(body.toString());
+    //print(body.toString());
 
     var url=app_base_url+'api/'+login;
     print('baseurl'+url);
@@ -451,7 +451,7 @@ bool isvendorProcessing = false;
       "USER_AUTO_ID":userId,
 
     };
-    print(body.toString());
+    //print(body.toString());
 
     var url= AppConfig.grobizBaseUrl +check_pountry_vendor_status;
     print('baseurl'+url);

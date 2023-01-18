@@ -168,7 +168,6 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
     final body = {
       "admin_auto_id": admin_auto_id,
       "app_type_id": app_type_id,
-      // "user_auto_id": user_id,
     };
 
     print("Body ${body}");
@@ -240,7 +239,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Join_As_Consultant()));
+                            builder: (context) => Join_As_Consultant())).then(onGoBack);
                   },
                   icon: Icon(Icons.add_circle_outline, color: appBarIconColor),
                 ),
@@ -290,10 +289,10 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                                           width:
                                               MediaQuery.of(context).size.width,
                                           height: 220,
-                                          child: consultList[index].profile_photo.isNotEmpty
+                                          child: consultList[index].profilePhoto.isNotEmpty
                                               ? CachedNetworkImage(
                                             fit: BoxFit.fill,
-                                            imageUrl: baseUrl+profile_pic_base_url+ consultList[index].profile_photo,
+                                            imageUrl: baseUrl+profile_pic_base_url+ consultList[index].profilePhoto,
                                             placeholder: (context, url) => Container(
                                                 decoration: BoxDecoration(
                                                   color: Colors.grey[400],
@@ -301,7 +300,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                                             errorWidget: (context, url, error) =>
                                             const Icon(Icons.error),
                                           ) :Image.asset(
-                                            consultantList[0].logo,
+                                            "assets/thumbnail.jpeg",
                                             fit: BoxFit.fill,
                                           ),
                                         )),
@@ -407,7 +406,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                                           // SizedBox(width: 5,),
                                           Flexible(
                                               child: Text(
-                                                  "Fees: ${consultList[index].fees}")),
+                                                  "Fees: \u{20B9} ${consultList[index].fees}")),
                                           Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
@@ -483,7 +482,7 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
                                                     //     throw 'Could not launch $uri';
                                                     //   }
                                                     // }
-                                                    _sendMail(consultList[index].mobileNo);
+                                                    _sendMail(consultList[index].consultantEmailId);
                                                   },
                                                   child: const Text('Mail'),
                                                   style:
@@ -797,6 +796,6 @@ class _Consultant_DashboardState extends State<Consultant_Dashboard> {
   }
 
   FutureOr onGoBack(dynamic value) {
-    //getData();
+    getConsultant();
   }
 }

@@ -91,7 +91,8 @@ class _Candidate_ListState extends State<Candidate_List> {
     final response = await http.post(uri, body: body);
     if (response.statusCode == 200) {
       isApiCallProcessing=false;
-
+      //print(body.toString());
+      //print(url);
       final resp=jsonDecode(response.body);
       String status=resp['status'];
       if(status=='1'){
@@ -104,7 +105,10 @@ class _Candidate_ListState extends State<Candidate_List> {
         }
       }else
       {
-
+        isApiCallProcessing=false;
+        if(mounted){
+          setState(() {});
+        }
       }
     }
     else if(response.statusCode==500){
@@ -169,7 +173,8 @@ class _Candidate_ListState extends State<Candidate_List> {
         body:
         Column(
           children: <Widget>[
-            SingleChildScrollView(
+
+            candidate_list.isNotEmpty?SingleChildScrollView(
               child: Container(
                   height: MediaQuery.of(context).size.height/1.3,
                   padding: const EdgeInsets.only(top: 0),
@@ -293,13 +298,14 @@ class _Candidate_ListState extends State<Candidate_List> {
                           )
                   )
               ),
-            ),
+            ):
+            Container(),
 
             isApiCallProcessing==false && candidate_list.isEmpty?
             Container(
                 alignment: Alignment.center,
                 width: MediaQuery.of(context).size.width,
-                //height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height/1.3,
                 child: const Text('No Jobs available')
             ):
             Container(),
@@ -308,7 +314,7 @@ class _Candidate_ListState extends State<Candidate_List> {
             Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
-              //height: MediaQuery.of(context).size.height/2,
+              height: MediaQuery.of(context).size.height/1.3,
               child: const GFLoader(
                   type:GFLoaderType.circle
               ),

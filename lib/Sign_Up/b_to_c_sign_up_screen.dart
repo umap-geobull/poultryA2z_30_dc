@@ -140,7 +140,7 @@ class BtoCSignupState extends State<BtoCSignup> {
       });
     }
     var url = AppConfig.grobizBaseUrl + get_main_category_lists;
-    print(url);
+    //print(url);
     var uri = Uri.parse(url);
     print("url ${uri}");
 
@@ -148,7 +148,7 @@ class BtoCSignupState extends State<BtoCSignup> {
       // "admin_auto_id":admin_auto_id,
       // "app_type_id": app_type_id,
     };
-    print(body.toString());
+    //print(body.toString());
     final response = await http.get(uri);
     print("response ${response.body}");
     if (response.statusCode == 200) {
@@ -1453,18 +1453,18 @@ class BtoCSignupState extends State<BtoCSignup> {
     final response = await http.post(uri, body: body);
     if (response.statusCode == 200) {
       isSignUpApiprocessing = false;
-
+      print(response.body.toString());
       final resp = jsonDecode(response.body);
       String status = resp['status'];
       if (status == "1") {
         String userAutoId = resp['user_auto_id'];
         String userType = resp['user_type'];
-        // String category_id = resp['category_id'];
+        String category_id = resp['category_id'];
         Fluttertoast.showToast(
           msg: "You have signed up successfully",
           backgroundColor: Colors.grey,
         );
-        saveLoginSession(userAutoId, userType, '');
+        saveLoginSession(userAutoId, userType, category_id);
       } else {
         String msg = resp['msg'];
         Fluttertoast.showToast(
@@ -1505,18 +1505,24 @@ class BtoCSignupState extends State<BtoCSignup> {
     final response = await http.post(uri, body: body);
     if (response.statusCode == 200) {
       isSignUpApiprocessing = false;
-
+      print(response.toString());
       final resp = jsonDecode(response.body);
       String status = resp['status'];
       if (status == "1") {
         String userAutoId = resp['user_auto_id'];
         String userType = resp['user_type'];
-        // String category_id = resp['category_id'];
+        String category_id = resp['category_id'];
+        if(category_id!='')
+          {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            prefs.setString('app_type_id', category_id);
+            print("set "+category_id);
+          }
         Fluttertoast.showToast(
           msg: "You have signed up successfully",
           backgroundColor: Colors.grey,
         );
-        saveLoginSessionVendor(userAutoId, userType, '');
+        saveLoginSessionVendor(userAutoId, userType, category_id);
       } else {
         String msg = resp['msg'];
         Fluttertoast.showToast(
@@ -1557,10 +1563,10 @@ class BtoCSignupState extends State<BtoCSignup> {
     prefs.setString('user_type', userType);
     prefs.setString('app_type_id', category_id);
 
-    Fluttertoast.showToast(
-      msg: "Signed in successfully",
-      backgroundColor: Colors.grey,
-    );
+    // Fluttertoast.showToast(
+    //   msg: "Signed in successfully",
+    //   backgroundColor: Colors.grey,
+    // );
 
     Navigator.of(context).pushNamedAndRemoveUntil(
         HomeScreen.routeName, (Route<dynamic> route) => false);

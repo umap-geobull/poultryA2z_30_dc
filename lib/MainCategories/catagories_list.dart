@@ -170,7 +170,7 @@ class _VendorCatagoriesListState extends State<VendorCatagoriesList> {
                                 width: MediaQuery.of(context).size.width,
                                 height: 220,
                                 imageUrl:
-                                "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${data[index].SUPPLIERPROFILE}",
+                                "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/profiles/${data[index].SUPPLIERPROFILE}",
                                 placeholder: (context, url) =>
                                 new Container(
                                     width: MediaQuery.of(context).size.width,
@@ -336,7 +336,7 @@ class _VendorCatagoriesListState extends State<VendorCatagoriesList> {
                               totalRatingUi(),
                               InkWell(
                                 onTap: (){
-                                  Share.share("${vendorList[index].name} \n\n Supplire: ${vendorList[index].supplier}\n\n Min-Max Price: ${vendorList[index].minMaxPrice}");
+                                 // Share.share("${vendorList[index].name} \n\n Supplier: ${vendorList[index].supplier}\n\n Min-Max Price: ${vendorList[index].minMaxPrice}");
                                 },
                                 child: Container(
                                   height: 30,
@@ -350,9 +350,6 @@ class _VendorCatagoriesListState extends State<VendorCatagoriesList> {
                                       Icons.share,
                                       color: Colors.white,
                                     ),
-
-
-
 
                                 ),
                               )

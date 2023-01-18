@@ -54,7 +54,7 @@ class GalleryImagesState extends State<GalleryImages> {
     };
 
     var url = baseUrl + get_banner_images;
-    print(url);
+    //print(url);
     var uri = Uri.parse(url);
     final response = await http.post(uri, body: body);
     if (response.statusCode == 200) {

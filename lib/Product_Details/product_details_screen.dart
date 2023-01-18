@@ -2322,9 +2322,9 @@ class _ProductDetailScreen extends State<ProductDetailScreen> {
       "customer_auto_id": user_id,
       "app_type_id":app_type_id,
     };
-print(body.toString());
+//print(body.toString());
     var url = baseUrl+'api/' + get_product_details;
-print(url);
+//print(url);
     Uri uri=Uri.parse(url);
 
     final response = await http.post(uri, body: body);

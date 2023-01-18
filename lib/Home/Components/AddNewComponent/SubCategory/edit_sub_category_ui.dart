@@ -324,7 +324,7 @@ class _EditSubCategory extends State<EditSubCategory> {
 
     var url=baseUrl+'api/'+delete_sub_category;
 
-    print(url);
+    //print(url);
     print("sub_category_auto_id "+subCategory.id+ " adminid "+admin_auto_id+ " apptypeid "+app_type_id);
 
     var uri = Uri.parse(url);

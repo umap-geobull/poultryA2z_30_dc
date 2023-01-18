@@ -10,6 +10,7 @@ import '../../Utils/App_Apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
+import '../Job_Approval/Job_approval_screen.dart';
 import '../Utils/coustom_bottom_nav_bar.dart';
 import '../Utils/enums.dart';
 import 'Add_Vacancy.dart';
@@ -132,8 +133,10 @@ class _Job_ListState extends State<Job_List> {
     final body = {
       "admin_auto_id":admin_auto_id,
       "app_type_id": app_type_id,
+      "user_auto_id": user_id,
     };
-
+// print(body.toString());
+// print(url);
     final response = await http.post(uri, body: body);
     if (response.statusCode == 200) {
       isApiCallProcessing=false;
@@ -187,28 +190,20 @@ class _Job_ListState extends State<Job_List> {
                     fontSize: 18,
                     fontWeight: FontWeight.bold)),
             actions: [
-              IconButton(
-                  onPressed: ()=>{
-                    //showFilter()
-                  },
-                  icon: Icon(Icons.filter_alt_outlined,color: appBarIconColor,)),
+              // IconButton(
+              //     onPressed: ()=>{
+              //       //showFilter()
+              //     },
+              //     icon: Icon(Icons.filter_alt_outlined,color: appBarIconColor,)),
 
               // IconButton(
               //   onPressed: () {
               //     Navigator.push(context,
-              //         MaterialPageRoute(builder: (context) => Job_List_Ui()));
+              //         MaterialPageRoute(builder: (context) => Job_Approval_Screen()));
               //   },
-              //   icon: Icon(Icons.edit, color:appBarIconColor),
+              //   icon: Icon(Icons.domain_verification, color:appBarIconColor),
               // ),
               //
-              // widget.type != "brand" ?
-              // IconButton(
-              //   onPressed: () {
-              //     fetch_images();
-              //   },
-              //   icon: Icon(Icons.add_circle_outline, color: appBarIconColor),
-              // ):
-              // Container(),
             ]
         ),
         body:
@@ -220,28 +215,28 @@ class _Job_ListState extends State<Job_List> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // Expanded(
-                  //     flex: 1,
-                  //     child: GestureDetector(
-                  //       child: Container(
-                  //           alignment: Alignment.center,
-                  //           child: Container(
-                  //             alignment: Alignment.center,
-                  //             height: 35,
-                  //             width: 100,
-                  //             decoration: BoxDecoration(
-                  //               color: secondaryButtonColor,
-                  //               shape: BoxShape.rectangle,
-                  //               borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  //             ),
-                  //             child: Text("  Apply Jobs   ",textAlign: TextAlign.center,style: TextStyle(color: appBarIconColor)),
-                  //           )
-                  //       ),
-                  //       onTap: (){
-                  //         Navigator.push(context,  MaterialPageRoute(builder: (context) => ApplyJobs()));
-                  //       },
-                  //     )
-                  // ),
+                  user_type=='Admin'?Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        child: Container(
+                            alignment: Alignment.center,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 35,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: secondaryButtonColor,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                              ),
+                              child: Text("  Job Approvals  ",textAlign: TextAlign.center,style: TextStyle(color: appBarIconColor)),
+                            )
+                        ),
+                        onTap: (){
+                          Navigator.push(context,  MaterialPageRoute(builder: (context) => Job_Approval_Screen())).then(onGoBack);
+                        },
+                      )
+                  ):Container(),
 
                   Expanded(
                       flex: 1,
@@ -261,7 +256,7 @@ class _Job_ListState extends State<Job_List> {
                             )
                         ),
                         onTap: (){
-                          Navigator.push(context,  MaterialPageRoute(builder: (context) => AddVacancyScreen()));
+                          Navigator.push(context,  MaterialPageRoute(builder: (context) => AddVacancyScreen())).then(onGoBack);
                         },
                       )
                   ),
@@ -285,7 +280,7 @@ class _Job_ListState extends State<Job_List> {
                             )
                         ),
                         onTap: (){
-                         Navigator.push(context,  MaterialPageRoute(builder: (context) => MyAppliedJobs()));
+                         Navigator.push(context,  MaterialPageRoute(builder: (context) => MyAppliedJobs())).then(onGoBack);
                         },
                       )
                   )
@@ -333,7 +328,7 @@ class _Job_ListState extends State<Job_List> {
                                                     style: const TextStyle(
                                                         fontWeight: FontWeight.w600, fontSize: 18,color: Colors.blue),
                                                   ),
-                                                  user_type=='Admin'?IconButton(onPressed: ()=>{showAlert(job_list[index].id)},
+                                                  user_id==job_list[index].user_auto_id?IconButton(onPressed: ()=>{showAlert(job_list[index].id)},
                                                       icon: Icon(Icons.delete, color: appBarIconColor)):Container()
                                                     ],),
 
@@ -492,10 +487,11 @@ class _Job_ListState extends State<Job_List> {
       "job_auto_id": job_id,
       "admin_auto_id":admin_auto_id,
       "app_type_id":app_type_id,
+      "user_auto_id":user_id,
     };
     var url = baseUrl+'api/' + delete_job_vacancy;
-    print(body.toString());
-    print(url);
+    //print(body.toString());
+    //print(url);
     Uri uri=Uri.parse(url);
 
     final response = await http.post(uri, body: body);

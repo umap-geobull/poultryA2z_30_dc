@@ -37,6 +37,7 @@ import '../Cart/model/cart_count_model.dart';
 import '../Product_Details/Product_List_User.dart';
 import '../Sign_Up/vendor_signup_catagory.dart';
 import '../Utils/App_Apis.dart';
+import '../Vendor_Approval/Vendor_approval_screen.dart';
 import '../grobiz_start_pages/welcome/type_app_base_model.dart';
 import 'Components/AddNewComponent/Offers/edit_offer.dart';
 import 'Components/AddNewComponent/Products/ProductNew.dart';
@@ -265,26 +266,26 @@ class _HomeScreen extends State<HomeScreen> {
                 ) : Container(),
 
 
-                user_id==super_id?IconButton(
-                  visualDensity: VisualDensity(horizontal: -2.0, vertical: -2.0),
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    getAllBaseAppsCategory();
-                  },
-                  icon: Icon(Icons.swap_horiz, color: appBarIconColor),
-                )
-                    : Container(),
+                // user_id==super_id?IconButton(
+                //   visualDensity: VisualDensity(horizontal: -2.0, vertical: -2.0),
+                //   padding: EdgeInsets.zero,
+                //   onPressed: () {
+                //     getAllBaseAppsCategory();
+                //   },
+                //   icon: Icon(Icons.swap_horiz, color: appBarIconColor),
+                // )
+                //     : Container(),
 
-                userType=='Admin'?
-                IconButton(
-                  visualDensity: VisualDensity(horizontal: -2.0, vertical: -2.0),
-                  padding: EdgeInsets.zero,
-                  onPressed: () {
-                    showContactInfo();
-                  },
-                  icon: Icon(Icons.call, color: appBarIconColor),
-                ):
-                Container(),
+                // userType=='Admin'?
+                // IconButton(
+                //   visualDensity: VisualDensity(horizontal: -2.0, vertical: -2.0),
+                //   padding: EdgeInsets.zero,
+                //   onPressed: () {
+                //     showContactInfo();
+                //   },
+                //   icon: Icon(Icons.call, color: appBarIconColor),
+                // ):
+                // Container(),
 
                 IconButton(
                   visualDensity: VisualDensity(horizontal: -2.0, vertical: -2.0),
@@ -364,35 +365,24 @@ class _HomeScreen extends State<HomeScreen> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    eraseDataStatus=='No'?
-                                    Container(
-                                      margin: EdgeInsets.all(5),
-                                      child:  ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent,
-                                        ),
-                                        child: Text('Consultant Type',style: TextStyle(color: Colors.white,fontSize: 12)),
-                                        onPressed: ()=> {
-                                          //showAlertErase()
-                                        },
-                                      ),
-                                    ):
-                                    Container(),
+                                    // eraseDataStatus=='No'?
+                                    // Container(
+                                    //   margin: EdgeInsets.all(5),
+                                    //   child:  ElevatedButton(
+                                    //     style: ElevatedButton.styleFrom(
+                                    //       backgroundColor: Colors.redAccent,
+                                    //     ),
+                                    //     child: Text('Consultant Type',style: TextStyle(color: Colors.white,fontSize: 12)),
+                                    //     onPressed: ()=> {
+                                    //       //showAlertErase()
+                                    //     },
+                                    //   ),
+                                    // ):
+                                    // Container(),
+                                    //
+                                    // eraseDataStatus=='No'?
 
-                                    eraseDataStatus=='No'?
-                                    Container(
-                                      margin: EdgeInsets.all(5),
-                                      child:  ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.redAccent,
-                                        ),
-                                        child: Text('Specialization',style: TextStyle(color: Colors.white,fontSize: 12)),
-                                        onPressed: ()=> {
-                                          //showAlertErase()
-                                        },
-                                      ),
-                                    ):
-                                    Container(),
+                                        // : Container(),
 
                                     Container(
                                       margin: const EdgeInsets.all(5),
@@ -402,12 +392,12 @@ class _HomeScreen extends State<HomeScreen> {
                                         ),
                                         child: const Text('Add Component',style: TextStyle(color: Colors.black87,fontSize: 12),),
                                         onPressed: () {
-                                          if(eraseDataStatus=='No'){
-                                            showAlertAddComponent();
-                                          }
-                                          else{
+                                          // if(eraseDataStatus=='No'){
+                                          //   showAlertAddComponent();
+                                          // }
+                                          // else{
                                             showAddComponent();
-                                          }
+                                          // }
                                         },
                                       ),
                                     ),
@@ -438,10 +428,23 @@ class _HomeScreen extends State<HomeScreen> {
                                         child: Text('Import Vendor',style: TextStyle(color: Colors.black87,fontSize: 12)),
                                         onPressed: ()=> {
                                           //checkPlanDetails()
-                                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VendorSignupCatagory()))
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => VendorSignupCatagory()))
                                         },
                                       ),
                                       margin: EdgeInsets.all(5),
+                                    ):Container(),
+                                    userType=='Admin'?
+                                    Container(
+                                      margin: EdgeInsets.all(5),
+                                      child:  ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.grey[100],
+                                        ),
+                                        child: Text('Vendor Approval',style: TextStyle(color: Colors.black87,fontSize: 12)),
+                                        onPressed: ()=> {
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Vendor_Approval_Screen()))
+                                        },
+                                      ),
                                     ):Container(),
                                   ],
                                 ),
@@ -461,9 +464,9 @@ class _HomeScreen extends State<HomeScreen> {
                     ):
                     Container(),
 
-                    showLocationOnHomeScreen=='Yes'?
-                    UserLocation():
-                    Container(),
+                    // showLocationOnHomeScreen=='Yes'?
+                    // UserLocation():
+                    // Container(),
 
                     homeComponentList.isNotEmpty?
                     Expanded(
@@ -729,7 +732,7 @@ class _HomeScreen extends State<HomeScreen> {
 
     var url=AppConfig.grobizBaseUrl+get_all_categories_list;
 
-    print(url);
+    //print(url);
 
     var uri = Uri.parse(url);
     final response = await http.get(uri);
@@ -2020,7 +2023,7 @@ class _HomeScreen extends State<HomeScreen> {
     final body={
       'user_auto_id':user_id,
     };
-print(body.toString());
+//print(body.toString());
     Uri uri=Uri.parse(url);
     final response = await http.post(uri,body: body);
     print(response.toString());

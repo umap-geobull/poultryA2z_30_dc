@@ -373,3 +373,15 @@ const String check_pountry_vendor_status="check_pountry_vendor_status";
 const String get_pountry_vendor_details="get_pountry_vendor_details";
 const String get_pountry_vendor_customer="get_pountry_vendor_customer";
 const String get_pountry_vendor="get_pountry_vendor";
+
+//job approval
+const String get_job_approval_list="get_job_approval_list";
+const String approve_job="approve_job";
+const String get_approved_job_list="get_approved_job_list";
+const String get_disapproved_job_list="get_disapproved_job_list";
+
+//vendor approval
+const String get_vendor_approval_list="get_vendor_approval_list";
+const String approve_vendor="approve_vendor";
+const String get_approved_vendor_list="get_approved_vendor_list";
+const String get_disapproved_vendor_list="get_disapproved_vendor_list";

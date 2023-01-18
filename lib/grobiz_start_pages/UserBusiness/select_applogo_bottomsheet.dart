@@ -448,7 +448,7 @@ class _SelectLogo extends State<SelectLogo> {
 
     var url=AppConfig.grobizBaseUrl+update_profile;
 
-    print(url);
+    //print(url);
 
     var uri = Uri.parse(url);
 

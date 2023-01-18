@@ -1705,7 +1705,7 @@ class _RemoveBackgroundState extends State<RemoveBackground> {
     };
     print("user-id=" + user_id);
     var url = baseUrl + get_image_plan_status;
-    print(url);
+    //print(url);
     var uri = Uri.parse(url);
     final response = await http.post(uri, body: body);
     print(response.statusCode);

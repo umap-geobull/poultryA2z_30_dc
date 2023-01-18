@@ -101,7 +101,7 @@ class AdminProfileState extends State<AdminProfile> {
 
     var url=AppConfig.grobizBaseUrl+update_profile;
 
-    print(url);
+    //print(url);
 
     var uri = Uri.parse(url);
 
@@ -425,34 +425,34 @@ class AdminProfileState extends State<AdminProfile> {
               height: 30,
             ),
 
-            SizedBox(
-              height: 40.0,
-              width: 150,
-              child: Container(
-                child:
-                isApiCallProcessing==true?
-                Container():
-                isDeleteApiCallProcessing==true?
-                Center(
-                  child: const GFLoader(
-                      type:GFLoaderType.circle
-                  ),
-                ):
-                ElevatedButton(
-                  onPressed: () {
-                    if(admin_auto_id!=null && admin_auto_id!= super_id){
-                        deleteProfileApi();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red ,
-                    shadowColor: Colors.grey[100],
-                    elevation: 5,
-                  ),
-                  child: const Text('Delete Profile'),
-                ),
-              ),
-            ),
+            // SizedBox(
+            //   height: 40.0,
+            //   width: 150,
+            //   child: Container(
+            //     child:
+            //     isApiCallProcessing==true?
+            //     Container():
+            //     isDeleteApiCallProcessing==true?
+            //     Center(
+            //       child: const GFLoader(
+            //           type:GFLoaderType.circle
+            //       ),
+            //     ):
+            //     ElevatedButton(
+            //       onPressed: () {
+            //         if(admin_auto_id!=null && admin_auto_id!= super_id){
+            //             deleteProfileApi();
+            //         }
+            //       },
+            //       style: ElevatedButton.styleFrom(
+            //         backgroundColor: Colors.red ,
+            //         shadowColor: Colors.grey[100],
+            //         elevation: 5,
+            //       ),
+            //       child: const Text('Delete Profile'),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       )

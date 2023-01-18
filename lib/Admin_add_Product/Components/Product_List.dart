@@ -412,7 +412,7 @@ class _Product_ListState extends State<Product_List> {
       "max_trial_period":max_trial_period,
     };
 
-    // print(body.toString());
+    // //print(body.toString());
 
     var url = baseUrl + 'api/' + get_filter_products;
 
@@ -562,7 +562,7 @@ class _Product_ListState extends State<Product_List> {
       "admin_auto_id":admin_auto_id,
       "app_type_id":app_type_id,
     };
-print(body.toString());
+//print(body.toString());
     var url = baseUrl+'api/' + get_Admin_Subcategory_Product;
 
     Uri uri=Uri.parse(url);

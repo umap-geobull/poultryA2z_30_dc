@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:poultry_a2z/Utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
+import 'Components/Consultant_Type_model.dart';
 import 'Components/Rest_Apis.dart';
 
 
@@ -14,7 +15,7 @@ class Add_Consultant_Type_Screen extends StatefulWidget {
 }
 
 class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen> {
-  // List<getspecList>? getmanufacturer_List = [];
+  List<Consultant_typeList>? getconsultant_List = [];
   bool isApiCallProcessing = false;
   String baseUrl='',admin_auto_id='';
 
@@ -43,7 +44,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
             actions: [
               IconButton(
                 onPressed: () {
-                  Add_Manufacturer_Layout();
+                  Add_Consultant_Layout();
                 },
                 icon: const Icon(Icons.add_circle_outline, color: appBarIconColor),
               ),
@@ -53,19 +54,19 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
               Container(
                   child: Column(
                     children: [
-                      // Expanded(
-                      //   child: ListView.builder(
-                      //       itemCount: getmanufacturer_List?.length,
-                      //       itemBuilder: (BuildContext context, int index) {
-                      //         // return item
-                      //         return Manufacturer_Layout(
-                      //           getmanufacturer_List![index].id,
-                      //           getmanufacturer_List![index].manufacturerName,
-                      //           getmanufacturer_List![index].isSelected,
-                      //           index,
-                      //         );
-                      //       }),
-                      // ),
+                      Expanded(
+                        child: ListView.builder(
+                            itemCount: getconsultant_List?.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              // return item
+                              return Consultant_layout(
+                                getconsultant_List![index].id,
+                                getconsultant_List![index].consultant_type,
+                                getconsultant_List![index].isSelected,
+                                index,
+                              );
+                            }),
+                      ),
 
                       selected_manufacturer_List.isNotEmpty
                           ? Padding(
@@ -97,16 +98,14 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
                       )
                           : Container(),
                     ],
-
-
                   )
               ),
 
-              // isApiCallProcessing==false && getmanufacturer_List!.isEmpty?
-              // Center(
-              //   child: Text('No manufacturers added'),
-              // ):
-              // Container(),
+              isApiCallProcessing==false && getconsultant_List!.isEmpty?
+              Center(
+                child: Text('No Consultant Type added'),
+              ):
+              Container(),
 
               isApiCallProcessing==true?
               Container(
@@ -131,7 +130,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
         this.baseUrl=baseUrl;
         this.admin_auto_id=adminId;
         //print(admin_auto_id+' '+baseUrl);
-        //getManufacturer_List();
+        get_consultant_List();
       });
     }
     return null;
@@ -153,7 +152,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
                     child: Column(
                       children: <Widget>[
                         const Text(
-                          'Do you want to delete this manufacturer',
+                          'Do you want to delete this consultant type',
                           style: TextStyle(color: Colors.black54),
                         ),
                         const SizedBox(
@@ -211,7 +210,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
     );
   }
 
-  void Add_Manufacturer_Layout() {
+  void Add_Consultant_Layout() {
     showModalBottomSheet<void>(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(25.0))),
@@ -227,7 +226,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   const Center(
-                      child: Text('Add Manufacturer ',
+                      child: Text('Add Consultant type ',
                           style: TextStyle(
                               fontSize: 16,
                               color: Colors.black,
@@ -236,7 +235,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
                   const SizedBox(
                     height: 10.0,
                   ),
-                  const Text("Manufacturer Name",
+                  const Text("Consultant Type",
                       style: TextStyle(
                           color: Colors.black, fontSize: 16)),
                   const SizedBox(
@@ -271,7 +270,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
                                 contentPadding: const EdgeInsets.fromLTRB(
                                     10, 15, 0, 0),
                                 //hintText: "Add multiple colors separated by comma",
-                                hintText: "Add manufacturer name",
+                                hintText: "Add consultant type ",
                                 focusedBorder: OutlineInputBorder(
                                   borderSide:
                                   const BorderSide(color: Colors.blue, width: 1),
@@ -312,12 +311,12 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
                                   setState(() {
 
                                     if (manufacturer_name == "" || manufacturer_name.isEmpty) {
-                                      Fluttertoast.showToast(msg: "Enter manufacturer name",
+                                      Fluttertoast.showToast(msg: "Enter Consultant type ",
                                         backgroundColor: Colors.grey,);
                                     }
                                     else {
                                       Navigator.pop(context);
-                                      Add_Manufacturer();
+                                      Add_Consultant_Type();
                                       if(mounted)
                                       {
                                         setState(() {
@@ -348,68 +347,68 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
         });
   }
 
-  // void getManufacturer_List() async {
-  //   if(mounted){
-  //     setState(() {
-  //       isApiCallProcessing=true;
-  //     });
-  //   }
-  //
-  //   Rest_Apis restApis = Rest_Apis();
-  //
-  //   restApis.Get_Manufacturer_List(admin_auto_id, baseUrl).then((value) {
-  //     print(value.toString());
-  //     if (value != null) {
-  //       isApiCallProcessing = false;
-  //       //getmanufacturer_List = value;
-  //
-  //       //print('manufacturer_name length '+getmanufacturer_List!.length.toString());
-  //       if(this.mounted){
-  //         setState(() {
-  //
-  //         });
-  //       }
-  //     }
-  //   });
-  // }
+  void get_consultant_List() async {
+    if(mounted){
+      setState(() {
+        isApiCallProcessing=true;
+      });
+    }
 
-  // Widget Manufacturer_Layout(String? id, String? colorName,
-  //     bool? isSelected, int index) {
-  //   return Container(
-  //     decoration:  BoxDecoration(
-  //       border: Border.all(
-  //         color: Colors.grey.shade300, //                   <--- border color
-  //         width: 1.0,
-  //       ),
-  //
-  //     ),
-  //     child: ListTile(
-  //
-  //         title: Text(
-  //          colorName!,
-  //           style: const TextStyle(
-  //             fontSize: 16,
-  //             color: Colors.black
-  //           ),
-  //         ),
-  //
-  //         trailing: isAdded(getmanufacturer_List![index].id) == true
-  //             ? Icon(
-  //           Icons.check_circle,
-  //           color: Colors.green[700],
-  //         )
-  //             : const Icon(
-  //           Icons.check_circle_outline,
-  //           color: Colors.grey,
-  //         ),
-  //         onTap: () {
-  //           setState(() {
-  //
-  //             setSelected(getmanufacturer_List![index].id);
-  //           });
-  //         }),
-  //   );
-  // }
+    Rest_Apis restApis = Rest_Apis();
+
+    restApis.Get_ConsultantType_List(admin_auto_id, baseUrl).then((value) {
+      print(value.toString());
+      if (value != null) {
+        isApiCallProcessing = false;
+        getconsultant_List = value;
+
+        //print('manufacturer_name length '+getconsultant_List!.length.toString());
+        if(this.mounted){
+          setState(() {
+
+          });
+        }
+      }
+    });
+  }
+
+  Widget Consultant_layout(String? id, String? colorName,
+      bool? isSelected, int index) {
+    return Container(
+      decoration:  BoxDecoration(
+        border: Border.all(
+          color: Colors.grey.shade300,
+          width: 1.0,
+        ),
+
+      ),
+      child: ListTile(
+
+          title: Text(
+           colorName!,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black
+            ),
+          ),
+
+          trailing: isAdded(getconsultant_List![index].id) == true
+              ? Icon(
+            Icons.check_circle,
+            color: Colors.green[700],
+          )
+              : const Icon(
+            Icons.check_circle_outline,
+            color: Colors.grey,
+          ),
+          onTap: () {
+            setState(() {
+
+              setSelected(getconsultant_List![index].id);
+            });
+          }),
+    );
+  }
 
   setSelected(String id) {
     if (isAdded(id) == true) {
@@ -419,7 +418,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
         selected_manufacturer_List.add(id);
       } else {
         Fluttertoast.showToast(
-          msg: "Maximum 10 manufacturer can be selected",
+          msg: "Maximum 10 consultant can be selected",
           backgroundColor: Colors.grey,
         );
       }
@@ -451,14 +450,14 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
 
       Rest_Apis restApis = Rest_Apis();
 
-      restApis.Delete_Manufacturer(selected_manufacturer_List[i], admin_auto_id, baseUrl).then((value) {
+      restApis.Delete_Consulant_Type(selected_manufacturer_List[i], admin_auto_id, baseUrl).then((value) {
         if (value != null) {
           int status = value;
 
           if (status == 1) {
             isApiCallProcessing = false;
 
-            //getManufacturer_List();
+            get_consultant_List();
             selected_manufacturer_List = [];
           } else if (status == 0) {
             isApiCallProcessing = false;
@@ -478,7 +477,7 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
     }
   }
 
-  void Add_Manufacturer() {
+  void Add_Consultant_Type() {
     if(mounted){
       setState(() {
         isApiCallProcessing=true;
@@ -489,11 +488,11 @@ class _Add_Consultant_Type_ScreenState extends State<Add_Consultant_Type_Screen>
 
     restApis.Add_consultanttype_Api(manufacturer_name, admin_auto_id, baseUrl).then((value) {
       if (value != null) {
-        String status = value;
+        int status = value;
 
-        if (status == "1") {
+        if (status == 1) {
           isApiCallProcessing = false;
-          //getManufacturer_List();
+          get_consultant_List();
         } else if (status == 0) {
           isApiCallProcessing = false;
 

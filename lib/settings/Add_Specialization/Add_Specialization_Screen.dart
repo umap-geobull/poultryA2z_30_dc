@@ -492,7 +492,7 @@ class _Add_Specialization_ScreenState extends State<Add_Specialization_Screen> {
       if (value != null) {
         int status = value;
 
-        if (status == "1") {
+        if (status == 1) {
           isApiCallProcessing = false;
           get_specialization_List();
         } else if (status == 0) {

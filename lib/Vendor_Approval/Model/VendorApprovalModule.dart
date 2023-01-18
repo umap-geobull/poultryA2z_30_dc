@@ -1,17 +1,17 @@
-class VendorDetailsVendor {
-  VendorDetailsVendor({
+class VendorApprovalList {
+  VendorApprovalList({
     required this.status,
     required this.msg,
     required this.data,
   });
-  late final String status;
+  late final int status;
   late final String msg;
-  late final List<Vendor> data;
+  late final List<GetVendorListCategory> data;
 
-  VendorDetailsVendor.fromJson(Map<String, dynamic> json){
+  VendorApprovalList.fromJson(Map<String, dynamic> json){
     status = json['status'];
     msg = json['msg'];
-    data = List.from(json['data']).map((e)=>Vendor.fromJson(e)).toList();
+    data = List.from(json['data']).map((e)=>GetVendorListCategory.fromJson(e)).toList();
   }
 
   Map<String, dynamic> toJson() {
@@ -23,8 +23,8 @@ class VendorDetailsVendor {
   }
 }
 
-class Vendor {
-  Vendor({
+class GetVendorListCategory {
+  GetVendorListCategory({
     required this.id,
     required this.CATEGORYAUTOID,
     required this.ADMINAUTOID,
@@ -206,6 +206,7 @@ class Vendor {
     required this.WEBSITE,
     required this.WHICHTYPEOFLABOUR,
     required this.YPEOFCERTIFICATION,
+    required this.ADMIN_APPROVAL,
     required this.rdate,
     required this.updatedAt,
     required this.createdAt,
@@ -394,17 +395,18 @@ class Vendor {
   late final String rdate;
   late final String updatedAt;
   late final String createdAt;
+  late final String ADMIN_APPROVAL;
 
-  Vendor.fromJson(Map<String, dynamic> json){
+  GetVendorListCategory.fromJson(Map<String, dynamic> json){
     id = json['_id'];
     CATEGORYAUTOID = json['CATEGORY_AUTO_ID'];
     ADMINAUTOID = json['ADMIN_AUTO_ID'];
     APPTYPEID = json['APP_TYPE_ID'];
-    USERAUTOID = json['USER_AUTO_ID'] != null ? json['USER_AUTO_ID']:'';
-    MINORDERVALUE = json['MIN_ORDER_VALUE']!= null ? json['MIN_ORDER_VALUE']:'';
-    PRICERANGE = json['PRICE_RANGE']!= null ? json['PRICE_RANGE']:'';
-    VENDORPROFILE = json['VENDOR_PROFILE']!= null ? json['VENDOR_PROFILE']:'';
-    SUPPLIERPROFILE = json['SUPPLIER_PROFILE']!= null ? json['SUPPLIER_PROFILE']:'';
+    USERAUTOID = json['USER_AUTO_ID'] != null ?json['USER_AUTO_ID'] :'';
+    MINORDERVALUE = json['MIN_ORDER_VALUE']!= null ?json['MIN_ORDER_VALUE'] :'';
+    PRICERANGE = json['PRICE_RANGE']!= null ?json['PRICE_RANGE'] :'';
+    VENDORPROFILE = json['VENDOR_PROFILE']!= null ?json['VENDOR_PROFILE'] :'';
+    SUPPLIERPROFILE = json['SUPPLIER_PROFILE']!= null ?json['SUPPLIER_PROFILE'] :'';
     FIRMNAME = json['FIRM_NAME'];
     OWNERNAME = json['OWNER_NAME'];
     EMAILID = json['EMAIL_ID'];
@@ -580,6 +582,7 @@ class Vendor {
     rdate = json['rdate'];
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
+    ADMIN_APPROVAL = json['ADMIN_APPROVAL'];
   }
 
   Map<String, dynamic> toJson() {
@@ -589,8 +592,8 @@ class Vendor {
     _data['ADMIN_AUTO_ID'] = ADMINAUTOID;
     _data['APP_TYPE_ID'] = APPTYPEID;
     _data['USER_AUTO_ID'] = USERAUTOID;
-    //_data['MIN_ORDER_VALUE'] = MINORDERVALUE;
-    //_data['PRICE_RANGE'] = PRICERANGE;
+    _data['MIN_ORDER_VALUE'] = MINORDERVALUE;
+    _data['PRICE_RANGE'] = PRICERANGE;
     _data['VENDOR_PROFILE'] = VENDORPROFILE;
     _data['SUPPLIER_PROFILE'] = SUPPLIERPROFILE;
     _data['FIRM_NAME'] = FIRMNAME;
@@ -768,6 +771,7 @@ class Vendor {
     _data['rdate'] = rdate;
     _data['updated_at'] = updatedAt;
     _data['created_at'] = createdAt;
+    _data['ADMIN_APPROVAL'] = ADMIN_APPROVAL;
     return _data;
   }
 }

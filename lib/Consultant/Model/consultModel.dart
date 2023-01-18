@@ -39,12 +39,14 @@ class ConsultData {
     required this.availableFrom,
     required this.availableTo,
     required this.description,
+    required this.consultantEmailId,
     required this.resume,
-    required this.profile_photo,
+    required this.profilePhoto,
     required this.rdate,
     required this.updatedAt,
     required this.createdAt,
   });
+
   late final String id;
   late final String adminAutoId;
   late final String userAutoId;
@@ -59,8 +61,9 @@ class ConsultData {
   late final String availableFrom;
   late final String availableTo;
   late final String description;
+  late final String consultantEmailId;
   late final String resume;
-  late final String profile_photo;
+  late final String profilePhoto;
   late final String rdate;
   late final String updatedAt;
   late final String createdAt;
@@ -80,8 +83,9 @@ class ConsultData {
     availableFrom = json['available_from'];
     availableTo = json['available_to'];
     description = json['description'];
+    consultantEmailId = json['consultant_email_id'];
     resume = json['resume'];
-    profile_photo = json['profile_photo'];
+    profilePhoto = json['profile_photo'];
     rdate = json['rdate'];
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
@@ -103,11 +107,13 @@ class ConsultData {
     _data['available_from'] = availableFrom;
     _data['available_to'] = availableTo;
     _data['description'] = description;
+    _data['consultant_email_id'] = consultantEmailId;
     _data['resume'] = resume;
-    _data['profile_photo'] = profile_photo;
+    _data['profile_photo'] = profilePhoto;
     _data['rdate'] = rdate;
     _data['updated_at'] = updatedAt;
     _data['created_at'] = createdAt;
     return _data;
   }
+
 }

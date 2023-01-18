@@ -1529,7 +1529,7 @@ class _WelcomePage extends State<WelcomePage> {
 
     var url=AppConfig.grobizBaseUrl+get_app_base;
 
-    print(url);
+    //print(url);
     print(type);
 
     var uri = Uri.parse(url);

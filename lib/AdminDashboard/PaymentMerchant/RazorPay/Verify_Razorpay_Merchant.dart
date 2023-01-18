@@ -277,11 +277,11 @@ class _Verify_Razorpay_Merchant extends State<Verify_Razorpay_Merchant> {
       "secret_key":adminProfile[0].secretKey,
     };
 
-    // print(body.toString());
+    // //print(body.toString());
 
     var url=AppConfig.grobizBaseUrl+update_profile;
 
-    print(url);
+    //print(url);
 
     Uri uri=Uri.parse(url);
 

@@ -271,13 +271,14 @@ class _AddVacancyScreenState extends State<AddVacancyScreen> {
       "experience":experience_controller.text,
       "salary_expectations":salary_controller.text,
       "job_description":description_controller.text,
+      "user_auto_id":user_id,
       "admin_auto_id":admin_auto_id,
       "app_type_id":app_type_id,
     };
 
     var url = baseUrl+'api/' + add_job_vacancy;
-print(body.toString());
-print(url);
+// //print(body.toString());
+// //print(url);
     Uri uri=Uri.parse(url);
 
     final response = await http.post(uri, body: body);
@@ -290,8 +291,8 @@ print(url);
       print("status=>"+status.toString());
       if (status == 1) {
         Fluttertoast.showToast(
-          msg: "Job Posted successfully",
-          backgroundColor: Colors.grey,
+          msg: "Job send for approval.please wait till your admin approve it...",
+          backgroundColor: Colors.black87,
         );
         Navigator.pop(context);
       }

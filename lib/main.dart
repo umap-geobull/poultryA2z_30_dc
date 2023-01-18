@@ -5,6 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:poultry_a2z/FirebaseSetup/setup_notifcations.dart';
 import 'package:provider/provider.dart';
 import 'Community/Community_provider.dart';
+import 'Consultant/ConsultantProvider.dart';
 import 'Spalsh_screen/splash_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -138,6 +139,8 @@ class MyApp extends  StatelessWidget {
         ChangeNotifierProvider<CommunityProvider>(
           create: (_) => CommunityProvider(),
         ),
+        // ChangeNotifierProvider<ConsultantProvider>(
+        // create: (_) => ConsultantProvider(),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

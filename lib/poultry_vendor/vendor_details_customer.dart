@@ -111,7 +111,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
       });
     }
     var url = AppConfig.grobizBaseUrl + get_pountry_vendor_customer;
-    print(url);
+    //print(url);
     var uri = Uri.parse(url);
     print("url ${uri}");
 
@@ -122,7 +122,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
       "CATEGORY_AUTO_ID": widget.vendor.CATEGORYAUTOID,
       "POULTRY_VENDOR_AUTO_ID": widget.vendor.id
     };
-    print(body.toString());
+    //print(body.toString());
     final response = await http.post(uri, body: body);
     print("response vendor ${response.body}");
     if (response.statusCode == 200) {
@@ -298,7 +298,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
                   child: vendor[0].VENDORPROFILE.isEmpty? Image.asset(
-                    vendorList[0].image,
+                    'assets/thumbnail.jpeg',
                     fit: BoxFit.fill,
                     width: MediaQuery.of(context).size.width,
                     height: 200,
@@ -307,7 +307,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                     width: MediaQuery.of(context).size.width,
                     height: 200,
                     imageUrl:
-                    "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${vendor[0].VENDORPROFILE}",
+                    "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/profiles/${vendor[0].VENDORPROFILE}",
                     placeholder: (context, url) =>
                     new Container(
                       width: MediaQuery.of(context).size.width,
@@ -387,48 +387,48 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                         children: [
                           Row(
                             children: [
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Min Order Value",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      child: TextFormField(
-                                          autocorrect: true,
-                                          enabled: false,
-                                          controller: shopMin_OrderController,
-                                          textAlign: TextAlign.center,
-                                          cursorColor: Color(0xffF5591F),
-                                          decoration: InputDecoration(
-                                            hintText: vendor[0].MINORDERVALUE.isEmpty ? "N.A,":"${vendor[0].MINORDERVALUE}",
-                                            border: InputBorder.none,
-                                            contentPadding: EdgeInsets.only(
-                                                left: 0,
-                                                right: 0,
-                                                top: 0,
-                                                bottom:
-                                                10 // HERE THE IMPORTANT PART
-                                            ),
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                          ),
-                                          onChanged: (value) =>
-                                          shopMin_OrderController.text =
-                                              value,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black)),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              // Expanded(
+                              //   flex: 1,
+                              //   child: Column(
+                              //     children: [
+                              //       Text(
+                              //         "Min Order Value",
+                              //         style: TextStyle(
+                              //           fontSize: 12,
+                              //         ),
+                              //       ),
+                              //       Container(
+                              //         height: 20,
+                              //         alignment: Alignment.center,
+                              //         child: TextFormField(
+                              //             autocorrect: true,
+                              //             enabled: false,
+                              //             controller: shopMin_OrderController,
+                              //             textAlign: TextAlign.center,
+                              //             cursorColor: Color(0xffF5591F),
+                              //             decoration: InputDecoration(
+                              //               hintText: vendor[0].MINORDERVALUE.isEmpty ? "N.A,":"${vendor[0].MINORDERVALUE}",
+                              //               border: InputBorder.none,
+                              //               contentPadding: EdgeInsets.only(
+                              //                   left: 0,
+                              //                   right: 0,
+                              //                   top: 0,
+                              //                   bottom:
+                              //                   10 // HERE THE IMPORTANT PART
+                              //               ),
+                              //               enabledBorder: InputBorder.none,
+                              //               focusedBorder: InputBorder.none,
+                              //             ),
+                              //             onChanged: (value) =>
+                              //             shopMin_OrderController.text =
+                              //                 value,
+                              //             style: TextStyle(
+                              //                 fontSize: 14,
+                              //                 color: Colors.black)),
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
                               Expanded(
                                 flex: 1,
                                 child: Column(
@@ -456,46 +456,46 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                                   ],
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Price Range",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    Container(
-                                      height: 20,
-                                      alignment: Alignment.center,
-                                      child: TextFormField(
-                                          enabled: false,
-                                          controller: shopPrice_RangeController,
-                                          textAlign: TextAlign.center,
-                                          decoration: InputDecoration(
-                                            hintText: vendor[0].PRICERANGE.isEmpty ? "N.A,":"${vendor[0].PRICERANGE}",
-                                            border: InputBorder.none,
-                                            contentPadding: EdgeInsets.only(
-                                                left: 0,
-                                                right: 0,
-                                                top: 0,
-                                                bottom:
-                                                10 // HERE THE IMPORTANT PART
-                                            ),
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                          ),
-                                          onChanged: (value) =>
-                                          shopPrice_RangeController.text =
-                                              value,
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black)),
-                                    )
-                                  ],
-                                ),
-                              ),
+                              // Expanded(
+                              //   flex: 1,
+                              //   child: Column(
+                              //     children: [
+                              //       Text(
+                              //         "Price Range",
+                              //         style: TextStyle(
+                              //           fontSize: 12,
+                              //         ),
+                              //       ),
+                              //       Container(
+                              //         height: 20,
+                              //         alignment: Alignment.center,
+                              //         child: TextFormField(
+                              //             enabled: false,
+                              //             controller: shopPrice_RangeController,
+                              //             textAlign: TextAlign.center,
+                              //             decoration: InputDecoration(
+                              //               hintText: vendor[0].PRICERANGE.isEmpty ? "N.A,":"${vendor[0].PRICERANGE}",
+                              //               border: InputBorder.none,
+                              //               contentPadding: EdgeInsets.only(
+                              //                   left: 0,
+                              //                   right: 0,
+                              //                   top: 0,
+                              //                   bottom:
+                              //                   10 // HERE THE IMPORTANT PART
+                              //               ),
+                              //               enabledBorder: InputBorder.none,
+                              //               focusedBorder: InputBorder.none,
+                              //             ),
+                              //             onChanged: (value) =>
+                              //             shopPrice_RangeController.text =
+                              //                 value,
+                              //             style: TextStyle(
+                              //                 fontSize: 14,
+                              //                 color: Colors.black)),
+                              //       )
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                           // Center(
@@ -523,27 +523,27 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
               SizedBox(
                 height: 5,
               ),
-              Padding(
-                  padding:
-                  const EdgeInsets.only(left: 8.0, right: 8, bottom: 5),
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding:
-                        EdgeInsets.only(left: 10, right: 10, bottom: 2),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            // Icon(Icons.location_on, color: kMainColor,size: 20,),
-                            // SizedBox(width: 5,),
-                            Text("Supplier",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold))
-                          ],
-                        ),
-                      ))),
+              // Padding(
+              //     padding:
+              //     const EdgeInsets.only(left: 8.0, right: 8, bottom: 5),
+              //     child: SizedBox(
+              //         width: MediaQuery.of(context).size.width,
+              //         child: Padding(
+              //           padding:
+              //           EdgeInsets.only(left: 10, right: 10, bottom: 2),
+              //           child: Row(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: <Widget>[
+              //               // Icon(Icons.location_on, color: kMainColor,size: 20,),
+              //               // SizedBox(width: 5,),
+              //               Text("Supplier",
+              //                   style: TextStyle(
+              //                       color: Colors.black,
+              //                       fontSize: 16,
+              //                       fontWeight: FontWeight.bold))
+              //             ],
+              //           ),
+              //         ))),
               Container(
                 margin: EdgeInsets.only(left: 10, right: 10),
                 height: 70,
@@ -573,12 +573,12 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                         child: Container(
                             height: 40,
                             width: 40,
-                            child:vendor[0].SUPPLIERPROFILE.isEmpty? Image.asset('assets/consultant1.jpeg'):CachedNetworkImage(
+                            child:vendor[0].SUPPLIERPROFILE.isEmpty? Image.asset('assets/thumbnail.jpeg'):CachedNetworkImage(
                               fit: BoxFit.fill,
                               width: MediaQuery.of(context).size.width,
                               height: 170,
                               imageUrl:
-                              "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${vendor[0].SUPPLIERPROFILE}",
+                              "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/profiles/${vendor[0].SUPPLIERPROFILE}",
                               placeholder: (context, url) =>
                               new Container(
                                 width: MediaQuery.of(context).size.width,

@@ -970,11 +970,11 @@ class _BuyNowScreen extends State<BuyNowScreen> {
       "admin_auto_id":admin_auto_id,
     };
 
-    print(body.toString());
+    //print(body.toString());
 
     var url = baseUrl+'api/' + get_buy_now;
 
-    print(url);
+    //print(url);
 
     Uri uri=Uri.parse(url);
 

@@ -1144,7 +1144,7 @@ class _ProductNew extends State<ProductNew> {
 
     print(body);
     var url = baseUrl+'api/' + add_to_cart;
-    print(url);
+    //print(url);
 
     Uri uri=Uri.parse(url);
 
