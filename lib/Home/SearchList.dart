@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:poultry_a2z/Home/SearchListModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../MainCategories/catagories_list.dart';
+import '../MainCategories/main_category_screen.dart';
 import '../Product_Details/Product_List_User.dart';
 import '../Product_Details/product_details_screen.dart';
 import '../Utils/App_Apis.dart';
 import 'package:http/http.dart' as http;
+
+import 'Components/AddNewComponent/models/home_brands_detail.dart';
 
 class SearchList extends StatefulWidget {
   @override
@@ -92,7 +96,6 @@ class SearchListState extends State<SearchList> {
       ),
             Expanded(
                 child:
-
                 controller.text.isNotEmpty?
                 _searchResult.isNotEmpty ?
                 ListView.builder(
@@ -197,12 +200,6 @@ class SearchListState extends State<SearchList> {
       "admin_auto_id":admin_auto_id,
       "app_type_id": app_type_id,
     };
-    /*print('custid:' + userId);
-    print('id:' + id);
-    print('title:' + title);
-    print('type:' + type);
-    print('admin_auto_id:' + admin_auto_id);
-    print('app_type_id:' + app_type_id);*/
 
     final response = await http.post(uri, body: body);
     //print(response);
@@ -211,46 +208,40 @@ class SearchListState extends State<SearchList> {
 
       final resp = jsonDecode(response.body);
       int status = resp['status'];
-      print("status=>" + status.toString());
+     // print("status=>" + status.toString());
       if (status == 1) {
         print('search added');
-        if (type == 'Product') {
+        // if (type == 'Product') {
+        //   Navigator.push(context,
+        //       MaterialPageRoute(builder: (context) => ProductDetailScreen(id)));
+        // } else if (type == 'Subcategory') {
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) => Product_List_User(
+        //             type: type,
+        //             main_cat_id: '',
+        //             sub_cat_id: id,
+        //             brand_id: '',
+        //               home_componet_id: "",
+        //             offer_id: '',
+        //           )));
+        // } else if (type == 'Brand') {
+        //   Navigator.push(context,
+        //       MaterialPageRoute(
+        //           builder: (context) => Product_List_User(
+        //             type: type,
+        //             main_cat_id: '',
+        //             sub_cat_id: '',
+        //             brand_id: id,
+        //               home_componet_id: "",
+        //             offer_id: '',
+        //           )));
+        // }else
+          if (type == 'category'){
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProductDetailScreen(id)));
-        } else if (type == 'Subcategory') {
-          Navigator.push(
-              context,
               MaterialPageRoute(
-                  builder: (context) => Product_List_User(
-                    type: type,
-                    main_cat_id: '',
-                    sub_cat_id: id,
-                    brand_id: '',
-                      home_componet_id: "",
-                    offer_id: '',
-                  )));
-        } else if (type == 'Brand') {
-          Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (context) => Product_List_User(
-                    type: type,
-                    main_cat_id: '',
-                    sub_cat_id: '',
-                    brand_id: id,
-                      home_componet_id: "",
-                    offer_id: '',
-                  )));
-        }else if (type == 'category'){
-          Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (context) => Product_List_User(
-                    type: type,
-                    main_cat_id: id,
-                    sub_cat_id: '',
-                    brand_id: '',
-                      home_componet_id: "",
-                    offer_id: '',
-                  )));
+                  builder: (context) => MainCategoryScreen(id,title)));
         }
       } else {
         print('empty');

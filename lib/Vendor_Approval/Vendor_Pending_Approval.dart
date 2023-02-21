@@ -11,26 +11,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 
-import '../poultry_vendor/vendor_details_customer.dart';
 import 'Model/VendorApprovalModule.dart';
 
 class Vendor_Pending_Approval extends StatefulWidget {
   Vendor_Pending_Approval({
     Key? key,
-    // required this.type,
-    // required this.main_cat_id,
-    // required this.sub_cat_id,
-    // required this.brand_id,
-    // required this.home_componet_id,
-    // required this.offer_id
   }) : super(key: key);
-
-  // String type;
-  // String main_cat_id;
-  // String sub_cat_id;
-  // String brand_id;
-  // String home_componet_id;
-  // String offer_id;
 
   @override
   _Vendor_Pending_ApprovalState createState() =>
@@ -134,7 +120,6 @@ class _Vendor_Pending_ApprovalState extends State<Vendor_Pending_Approval> {
 
     final body = {
       "admin_auto_id": admin_auto_id,
-      //"user_auto_id":user_id,
     };
     //print(body.toString());
     //print(url);
@@ -423,7 +408,7 @@ class _Vendor_Pending_ApprovalState extends State<Vendor_Pending_Approval> {
               ? Container(
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 1.3,
+                  //height: MediaQuery.of(context).size.height / 1.3,
                   child: const GFLoader(type: GFLoaderType.circle),
                 )
               : Container()

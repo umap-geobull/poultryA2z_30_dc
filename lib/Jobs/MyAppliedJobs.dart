@@ -28,8 +28,6 @@ class _MyAppliedJobsState extends State<MyAppliedJobs> {
     String? appbarIcon =prefs.getString('appbarIconColor');
     String? primaryButtonColor =prefs.getString('primaryButtonColor');
     String? secondaryButtonColor =prefs.getString('secondaryButtonColor');
-    String? bottomBarColor =prefs.getString('bottomBarColor');
-    String? bottombarIcon =prefs.getString('bottomBarIconColor');
 
     if(appBarColor!=null){
       this.appBarColor=Color(int.parse(appBarColor));

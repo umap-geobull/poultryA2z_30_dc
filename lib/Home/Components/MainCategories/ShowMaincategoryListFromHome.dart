@@ -126,7 +126,7 @@ class _ShowMaincategoryFromHome extends State<ShowMaincategoryFromHome> {
     print("Catagory  Id ${maincategoryList[index].categoryAutoId}");
     print("Catagory  Id ${maincategoryList[index].maincategoryAutoId}");
     Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        MainCategoryScreen(maincategoryList[index].maincategoryAutoId,maincategoryList[index].mainCategoryName,maincategoryList[index])));
+        MainCategoryScreen(maincategoryList[index].maincategoryAutoId,maincategoryList[index].mainCategoryName)));
   }
 
   @override

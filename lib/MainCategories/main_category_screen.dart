@@ -38,8 +38,8 @@ class MainCategoryScreen extends StatefulWidget {
   String mainCategory_auto_id;
   String mainCategory_name;
   String user_id = '';
-  Content category;
-  MainCategoryScreen(this.mainCategory_auto_id,this.mainCategory_name,this.category);
+  //Content category;
+  MainCategoryScreen(this.mainCategory_auto_id,this.mainCategory_name);
 
   @override
   _MainCategoryScreen createState() => _MainCategoryScreen(mainCategory_auto_id,mainCategory_name);

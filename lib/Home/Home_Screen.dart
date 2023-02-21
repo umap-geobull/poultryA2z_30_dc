@@ -175,14 +175,14 @@ class _HomeScreen extends State<HomeScreen> {
       setState(() {});
     }
 
-    print("base url");
+    print("base url"+adminId!);
     if(userId!=null && adminId!=null && baseUrl!=null && apptypeid!=null && userType!=null){
 
       if(this.mounted){
         setState(() {
           this.user_id=userId;
           this.baseUrl=baseUrl;
-          this.admin_auto_id=adminId;
+          this.admin_auto_id=AppConfig.admin_auto_id;
           this.app_type_id=apptypeid;
           this.userType=userType;
 

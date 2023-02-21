@@ -7384,7 +7384,7 @@ class _CategoriesState extends State<Categories> {
     print("Catagory  Id ${mainCategoryList[index].categoryAutoId}");
     print("Catagory  Id ${mainCategoryList[index].maincategoryAutoId}");
     Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        MainCategoryScreen(mainCategoryList[index].maincategoryAutoId,mainCategoryList[index].mainCategoryName,mainCategoryList[index])));
+        MainCategoryScreen(mainCategoryList[index].maincategoryAutoId,mainCategoryList[index].mainCategoryName)));
 
 
     // widget.onGoToListCallBack("category",

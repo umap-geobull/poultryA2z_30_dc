@@ -408,7 +408,7 @@ class _OtpScreen extends State<OtpScreen> {
     //print(body.toString());
 
     var url=app_base_url+'api/'+login;
-    print('baseurl'+url);
+    //print('baseurl'+url);
     var uri = Uri.parse(url);
 
     final response = await http.post(uri,body: body);

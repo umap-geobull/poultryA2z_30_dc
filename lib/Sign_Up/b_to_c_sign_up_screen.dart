@@ -213,7 +213,7 @@ class BtoCSignupState extends State<BtoCSignup> {
 
   void _onFocusChange() {
     if (isLocationAllowed == false && isLocationPermissionChecked == false) {
-      _getCurrentLocation();
+      //_getCurrentLocation();
     }
   }
 
@@ -350,7 +350,7 @@ class BtoCSignupState extends State<BtoCSignup> {
         final TabController? tabController = DefaultTabController.of(context);
         tabController?.addListener(() {
           if (!tabController.indexIsChanging) {
-            print("inside tasb change");
+            print("inside tabs change");
 
           }
         });
@@ -1206,16 +1206,22 @@ class BtoCSignupState extends State<BtoCSignup> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          "Resend Code in ",
-          style: TextStyle(fontSize: 14),
-        ),
+        Text("Resend OTP in " , style: TextStyle(fontSize: 14),),
         TweenAnimationBuilder(
+          onEnd: ()=>{
+            if(this.mounted){
+              setState(() {
+                //print('0000');
+                // showTimer=false;
+                // showResendButton=true;
+              })
+            }
+          },
           tween: Tween(begin: 30.0, end: 0.0),
           duration: const Duration(seconds: 30),
           builder: (_, dynamic value, child) => Text(
             "00:${value.toInt()}",
-            style: TextStyle(color: primaryButtonColor),
+            style: const TextStyle(color: Colors.blue,fontSize: 17,fontWeight: FontWeight.bold),
           ),
         ),
       ],
@@ -1438,15 +1444,15 @@ class BtoCSignupState extends State<BtoCSignup> {
       "update_on_whatsapp": 'no',
       "have_retail_shop": 'no',
       "user_type": userType,
-      "country_code": c.countries[0].code + '-' + c.countries[0].dialCode,
+      "country_code": "IN-91",
       "country_name": country_name,
-      "admin_auto_id": admin_auto_id,
+      "admin_auto_id": AppConfig.admin_auto_id,
       "token": token
     };
 
     print("customer sign up body ${body}");
 
-    var url = baseUrl + 'api/' + user_registration;
+    var url = AppConfig.grobizBaseUrl + user_registration;
 
     var uri = Uri.parse(url);
 
@@ -1491,7 +1497,7 @@ class BtoCSignupState extends State<BtoCSignup> {
       "update_on_whatsapp": 'no',
       "have_retail_shop": 'no',
       "user_type": "Vendor",
-      "country_code": c.countries[0].code + '-' + c.countries[0].dialCode,
+      "country_code": "IN-91",
       "country_name": country_name,
       "admin_auto_id": AppConfig.admin_auto_id,
       "token": token
@@ -1499,7 +1505,7 @@ class BtoCSignupState extends State<BtoCSignup> {
 
     var url = AppConfig.grobizBaseUrl + user_registration;
     print("vendor signup body ${body}");
-
+    print(url);
     var uri = Uri.parse(url);
 
     final response = await http.post(uri, body: body);

@@ -1,49 +1,34 @@
 {
   "project_info": {
-    "project_number": "1092536869888",
-    "project_id": "ecommerce-appbuilder",
-    "storage_bucket": "ecommerce-appbuilder.appspot.com"
+    "project_number": "331485042758",
+    "project_id": "poultrya2z-2538e",
+    "storage_bucket": "poultrya2z-2538e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1092536869888:android:711ee88b66a6416df7a4e5",
+        "mobilesdk_app_id": "1:331485042758:android:e4b0bbc73e1c2607ae5247",
         "android_client_info": {
           "package_name": "com.poultryapp.poultry_a2z"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1092536869888-jm5331ptkp60gfogh4qk263b6fb893td.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.poultryapp.poultry_a2z",
-            "certificate_hash": "2c0404a51d82ce3b776c4ebf3ac5275f9ee5cf96"
-          }
-        },
-        {
-          "client_id": "1092536869888-5sm5gcojahvcisu5je9ee7ldmef008q5.apps.googleusercontent.com",
+          "client_id": "331485042758-ev0g5cjg5smgpe342fm62tae8fp5jh6h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAt8bj4UACvakZfiSy-0c1o_ivfplm7jEU"
+          "current_key": "AIzaSyD1rRlA1h9cPnyJUS0Qo1hPd61uUdGaIt8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1092536869888-5sm5gcojahvcisu5je9ee7ldmef008q5.apps.googleusercontent.com",
+              "client_id": "331485042758-ev0g5cjg5smgpe342fm62tae8fp5jh6h.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1092536869888-g668d3sngute1oosld4tjkbagvd9iu8a.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.geobull.geobullEcommerce"
-              }
             }
           ]
         }

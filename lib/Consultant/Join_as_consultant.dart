@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:poultry_a2z/Community/Model/consultant_result_model.dart';
+import 'package:poultry_a2z/Consultant/Consultant_type_Screen.dart';
 import 'package:poultry_a2z/Utils/App_Apis.dart';
 import 'package:http/http.dart' as http;
 import 'package:poultry_a2z/settings/Add_Consultant_Type/Add_Consultant_Type_Screen.dart';
@@ -20,9 +22,12 @@ import '../Utils/enums.dart';
 import '../settings/Add_Specialization/Add_Specialization_Screen.dart';
 import '../settings/Add_Specialization/Components/SpecializationModel.dart';
 import 'ConsultantProvider.dart';
-
+import 'Specialization_bottomsheetdart.dart';
+// typedef OnSaveCallback = void Function(String selected_categories);
 class Join_As_Consultant extends StatefulWidget {
-
+  // Join_As_Consultant(this.onSaveCallback,this.selected_categories);
+  // OnSaveCallback onSaveCallback;
+  // String selected_categories;
   @override
   _Join_As_Consultant createState() => _Join_As_Consultant();
 }
@@ -50,7 +55,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
   TextEditingController tv_available_to = TextEditingController();
   List<String> selected_categories=[];
   List<String> selected_speciality=[];
-  String selectedJobs='';
+  String selectedConsultantType='';
   String selectedSpeciality='';
   late File resume_file;
   bool isfileuploaded=false;
@@ -101,8 +106,8 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
           this.baseUrl=baseUrl;
           this.admin_auto_id=adminId;
           this.app_type_id=apptypeid;
-          get_specialization_List();
-          get_consultant_List();
+          // get_specialization_List();
+          // get_consultant_List();
         });
       }
     }
@@ -243,7 +248,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                                     child: IconButton(
                                       icon: Icon(Icons.add_circle,color: Colors.blue),
                                       onPressed: ()=>{
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => Add_Consultant_Type_Screen())).then(onGoBackFromConsulant)
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => Add_Consultant_Type_Screen()))
                                       },
                                     ),
                                   )),
@@ -296,7 +301,7 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                                   child: IconButton(
                                     icon: Icon(Icons.add_circle,color: Colors.blue),
                                     onPressed: ()=>{
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Add_Specialization_Screen())).then(onGoBackFromSpecification)
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Add_Specialization_Screen()))
                                     },
                                   ),
                                 )),
@@ -387,8 +392,10 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                             } else {
                               print('No file selected');
                             }
-                          },
+                            setState(() {
 
+                            });
+                          },
                             child:
                             Container(
                                 margin: EdgeInsets.only(top: 20),
@@ -412,7 +419,11 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
                                   )
                                 ],)
                             ),
-                          ):Text(resume_file.path.toString()),
+                          ):Container(
+                        height: 50,
+                        padding: EdgeInsets.all(10),
+                        alignment: Alignment.center,
+                          child:Text("Resume: "+resume_file.path.toString(),style: TextStyle(color: Colors.blue),maxLines: 4,),),
 
                       const SizedBox(height: 15),
                       SizedBox(width: 200,
@@ -452,105 +463,90 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
     );
   }
 
-  FutureOr onGoBackFromSpecification(dynamic value) {
-    get_specialization_List();
-    setState(() {});
-  }
+  // FutureOr onGoBackFromSpecification(dynamic value) {
+  //   get_specialization_List();
+  //   setState(() {});
+  // }
 
-  FutureOr onGoBackFromConsulant(dynamic value) {
-    get_consultant_List();
-    setState(() {});
-  }
+  // FutureOr onGoBackFromConsulant(dynamic value) {
+  //   get_consultant_List();
+  //   setState(() {});
+  // }
 
-  void get_specialization_List() async {
-    if(mounted){
-      setState(() {
-        isApiCallProcessing=true;
-      });
-    }
+  // void get_specialization_List() async {
+  //   if(mounted){
+  //     setState(() {
+  //       isApiCallProcessing=true;
+  //     });
+  //   }
+  //
+  //   Rest_Apis restApis = Rest_Apis();
+  //
+  //   restApis.Get_Specialization_List(admin_auto_id, baseUrl).then((value) {
+  //     print(value.toString());
+  //     if (value != null) {
+  //       isApiCallProcessing = false;
+  //       getspecialization_List=value;
+  //       if(speciality_list.isNotEmpty)
+  //       {
+  //         speciality_list.clear();
+  //       }
+  //       for (var element in getspecialization_List!) {
+  //         speciality_list.add(element.specialization);
+  //       }
+  //       //speciality_list = value;
+  //
+  //       if(this.mounted){
+  //         setState(() {
+  //
+  //         });
+  //       }
+  //     }
+  //   });
+  // }
 
-    Rest_Apis restApis = Rest_Apis();
-
-    restApis.Get_Specialization_List(admin_auto_id, baseUrl).then((value) {
-      print(value.toString());
-      if (value != null) {
-        isApiCallProcessing = false;
-        getspecialization_List=value;
-        if(speciality_list.isNotEmpty)
-        {
-          speciality_list.clear();
-        }
-        for (var element in getspecialization_List!) {
-          speciality_list.add(element.specialization);
-        }
-        //speciality_list = value;
-
-        if(this.mounted){
-          setState(() {
-
-          });
-        }
-      }
-    });
-  }
-
-  void get_consultant_List() async {
-    if(mounted){
-      setState(() {
-        isApiCallProcessing=true;
-      });
-    }
-
-    // Rest_Apis restApis = Rest_Apis();
-    //
-    // restApis.Get_ConsultantType_List(admin_auto_id, baseUrl).then((value) {
-    //   print(value.toString());
-    //   if (value != null) {
-    //     isApiCallProcessing = false;
-    //     getconsultant_List = value;
-    //     if(this.mounted){
-    //       setState(() {
-    //
-    //       });
-    //     }
-    //   }
-    // });
-
-    var url = baseUrl+'api/' + get_consultant_type;
-
-    Uri uri=Uri.parse(url);
-
-    final body={
-      "admin_auto_id":admin_auto_id,
-    };
-
-    final response = await http.post(uri, body: body);
-
-    if (response.statusCode == 200) {
-      final resp = jsonDecode(response.body);
-
-      int  status = resp['status'];
-
-      if (status == 1) {
-        isApiCallProcessing=false;
-        Consulant_Type_model consultantListModel=Consulant_Type_model.fromJson(json.decode(response.body));
-        List<Consultant_typeList> getconsultant=consultantListModel.data;
-        if(Category_list.isNotEmpty)
-        Category_list.clear();
-        for (var element in getconsultant) {
-          Category_list.add(element.consultant_type);
-        }
-      }
-      else {
-        isApiCallProcessing=false;
-        print('empty');
-      }
-
-      if(mounted){
-        setState(() {});
-      }
-    }
-  }
+  // void get_consultant_List() async {
+  //   if(mounted){
+  //     setState(() {
+  //       isApiCallProcessing=true;
+  //     });
+  //   }
+  //
+  //   var url = baseUrl+'api/' + get_consultant_type;
+  //
+  //   Uri uri=Uri.parse(url);
+  //
+  //   final body={
+  //     "admin_auto_id":admin_auto_id,
+  //   };
+  //
+  //   final response = await http.post(uri, body: body);
+  //
+  //   if (response.statusCode == 200) {
+  //     final resp = jsonDecode(response.body);
+  //
+  //     int  status = resp['status'];
+  //
+  //     if (status == 1) {
+  //       isApiCallProcessing=false;
+  //       Consulant_Type_model consultantListModel=Consulant_Type_model.fromJson(json.decode(response.body));
+  //       List<Consultant_typeList> getconsultant=consultantListModel.data;
+  //       if(Category_list.isNotEmpty)
+  //       Category_list.clear();
+  //       for (var element in getconsultant) {
+  //         Category_list.add(element.consultant_type);
+  //       }
+  //     }
+  //     else {
+  //       isApiCallProcessing=false;
+  //       print('empty');
+  //     }
+  //
+  //     if(mounted){
+  //       setState(() {});
+  //     }
+  //   }
+  // }
 
   Widget uploadLogoUi() {
     String profile_pic_url=baseUrl+profile_pic_base_url;
@@ -840,363 +836,355 @@ class _Join_As_Consultant extends State<Join_As_Consultant> {
       }
     }
   }
+
   getformattedTime(TimeOfDay time) {
     return '${time.hourOfPeriod}:${time.minute} ${time.period.toString().split('.')[1]}';
   }
 
   showSelectcategory() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.green[50],
-        title: const Text(
-          'Select Consultant Type',
-          style: TextStyle(color: Colors.black87,fontSize: 15),
-        ),
-        content:
-        //!allAppTypes.isEmpty?
-        Container(
-            height: 320,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                   SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: showcolorlistUi(),
-                      ),
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      setCategory();
-                    },
-                    child: const Text("ok",
-                        style: TextStyle(color: Colors.black54, fontSize: 13)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryButtonColor,
-                      minimumSize: const Size(80, 30),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                  ),
-                ),
-
-                      // getmanufaturer_List.isEmpty && isApiCallProcessing == false ?
-                      // Center(child: Text('No Manufacturers')) :
-                      // Container(
-                      //   alignment: Alignment.center,
-                      //   width: MediaQuery.of(context).size.width,
-                      //   child:
-                      //   const GFLoader(type: GFLoaderType.circle),
-                      // ),
-
-              ],
-            ),
-        )
-      ),
-    );
-  }
-  
-  showSpecialization() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-          backgroundColor: Colors.green[50],
-          title: const Text(
-            'Select Specialization Type',
-            style: TextStyle(color: Colors.black87,fontSize: 15),
-          ),
-          content:
-          Container(
-            height: 260,
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: showspecializationlistUi(),
-                ),
-                speciality_list.isNotEmpty?
-                Container(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      setSpeciality();
-                    },
-                    child: const Text("ok",
-                        style: TextStyle(color: Colors.black54, fontSize: 13)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryButtonColor,
-                      minimumSize: const Size(80, 30),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      ),
-                    ),
-                  ),
-                ):Container(),
-
-                // speciality_list.isEmpty && isApiCallProcessing == false ?
-                // Center(child: Text('No specialization')) :
-                // Container(
-                //   alignment: Alignment.center,
-                //   width: MediaQuery.of(context).size.width,
-                //   child:
-                //   const GFLoader(type: GFLoaderType.circle),
-                // ),
-
-              ],
-            ),
-          )
-      ),
-    );
-  }
-  
-  showcolorlistUi() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width/2,
-      height: 260,
-      child: GridView.builder(
-          itemCount: Category_list.length,
-          // physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 5,
-            crossAxisCount: 1,
-          ),
-          itemBuilder: (context, index) => SizedBox(
-            //width: MediaQuery.of(context).size.width/2,
-            height: 20,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Container(
-                  //   height: 22,
-                  //   width: 22,
-                  //   child: Checkbox(
-                  //     onChanged: (value) {
-                  //       if (mounted) {
-                  //         setState(() {
-                  //           if (isAdded(Category_list[index]) == true)
-                  //           {
-                  //             selected_categories.remove(Category_list[index]);
-                  //             //print(selected_manufacturer_id.toString());
-                  //            // widget.onSaveCallback(selected_manufacturer_id);
-                  //           }
-                  //           else {
-                  //             selected_categories.add(Category_list[index]);
-                  //            // widget.onSaveCallback(selected_manufacturer_id);
-                  //           }
-                  //         });
-                  //       }
-                  //     },
-                  //     value: isAdded(Category_list[index]),
-                  //   ),
-                  //   margin: const EdgeInsets.all(5),
-                  // ),
-
-                  // InkWell(
-                  //     onTap: (){
-                  //       if (isAdded(Category_list[index]) == true)
-                  //       {
-                  //         selected_categories.remove(Category_list[index]);
-                  //         //print(selected_manufacturer_id.toString());
-                  //         // widget.onSaveCallback(selected_manufacturer_id);
-                  //       }
-                  //       else {
-                  //         selected_categories.add(Category_list[index]);
-                  //         // widget.onSaveCallback(selected_manufacturer_id);
-                  //       }
-                  //       if (mounted) {
-                  //         setState(() {
-                  //         });
-                  //       }
-                  //     },
-                  //     child:    selected_categories.contains(Category_list[index])?
-                  //         Icon(Icons.check_box)
-                  //         : Icon(Icons.check_box_outline_blank)),
-                  Container(
-                    height: 25,
-                    width: 25,
-                    child: Checkbox(
-                      onChanged: (value) {
-                        // if(mounted){
-                        //   setState(() {
-                            if (isAdded(Category_list[index]) == true)
-                            {
-                              selected_categories.remove(Category_list[index]);
-                              //print(selected_manufacturer_id.toString());
-                              // widget.onSaveCallback(selected_manufacturer_id);
-                            }
-                            else {
-                              selected_categories.add(Category_list[index]);
-                              // widget.onSaveCallback(selected_manufacturer_id);
-                            }
-                        //   });
-                        // }
-                        setState(() {
-                        });
-                      },
-                      value: isAdded(Category_list[index]),
-                    ),
-                    margin: const EdgeInsets.all(5),
-                  ),
-                  Flexible(
-                    child: Text(
-                      Category_list[index],
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )
-                ]),
-          )),
-    );
+    return showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return Consultant_Type_Screen(onconsultantlistener,selectedConsultantType);
+        });
   }
 
-  showspecializationlistUi() {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width/2,
-      height: 200,
-      child: GridView.builder(
-          itemCount: speciality_list.length,
-          // physics: NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 5,
-            crossAxisCount: 1,
-          ),
-          itemBuilder: (context, index) => SizedBox(
-            //width: MediaQuery.of(context).size.width/2,
-            height: 20,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 22,
-                    width: 22,
-                    margin: const EdgeInsets.all(5),
-                    child: Checkbox(
-                      onChanged: (value) {
-                        if (mounted) {
-                          setState(() {
-                            if (isAdded1(speciality_list[index]) == true)
-                            {
-                              selected_speciality.remove(speciality_list[index]);
-                            }
-                            else {
-                              selected_speciality.add(speciality_list[index]);
-                            }
-                          });
-                        }
-                      },
-                      value: isAdded1(speciality_list[index]),
-                    ),
-                  ),
-                  Flexible(
-                    child: Text(
-                      speciality_list[index],
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.black,
-                      ),
-                    ),
-                  )
-                ]),
-          )),
-    );
-  }
-
-  bool isAdded(String id) {
-    for (int i = 0; i < selected_categories.length; i++) {
-      if (selected_categories[i] == id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  setData(){
-    this.selected_categories=selectedJobs.split(',');
-    if(this.mounted){
-      setState(() {
-      });
-    }
-  }
-
-  bool isAdded1(String id) {
-    for (int i = 0; i < selected_speciality.length; i++) {
-      if (selected_speciality[i] == id) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  setData1(){
-    this.selected_speciality=selectedSpeciality.split(',');
-    if(this.mounted){
-      setState(() {
-      });
-    }
-  }
-
-  setCategory(){
-    tv_consultant_type.text='';
-    selectedJobs='';
-    for(int index=0;index<selected_categories.length;index++){
-
-      if(index==0 || index==1){
-        if(selectedJobs!='') {
-          selectedJobs += ','+selected_categories[index];
-        }else{
-          selectedJobs+=selected_categories[index];
-        }
-      }
-      else{
-        selectedJobs+= ','+selected_categories[index];
-      }
-    }
-    tv_consultant_type.text=selectedJobs;
-    if(this.mounted){
-      setState(() {
-      });
-    }
-  }
-
-  setSpeciality(){
-    tv_speciality.text='';
-    selectedSpeciality='';
+  onconsultantlistener(String consultantlist){
+    this.selectedConsultantType=consultantlist;
+    tv_consultant_type.text=selectedConsultantType;
+    print(selectedConsultantType);
     setState(() {
+
     });
-    // if(selected_speciality.length==0) {
-      for (int index = 0; index < selected_speciality.length; index++) {
-
-        if (index == 0 || index == 1) {
-          if (selectedSpeciality != '') {
-            selectedSpeciality += ',' + selected_speciality[index];
-          } else {
-            selectedSpeciality += selected_speciality[index];
-          }
-        }
-        else {
-          selectedSpeciality += ',' + selected_speciality[index];
-        }
-      }
-      tv_speciality.text=selectedSpeciality;
-
-    if(this.mounted){
-      setState(() {
-      });
-    }
   }
+
+  showSpecialization() {
+    return showModalBottomSheet<void>(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return Specialization_bottomsheet(onspecializationlistener,selectedSpeciality);
+        });
+  }
+
+  onspecializationlistener(String selectedSpeciality){
+    this.selectedSpeciality=selectedSpeciality;
+    tv_speciality.text=selectedSpeciality;
+    print(selectedSpeciality);
+    setState(() {
+
+    });
+  }
+
+  // showSelectcategory() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       backgroundColor: Colors.green[50],
+  //       title: const Text(
+  //         'Select Consultant Type',
+  //         style: TextStyle(color: Colors.black87,fontSize: 15),
+  //       ),
+  //       content:
+  //       //!allAppTypes.isEmpty?
+  //       Container(
+  //           height: 320,
+  //           width: MediaQuery.of(context).size.width,
+  //           child: Column(
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: <Widget>[
+  //                  SingleChildScrollView(
+  //                       scrollDirection: Axis.vertical,
+  //                       child: showcolorlistUi(),
+  //                     ),
+  //               Container(
+  //                 child: ElevatedButton(
+  //                   onPressed: () {
+  //                     Navigator.pop(context);
+  //                     setCategory();
+  //                   },
+  //                   child: const Text("ok",
+  //                       style: TextStyle(color: Colors.black54, fontSize: 13)),
+  //                   style: ElevatedButton.styleFrom(
+  //                     backgroundColor: primaryButtonColor,
+  //                     minimumSize: const Size(80, 30),
+  //                     shape: const RoundedRectangleBorder(
+  //                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //
+  //                     // getmanufaturer_List.isEmpty && isApiCallProcessing == false ?
+  //                     // Center(child: Text('No Manufacturers')) :
+  //                     // Container(
+  //                     //   alignment: Alignment.center,
+  //                     //   width: MediaQuery.of(context).size.width,
+  //                     //   child:
+  //                     //   const GFLoader(type: GFLoaderType.circle),
+  //                     // ),
+  //
+  //             ],
+  //           ),
+  //       )
+  //     ),
+  //   );
+  // }
+  
+  // showSpecialization() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //         backgroundColor: Colors.green[50],
+  //         title: const Text(
+  //           'Select Specialization Type',
+  //           style: TextStyle(color: Colors.black87,fontSize: 15),
+  //         ),
+  //         content:
+  //         Container(
+  //           height: 260,
+  //           width: MediaQuery.of(context).size.width,
+  //           child: Column(
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: <Widget>[
+  //               SingleChildScrollView(
+  //                 scrollDirection: Axis.vertical,
+  //                 child: showspecializationlistUi(),
+  //               ),
+  //               speciality_list.isNotEmpty?
+  //               Container(
+  //                 child: ElevatedButton(
+  //                   onPressed: () {
+  //                     Navigator.pop(context);
+  //                     setSpeciality();
+  //                   },
+  //                   child: const Text("ok",
+  //                       style: TextStyle(color: Colors.black54, fontSize: 13)),
+  //                   style: ElevatedButton.styleFrom(
+  //                     backgroundColor: primaryButtonColor,
+  //                     minimumSize: const Size(80, 30),
+  //                     shape: const RoundedRectangleBorder(
+  //                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ):Container(),
+  //
+  //               // speciality_list.isEmpty && isApiCallProcessing == false ?
+  //               // Center(child: Text('No specialization')) :
+  //               // Container(
+  //               //   alignment: Alignment.center,
+  //               //   width: MediaQuery.of(context).size.width,
+  //               //   child:
+  //               //   const GFLoader(type: GFLoaderType.circle),
+  //               // ),
+  //
+  //             ],
+  //           ),
+  //         )
+  //     ),
+  //   );
+  // }
+  
+  // showcolorlistUi() {
+  //   return SizedBox(
+  //     width: MediaQuery.of(context).size.width/2,
+  //     height: 260,
+  //     child: GridView.builder(
+  //         itemCount: Category_list.length,
+  //         // physics: NeverScrollableScrollPhysics(),
+  //         shrinkWrap: true,
+  //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //           childAspectRatio: 5,
+  //           crossAxisCount: 1,
+  //         ),
+  //         itemBuilder: (context, index) => SizedBox(
+  //           //width: MediaQuery.of(context).size.width/2,
+  //           height: 20,
+  //           child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [
+  //                 Container(
+  //                   height: 25,
+  //                   width: 25,
+  //                   child: Checkbox(
+  //                     onChanged: (value) {
+  //                       // if(mounted){
+  //                       //   setState(() {
+  //                           if (isAdded(Category_list[index]) == true)
+  //                           {
+  //                             selected_categories.remove(Category_list[index]);
+  //                             //print(selected_manufacturer_id.toString());
+  //                             // widget.onSaveCallback(selected_manufacturer_id);
+  //                           }
+  //                           else {
+  //                             selected_categories.add(Category_list[index]);
+  //                             // widget.onSaveCallback(selected_manufacturer_id);
+  //                           }
+  //                       //   });
+  //                       // }
+  //                       setState(() {
+  //                       });
+  //                     },
+  //                     value: isAdded(Category_list[index]),
+  //                   ),
+  //                   margin: const EdgeInsets.all(5),
+  //                 ),
+  //                 Flexible(
+  //                   child: Text(
+  //                     Category_list[index],
+  //                     style: const TextStyle(
+  //                       fontSize: 14,
+  //                       color: Colors.black,
+  //                     ),
+  //                   ),
+  //                 )
+  //               ]),
+  //         )),
+  //   );
+  // }
+  //
+  // showspecializationlistUi() {
+  //   return SizedBox(
+  //     width: MediaQuery.of(context).size.width/2,
+  //     height: 200,
+  //     child: GridView.builder(
+  //         itemCount: speciality_list.length,
+  //         // physics: NeverScrollableScrollPhysics(),
+  //         shrinkWrap: true,
+  //         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+  //           childAspectRatio: 5,
+  //           crossAxisCount: 1,
+  //         ),
+  //         itemBuilder: (context, index) => SizedBox(
+  //           //width: MediaQuery.of(context).size.width/2,
+  //           height: 20,
+  //           child: Row(
+  //               mainAxisAlignment: MainAxisAlignment.start,
+  //               crossAxisAlignment: CrossAxisAlignment.center,
+  //               children: [
+  //                 Container(
+  //                   height: 22,
+  //                   width: 22,
+  //                   margin: const EdgeInsets.all(5),
+  //                   child: Checkbox(
+  //                     onChanged: (value) {
+  //                       if (mounted) {
+  //                         setState(() {
+  //                           if (isAdded1(speciality_list[index]) == true)
+  //                           {
+  //                             selected_speciality.remove(speciality_list[index]);
+  //                           }
+  //                           else {
+  //                             selected_speciality.add(speciality_list[index]);
+  //                           }
+  //                         });
+  //                       }
+  //                     },
+  //                     value: isAdded1(speciality_list[index]),
+  //                   ),
+  //                 ),
+  //                 Flexible(
+  //                   child: Text(
+  //                     speciality_list[index],
+  //                     style: const TextStyle(
+  //                       fontSize: 14,
+  //                       color: Colors.black,
+  //                     ),
+  //                   ),
+  //                 )
+  //               ]),
+  //         )),
+  //   );
+  // }
+  //
+  // bool isAdded(String id) {
+  //   for (int i = 0; i < selected_categories.length; i++) {
+  //     if (selected_categories[i] == id) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+  //
+  // setData(){
+  //   this.selected_categories=selectedConsultantType.split(',');
+  //   if(this.mounted){
+  //     setState(() {
+  //     });
+  //   }
+  // }
+  //
+  // bool isAdded1(String id) {
+  //   for (int i = 0; i < selected_speciality.length; i++) {
+  //     if (selected_speciality[i] == id) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+  //
+  // setData1(){
+  //   this.selected_speciality=selectedSpeciality.split(',');
+  //   if(this.mounted){
+  //     setState(() {
+  //     });
+  //   }
+  // }
+
+  // setCategory(){
+  //   tv_consultant_type.text='';
+  //   selectedConsultantType='';
+  //   for(int index=0;index<selected_categories.length;index++){
+  //
+  //     if(index==0 || index==1){
+  //       if(selectedConsultantType!='') {
+  //         selectedConsultantType += ','+selected_categories[index];
+  //       }else{
+  //         selectedConsultantType+=selected_categories[index];
+  //       }
+  //     }
+  //     else{
+  //       selectedConsultantType+= ','+selected_categories[index];
+  //     }
+  //   }
+  //   tv_consultant_type.text=selectedConsultantType;
+  //   if(this.mounted){
+  //     setState(() {
+  //     });
+  //   }
+  // }
+
+  // setSpeciality(){
+  //   tv_speciality.text='';
+  //   selectedSpeciality='';
+  //   setState(() {
+  //   });
+  //   // if(selected_speciality.length==0) {
+  //     for (int index = 0; index < selected_speciality.length; index++) {
+  //
+  //       if (index == 0 || index == 1) {
+  //         if (selectedSpeciality != '') {
+  //           selectedSpeciality += ',' + selected_speciality[index];
+  //         } else {
+  //           selectedSpeciality += selected_speciality[index];
+  //         }
+  //       }
+  //       else {
+  //         selectedSpeciality += ',' + selected_speciality[index];
+  //       }
+  //     }
+  //     tv_speciality.text=selectedSpeciality;
+  //
+  //   if(this.mounted){
+  //     setState(() {
+  //     });
+  //   }
+  // }
 
   bool checkValidations(){
 

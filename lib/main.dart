@@ -5,7 +5,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:poultry_a2z/FirebaseSetup/setup_notifcations.dart';
 import 'package:provider/provider.dart';
 import 'Community/Community_provider.dart';
-import 'Consultant/ConsultantProvider.dart';
 import 'Spalsh_screen/splash_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
@@ -115,7 +114,6 @@ Future<void> main() async {
           deep_link_admin_auto_id = admin_id;
         }
       }
-
     }
   }
   catch(e){

@@ -154,7 +154,7 @@ class _Add_Specialization_ScreenState extends State<Add_Specialization_Screen> {
                     child: Column(
                       children: <Widget>[
                         const Text(
-                          'Do you want to delete this manufacturer',
+                          'Do you want to delete this specialization',
                           style: TextStyle(color: Colors.black54),
                         ),
                         const SizedBox(

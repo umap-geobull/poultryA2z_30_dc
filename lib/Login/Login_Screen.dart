@@ -20,7 +20,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class StartState extends State<LoginScreen> {
-  String country_code='',phone_code='';
+  String country_code='IN',phone_code='91';
 
   final TextEditingController _mobileController= TextEditingController();
   bool isApiProcessing=false;
@@ -33,24 +33,11 @@ class StartState extends State<LoginScreen> {
   String appName='';
   String businessDetailsId='',businessName='',businessLogo='';
 
-  FocusNode _focus = FocusNode();
+  //FocusNode _focus = FocusNode();
   bool isLocationAllowed=false,isLocationPermissionChecked=false;
 
   Color appBarColor=Colors.white,appBarIconColor=Colors.black,primaryButtonColor=Colors.orange,
       secondaryButtonColor=Colors.orangeAccent;
-
-  getAppLogo() async{
-    SharedPreferences prefs= await SharedPreferences.getInstance();
-    var appLogo= prefs.getString('app_logo');
-
-    if(appLogo!=null){
-      if(this.mounted){
-        setState(() {
-          businessLogo = appLogo;
-        });
-      }
-    }
-  }
 
   void getappUi() async {
     SharedPreferences prefs= await SharedPreferences.getInstance();
@@ -75,6 +62,17 @@ class StartState extends State<LoginScreen> {
       this.secondaryButtonColor=Color(int.parse(secondaryButtonColor));
     }
 
+    prefs.setString('base_url',app_base_url);
+
+    var appLogo= prefs.getString('app_logo');
+
+    if(appLogo!=null){
+      if(this.mounted){
+        setState(() {
+          businessLogo = appLogo;
+        });
+      }
+    }
     if(this.mounted){
       setState(() {});
     }
@@ -85,25 +83,15 @@ class StartState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
 
-    getAppLogo();
-
-    _focus.addListener(_onFocusChange);
-    saveAppBaseUrl();
+    //_focus.addListener(_onFocusChange);
     getappUi();
-    getBaseUrl();
-  }
-
-  saveAppBaseUrl() async{
-    SharedPreferences prefs= await SharedPreferences.getInstance();
-    prefs.setString('base_url',app_base_url);
+    //getBaseUrl();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:
-        SingleChildScrollView(
-            child: Column(
+        body: Column(
               children: [
                 Container(
                   padding: EdgeInsets.only(top: 60,bottom: 40),
@@ -158,7 +146,7 @@ class StartState extends State<LoginScreen> {
                         )
 
                     ),
-                    focusNode: _focus,
+                    //focusNode: _focus,
                     initialCountryCode: country_code,
                     controller: _mobileController,
                     onCountryChanged: (country) {
@@ -194,7 +182,7 @@ class StartState extends State<LoginScreen> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: primaryButtonColor,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                             offset: Offset(0, 10),
                             blurRadius: 50,
@@ -230,145 +218,145 @@ class StartState extends State<LoginScreen> {
                   ),
                 )
               ],
-            )));
+            ));
   }
 
-  void _onFocusChange() {
-    if(isLocationAllowed==false && isLocationPermissionChecked==false){
-      _getCurrentLocation();
-    }
-  }
+  // void _onFocusChange() {
+  //   if(isLocationAllowed==false && isLocationPermissionChecked==false){
+  //     _getCurrentLocation();
+  //   }
+  // }
+  //
+  // _getCurrentLocation() async {
+  //   bool serviceEnabled;
+  //   LocationPermission permission;
+  //
+  //   // Test if location services are enabled.
+  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  //   if (!serviceEnabled) {
+  //     // Location services are not enabled don't continue
+  //     // accessing the position and request users of the
+  //     // App to enable the location services.
+  //     if(this.mounted){
+  //       setState(() {
+  //         //_showCity=true;
+  //       });
+  //     }
+  //
+  //     return Future.error('Location services are disabled.');
+  //   }
+  //
+  //   permission = await Geolocator.checkPermission();
+  //
+  //   if (permission == LocationPermission.denied) {
+  //     permission = await Geolocator.requestPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       // Permissions are denied, next time you could try
+  //       // requesting permissions again (this is also where
+  //       // Android's shouldShowRequestPermissionRationale
+  //       // returned true. According to Android guidelines
+  //       // your App should show an explanatory UI now.
+  //       if(this.mounted){
+  //         // _showCity=true;
+  //         //_showCountry=true;
+  //         isLocationAllowed=false;
+  //         isLocationPermissionChecked=true;
+  //         setState(() {});
+  //       }
+  //       return Future.error('Location permissions are denied');
+  //     }
+  //
+  //     else if (permission == LocationPermission.deniedForever) {
+  //       // Permissions are denied forever, handle appropriately.
+  //       if(this.mounted){
+  //         //  _showCity=true;
+  //         // _showCountry=true;
+  //         isLocationAllowed=false;
+  //         isLocationPermissionChecked=true;
+  //         setState(() {});
+  //       }
+  //       return Future.error(
+  //           'Location permissions are permanently denied, we cannot request permissions.');
+  //     }
+  //
+  //     else{
+  //       isLocationAllowed=true;
+  //       isLocationPermissionChecked=true;
+  //
+  //       Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  //
+  //       if(position!=null){
+  //         double latitude=position.latitude;
+  //         double longitude=position.longitude;
+  //
+  //         List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude,localeIdentifier: 'en_US',);
+  //         if(placemarks!=null){
+  //           String countrycode=placemarks[0].isoCountryCode.toString();
+  //
+  //           country_code=countrycode;
+  //
+  //           if(country_code=='IN'){
+  //             phone_code='91';
+  //           }
+  //
+  //           if(this.mounted){
+  //             setState(() {
+  //               //  _showCountry=true;
+  //               // _showCity=true;
+  //             });
+  //           }
+  //         }
+  //       }
+  //     }
+  //
+  //   }
+  //
+  //   else if (permission == LocationPermission.deniedForever) {
+  //     // Permissions are denied forever, handle appropriately.
+  //     if(this.mounted){
+  //       // _showCity=true;
+  //       //_showCountry=true;
+  //       setState(() {});
+  //     }
+  //     return Future.error(
+  //         'Location permissions are permanently denied, we cannot request permissions.');
+  //   }
+  //
+  //   else{
+  //     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  //
+  //     if(position!=null){
+  //       double latitude=position.latitude;
+  //       double longitude=position.longitude;
+  //
+  //       List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+  //       if(placemarks!=null){
+  //         String countrycode=placemarks[0].isoCountryCode.toString();
+  //
+  //         country_code=countrycode;
+  //
+  //         if(country_code=='IN'){
+  //           phone_code='91';
+  //         }
+  //
+  //         if(this.mounted){
+  //           setState(() {
+  //             //  _showCity=true;
+  //             //  _showCountry=true;
+  //           });
+  //         }
+  //       }
+  //     }
+  //   }
+  //   // When we reach here, permissions are granted and we can
+  //   // continue accessing the position of the device.
+  // }
 
-  _getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Test if location services are enabled.
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Location services are not enabled don't continue
-      // accessing the position and request users of the
-      // App to enable the location services.
-      if(this.mounted){
-        setState(() {
-          //_showCity=true;
-        });
-      }
-
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        // Permissions are denied, next time you could try
-        // requesting permissions again (this is also where
-        // Android's shouldShowRequestPermissionRationale
-        // returned true. According to Android guidelines
-        // your App should show an explanatory UI now.
-        if(this.mounted){
-          // _showCity=true;
-          //_showCountry=true;
-          isLocationAllowed=false;
-          isLocationPermissionChecked=true;
-          setState(() {});
-        }
-        return Future.error('Location permissions are denied');
-      }
-
-      else if (permission == LocationPermission.deniedForever) {
-        // Permissions are denied forever, handle appropriately.
-        if(this.mounted){
-          //  _showCity=true;
-          // _showCountry=true;
-          isLocationAllowed=false;
-          isLocationPermissionChecked=true;
-          setState(() {});
-        }
-        return Future.error(
-            'Location permissions are permanently denied, we cannot request permissions.');
-      }
-
-      else{
-        isLocationAllowed=true;
-        isLocationPermissionChecked=true;
-
-        Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-        if(position!=null){
-          double latitude=position.latitude;
-          double longitude=position.longitude;
-
-          List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude,localeIdentifier: 'en_US',);
-          if(placemarks!=null){
-            String countrycode=placemarks[0].isoCountryCode.toString();
-
-            country_code=countrycode;
-
-            if(country_code=='IN'){
-              phone_code='91';
-            }
-
-            if(this.mounted){
-              setState(() {
-                //  _showCountry=true;
-                // _showCity=true;
-              });
-            }
-          }
-        }
-      }
-
-    }
-
-    else if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      if(this.mounted){
-        // _showCity=true;
-        //_showCountry=true;
-        setState(() {});
-      }
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    else{
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-
-      if(position!=null){
-        double latitude=position.latitude;
-        double longitude=position.longitude;
-
-        List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
-        if(placemarks!=null){
-          String countrycode=placemarks[0].isoCountryCode.toString();
-
-          country_code=countrycode;
-
-          if(country_code=='IN'){
-            phone_code='91';
-          }
-
-          if(this.mounted){
-            setState(() {
-              //  _showCity=true;
-              //  _showCountry=true;
-            });
-          }
-        }
-      }
-    }
-    // When we reach here, permissions are granted and we can
-    // continue accessing the position of the device.
-  }
-
-  void dispose() {
-    super.dispose();
-    _focus.removeListener(_onFocusChange);
-    _focus.dispose();
-  }
+  // void dispose() {
+  //   super.dispose();
+  //   _focus.removeListener(_onFocusChange);
+  //   _focus.dispose();
+  // }
 
   Future sendLoginOtpApi(String mobileNumber) async {
     setState(() {
@@ -377,7 +365,7 @@ class StartState extends State<LoginScreen> {
 
     final body = {
       "mobile_number":mobileNumber,
-      "country_code":country_code+'-'+phone_code,
+      "country_code":"IN-91",
       "admin_auto_id":admin_auto_id,
     };
 
@@ -398,12 +386,12 @@ class StartState extends State<LoginScreen> {
       if(status=="1"){
         Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => OtpScreen(mobileNumber,country_code+'-'+phone_code)));
+                builder: (context) => OtpScreen(mobileNumber,"IN-91")));
       }
       else if(status=="0"){
         Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => BtoCSignup(mobileNumber,country_code,phone_code)));
+                builder: (context) => BtoCSignup(mobileNumber,"IN","91")));
       }
     }
     else{
@@ -421,11 +409,11 @@ class StartState extends State<LoginScreen> {
     const pattern = r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$';
     final regExp = RegExp(pattern);
 
-    if(country_code.isEmpty || phone_code.isEmpty){
-      Fluttertoast.showToast(msg: 'Please select country code');
-      return false;
-    }
-    else if(_mobileController.text.isEmpty){
+    // if(country_code.isEmpty || phone_code.isEmpty){
+    //   Fluttertoast.showToast(msg: 'Please select country code');
+    //   return false;
+    // }
+     if(_mobileController.text.isEmpty){
       Fluttertoast.showToast(msg: 'Please enter mobile number');
       return false;
     }

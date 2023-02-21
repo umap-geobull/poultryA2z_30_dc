@@ -181,26 +181,47 @@ class _ApplyJobs extends State<ApplyJobs> {
                         ),
                       ),
                       const SizedBox(height: 15),
-                      GestureDetector(
-                        onTap: showSelectcategory,
-                        child: SizedBox(
-                          height: 50,
-                          child: TextField(
-                            controller: tv_category,
-                            enabled: false,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.all(15),
-                              // prefixIcon: Icon(Icons.description),
-                              border: OutlineInputBorder(),
-                              labelText: 'Select Category',
-                            ),
-                            keyboardType: TextInputType.text,
-                          ),
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: showSelectcategory,
+                      //   child: SizedBox(
+                      //     height: 50,
+                      //     child: TextField(
+                      //       controller: tv_category,
+                      //       enabled: false,
+                      //       decoration: const InputDecoration(
+                      //         contentPadding: EdgeInsets.all(15),
+                      //         // prefixIcon: Icon(Icons.description),
+                      //         border: OutlineInputBorder(),
+                      //         labelText: 'Select Category',
+                      //       ),
+                      //       keyboardType: TextInputType.text,
+                      //     ),
+                      //   ),
+                      // ),
 
                       !isfileuploaded?GestureDetector(
-                          onTap: showImageDialog,
+                          onTap: () async {
+                            FilePickerResult? result = await FilePicker.platform.pickFiles(
+                                type: FileType.custom,
+                                allowedExtensions: ['pdf', 'doc'],
+                                allowMultiple: false
+                            );
+                            if (result != null) {
+                              PlatformFile file = result.files.first;
+                              resume_file=File(file.path!);
+                              isfileuploaded=true;
+                              print(file.name);
+                              print(file.bytes);
+                              print(file.size);
+                              print(file.extension);
+                              print(file.path);
+                            } else {
+                              print('No file selected');
+                            }
+                            setState(() {
+
+                            });
+                          },
                             child:
                             Container(
                                 margin: EdgeInsets.only(top: 20),
@@ -355,7 +376,7 @@ class _ApplyJobs extends State<ApplyJobs> {
     request.fields["mobile_no"] = tv_mobile.text;
     request.fields["experience"] = tv_experience.text;
     request.fields["expected_salary"] = tv_expected_salary.text;
-    request.fields["category"] = tv_category.text;
+    request.fields["category"] = '';
     request.fields["user_auto_id"] = user_id;
     request.fields["job_auto_id"] = widget.job_id;
     print(request.fields.toString());
@@ -503,16 +524,23 @@ class _ApplyJobs extends State<ApplyJobs> {
       );
       return false;
     }
-    else  if(tv_category.text.isEmpty){
+    // else  if(tv_category.text.isEmpty){
+    //   Fluttertoast.showToast(
+    //     msg: 'Please select category',
+    //     backgroundColor: Colors.black,
+    //   );
+    //   return false;
+    // }
+    else  if(tv_expected_salary.text.isEmpty){
       Fluttertoast.showToast(
-        msg: 'Please select category',
+        msg: 'Please add expected salary',
         backgroundColor: Colors.black,
       );
       return false;
     }
-    else  if(tv_expected_salary.text.isEmpty){
+    else  if(isfileuploaded==false){
       Fluttertoast.showToast(
-        msg: 'Please add expected salary',
+        msg: 'Please upload cv/resume',
         backgroundColor: Colors.black,
       );
       return false;
