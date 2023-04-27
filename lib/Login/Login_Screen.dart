@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -91,134 +92,137 @@ class StartState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 60,bottom: 40),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30)),
-                    color: primaryButtonColor,
-                  ),
-                  child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          businessLogo.isNotEmpty?
-                          SizedBox(
-                            height: 150,
-                            width: 150,
-                            child: CachedNetworkImage(
-                              imageUrl: app_logo_base_url+businessLogo,
-                              placeholder:(context, url) => Container(),
-                              errorWidget: (context, url, error) => const Icon(Icons.error),
-                            ),
-                          ):
-                          Container(),
-
-                          SizedBox(height: 20,),
-
-                          Text(
-                            "Login",
-                            style: TextStyle(fontSize: 30, color: Colors.white),
-                          ),
-                        ],
-                      )),
-                ),
-                SizedBox(height: 40.0),
-                Container(
-                  margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
-                  child: IntlPhoneField(
-                    decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
-                        hintText: 'Please enter your mobile no',
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.black, width: 1),
-                          borderRadius: BorderRadius.circular(10),
-                        )
-
-                    ),
-                    //focusNode: _focus,
-                    initialCountryCode: country_code,
-                    controller: _mobileController,
-                    onCountryChanged: (country) {
-                      setState(() {
-                        country_code = country.code;
-                        phone_code = country.dialCode;
-                      });
-                    },
-                  ),
-                ),
-
-                SizedBox(height: 50,),
-                isApiProcessing==true?
-                Container(
-                  height: 60,
-                  alignment: Alignment.center,
-                  width: 80,
-                  child: const GFLoader(
-                      type:GFLoaderType.circle
-                  ),
-                ):
-                GestureDetector(
-                  onTap: () {
-                    if(loginValiidation()){
-                      sendLoginOtpApi(_mobileController.text);
-                    }
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 20, right: 20),
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    height: 45,
+        body: SingleChildScrollView(
+          child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(top: 60,bottom: 40),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30),
+                          bottomRight: Radius.circular(30)),
                       color: primaryButtonColor,
-                      boxShadow: const [
-                        BoxShadow(
-                            offset: Offset(0, 10),
-                            blurRadius: 50,
-                            color: Color(0xffEEEEEE)),
+                    ),
+                    child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            businessLogo.isNotEmpty?
+                            SizedBox(
+                              height: 150,
+                              width: 150,
+                              child: CachedNetworkImage(
+                                imageUrl: app_logo_base_url+businessLogo,
+                                placeholder:(context, url) => Container(),
+                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                              ),
+                            ):
+                            Container(),
+
+                            SizedBox(height: 20,),
+
+                            Text(
+                              "Login",
+                              style: TextStyle(fontSize: 30, color: Colors.white),
+                            ),
+                          ],
+                        )),
+                  ),
+                  SizedBox(height: 40.0),
+                  Container(
+                    margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+                    child: IntlPhoneField(
+                      decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: EdgeInsets.fromLTRB(10, 15, 0, 0),
+                          hintText: 'Please enter your mobile no',
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          )
+
+                      ),
+                      //focusNode: _focus,
+                      initialCountryCode: country_code,
+                      controller: _mobileController,
+                      onCountryChanged: (country) {
+                        setState(() {
+                          country_code = country.code;
+                          phone_code = country.dialCode;
+                        });
+                      },
+                    ),
+                  ),
+
+                  SizedBox(height: 50,),
+                  isApiProcessing==true?
+                  Container(
+                    height: 60,
+                    alignment: Alignment.center,
+                    width: 80,
+                    child: const GFLoader(
+                        type:GFLoaderType.circle
+                    ),
+                  ):
+                  GestureDetector(
+                    onTap: () {
+                      if(loginValiidation()){
+                        sendLoginOtpApi(_mobileController.text);
+                      }
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      height: 45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: primaryButtonColor,
+                        boxShadow: const [
+                          BoxShadow(
+                              offset: Offset(0, 10),
+                              blurRadius: 50,
+                              color: Color(0xffEEEEEE)),
+                        ],
+                      ),
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Don't Have Any Account?  "),
+                        GestureDetector(
+                          child: Text(
+                            "Sign Up Now",
+                            style: TextStyle(color: secondaryButtonColor),
+                          ),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => const BtoCSignup("","",'')),
+                            //FirebaseCrashlytics.instance.crash();
+                            );
+                          },
+                        )
                       ],
                     ),
-                    child: const Text(
-                      "LOGIN",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-
-                Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Don't Have Any Account?  "),
-                      GestureDetector(
-                        child: Text(
-                          "Sign Up Now",
-                          style: TextStyle(color: secondaryButtonColor),
-                        ),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => const BtoCSignup("","",'')),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ));
+                  )
+                ],
+              ),
+        ));
   }
 
   // void _onFocusChange() {
@@ -390,8 +394,7 @@ class StartState extends State<LoginScreen> {
       }
       else if(status=="0"){
         Navigator.of(context).push(
-            MaterialPageRoute(
-                builder: (context) => BtoCSignup(mobileNumber,"IN","91")));
+            MaterialPageRoute(builder: (context) => BtoCSignup(mobileNumber,"IN","91")));
       }
     }
     else{

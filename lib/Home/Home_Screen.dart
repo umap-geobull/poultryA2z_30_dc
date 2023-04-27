@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
@@ -55,7 +57,7 @@ import 'Components/component_constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:path_provider/path_provider.dart';
@@ -104,7 +106,7 @@ class _HomeScreen extends State<HomeScreen> {
 
   Color appBarColor=Colors.white,appBarIconColor=Colors.black;
   String showLocationOnHomeScreen='';
-  Color bototmBarColor=Colors.white, bottomMenuIconColor=Color(0xFFFF7643);
+  Color bototmBarColor=Colors.white, bottomMenuIconColor=const Color(0xFFFF7643);
   int selectedFromTypes=-1;
   int selectedFromAll=-1;
   bool otherSelected=false;
@@ -233,7 +235,7 @@ class _HomeScreen extends State<HomeScreen> {
                 child: Container(
                     height: 50,
                     alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(right: 10,top: 10,bottom: 10),
+                    padding: const EdgeInsets.only(right: 10,top: 10,bottom: 10),
                     //child: SvgPicture.asset('assets/flipkart.svg',alignment: Alignment.centerLeft,),
                     child: businessLogo.isNotEmpty?
                     CachedNetworkImage(
@@ -243,12 +245,12 @@ class _HomeScreen extends State<HomeScreen> {
                     ):
                     userType=='Admin' && iseditSwitched==true?
                     Container(
-                      padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                      padding: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                       decoration: BoxDecoration(
                           color: Colors.blueAccent.shade100,
                           borderRadius: BorderRadius.circular(5)
                       ),
-                      child: Text('+ Logo',style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold),),
+                      child: const Text('+ Logo',style: TextStyle(color: Colors.white,fontSize: 15,fontWeight: FontWeight.bold),),
                     ):
                     Container()
                   //Image.asset('assets/app_logo.png',alignment: Alignment.centerLeft,),
@@ -288,7 +290,7 @@ class _HomeScreen extends State<HomeScreen> {
                 // Container(),
 
                 IconButton(
-                  visualDensity: VisualDensity(horizontal: -2.0, vertical: -2.0),
+                  visualDensity: const VisualDensity(horizontal: -2.0, vertical: -2.0),
                   padding: EdgeInsets.zero,
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => SearchList()));
@@ -311,14 +313,14 @@ class _HomeScreen extends State<HomeScreen> {
           body:Stack(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(bottom: 40),
+                padding: const EdgeInsets.only(bottom: 40),
                 child: Column(
                   children: [
                     iseditSwitched==true?
                     Container(
-                      margin: EdgeInsets.only(bottom: 20),
-                      child:  isShutterOpen==false?
-                      GestureDetector(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      child:  isShutterOpen==false
+                          ? GestureDetector(
                         onTap: ()=>{
                           showHideSetting()
                         },
@@ -339,8 +341,8 @@ class _HomeScreen extends State<HomeScreen> {
                           ),
                           width: 50,
                           child: const Icon(Icons.keyboard_arrow_down,color: Colors.orange,size: 20,),
-                        ),):
-                      Container(
+                        ),)
+                          : Container(
                         decoration: const BoxDecoration(
                           boxShadow: <BoxShadow>[
                             BoxShadow(
@@ -425,24 +427,24 @@ class _HomeScreen extends State<HomeScreen> {
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.grey[100],
                                         ),
-                                        child: Text('Import Vendor',style: TextStyle(color: Colors.black87,fontSize: 12)),
+                                        child: const Text('Import Vendor',style: TextStyle(color: Colors.black87,fontSize: 12)),
                                         onPressed: ()=> {
                                           //checkPlanDetails()
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => VendorSignupCatagory()))
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  VendorSignupCatagory(isFromHomeScreen: true,)))
                                         },
                                       ),
-                                      margin: EdgeInsets.all(5),
+                                      margin: const EdgeInsets.all(5),
                                     ):Container(),
                                     userType=='Admin'?
                                     Container(
-                                      margin: EdgeInsets.all(5),
+                                      margin: const EdgeInsets.all(5),
                                       child:  ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.grey[100],
                                         ),
-                                        child: Text('Vendor Approval',style: TextStyle(color: Colors.black87,fontSize: 12)),
+                                        child: const Text('Vendor Approval',style: TextStyle(color: Colors.black87,fontSize: 12)),
                                         onPressed: ()=> {
-                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Vendor_Approval_Screen()))
+                                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const Vendor_Approval_Screen()))
                                         },
                                       ),
                                     ):Container(),
@@ -455,14 +457,13 @@ class _HomeScreen extends State<HomeScreen> {
                                 showHideSetting()
                               },
                               child: Container(
-                                child: Icon(Icons.keyboard_arrow_up,color: Colors.orange,size: 30,),
+                                child: const Icon(Icons.keyboard_arrow_up,color: Colors.orange,size: 30,),
                                 width: 50,
                               ),)
                           ],
                         ),
-                      ),
-                    ):
-                    Container(),
+                      ),)
+                        : Container(),
 
                     // showLocationOnHomeScreen=='Yes'?
                     // UserLocation():
@@ -478,12 +479,14 @@ class _HomeScreen extends State<HomeScreen> {
                           cacheExtent: 5000,
                           onReorder: reorderData,
                           itemCount: homeComponentList.length,
+
                           itemBuilder: (context, index) =>
                               Container(
                                 key: ValueKey(homeComponentList[index]),
                                 child: getComponentUi(homeComponentList[index]),
                               )
                       ):
+
                       ListView.builder(
                         // physics: NeverScrollableScrollPhysics(),
                         //shrinkWrap: true,
@@ -496,7 +499,8 @@ class _HomeScreen extends State<HomeScreen> {
                               )
                       ),
                     ):
-                    Container()
+                    Container(),
+
                   ],
                 ),
               ),
@@ -509,8 +513,8 @@ class _HomeScreen extends State<HomeScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text('No home components added'),
-                        SizedBox(height: 20,),
+                        const Text('No home components added'),
+                        const SizedBox(height: 20,),
 
                         userType == 'Admin'?
                         Column(
@@ -533,10 +537,10 @@ class _HomeScreen extends State<HomeScreen> {
                                 },
                               ),
                             ),
-                            SizedBox(height: 10,),
+                            const SizedBox(height: 10,),
 
-                            Text('OR'),
-                            SizedBox(height: 10,),
+                            const Text('OR'),
+                            const SizedBox(height: 10,),
 
                           ],
                         ):
@@ -571,9 +575,12 @@ class _HomeScreen extends State<HomeScreen> {
               ) :
               Container(),
 
+
               isInitialApiCallProcessing==true?
-              HomeLoader():
+              const HomeLoader():
               Container(),
+
+
 
               isServerError==true?
               Container(
@@ -595,6 +602,7 @@ class _HomeScreen extends State<HomeScreen> {
               ):
               Container(),
 
+
               isApiCallProcessing==true?
               Container(
                 alignment: Alignment.center,
@@ -603,7 +611,8 @@ class _HomeScreen extends State<HomeScreen> {
                     type:GFLoaderType.circle
                 ),
               ):
-              Container()
+              Container(),
+
             ],
           ),
           bottomSheet: CustomBottomNavBar(MenuState.home,
@@ -639,7 +648,7 @@ class _HomeScreen extends State<HomeScreen> {
           width: MediaQuery.of(context).size.width,
           alignment: Alignment.center,
           height: 100,
-          child: Text('Sorry..No app found'),):
+          child: const Text('Sorry..No app found'),):
         Container(),
 
       ),
@@ -650,7 +659,7 @@ class _HomeScreen extends State<HomeScreen> {
     if(this.mounted){
       _scrollController.animateTo(
           _scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 100),
+          duration: const Duration(milliseconds: 100),
           curve: Curves.bounceIn);
 
       setState(() {
@@ -676,7 +685,7 @@ class _HomeScreen extends State<HomeScreen> {
               selectAppBase(allAppTypes[index].name, allAppTypes[index].id)
             },
             child: Container(
-                margin: EdgeInsets.all(3),
+                margin: const EdgeInsets.all(3),
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -699,7 +708,7 @@ class _HomeScreen extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
 
-                    Text(allAppTypes[index].name,style: TextStyle(color: Colors.black54,fontSize: 15),)
+                    Text(allAppTypes[index].name,style: const TextStyle(color: Colors.black54,fontSize: 15),)
                   ],
                 )),
           ));
@@ -885,7 +894,7 @@ class _HomeScreen extends State<HomeScreen> {
                                 ),
                               ),
                             )),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Container(
@@ -913,24 +922,24 @@ class _HomeScreen extends State<HomeScreen> {
     );
   }
 
-  Widget _shoppingCartBadge() {
-    return Badge(
-      badgeColor: Colors.orangeAccent,
-      position: BadgePosition.topEnd(top: 0, end: 3),
-      animationDuration: const Duration(milliseconds: 300),
-      animationType: BadgeAnimationType.slide,
-      badgeContent: Text(
-        cartCount.toString(),
-        style: const TextStyle(color: Colors.white),
-      ),
-      child: IconButton(
-          icon: Icon(Icons.shopping_cart, color: appBarIconColor),
-          onPressed: () {
-            gotoCartScreen();
-          }
-      ),
-    );
-  }
+  // Widget _shoppingCartBadge() {
+  //   return Badge(
+  //     badgeColor: Colors.orangeAccent,
+  //     position: BadgePosition.topEnd(top: 0, end: 3),
+  //     animationDuration: const Duration(milliseconds: 300),
+  //     animationType: BadgeAnimationType.slide,
+  //     badgeContent: Text(
+  //       cartCount.toString(),
+  //       style: const TextStyle(color: Colors.white),
+  //     ),
+  //     child: IconButton(
+  //         icon: Icon(Icons.shopping_cart, color: appBarIconColor),
+  //         onPressed: () {
+  //           gotoCartScreen();
+  //         }
+  //     ),
+  //   );
+  // }
 
   gotoCartScreen(){
     routes = MaterialPageRoute(builder: (context) => const Cart_Screen());
@@ -997,7 +1006,7 @@ class _HomeScreen extends State<HomeScreen> {
       //         home_componet_id: "",
       //     offer_id: '',));
       routes = MaterialPageRoute(
-          builder: (context) => SubCategoriesListScreen());
+          builder: (context) => const SubCategoriesListScreen());
     }
 
     Navigator.push(context, routes).then(onGoBackFromCart);
@@ -1024,6 +1033,7 @@ class _HomeScreen extends State<HomeScreen> {
         margin: const EdgeInsets.only(bottom: 2),
         child: Column(
           children: <Widget>[
+
             HomeSlider(homecomponent.id,iseditSwitched,showAlert,
                 double.parse(homecomponent.height),
                 Color(int.parse(homecomponent.backgroundColor))
@@ -1729,7 +1739,7 @@ class _HomeScreen extends State<HomeScreen> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
-            padding: EdgeInsets.all(50),
+            padding: const EdgeInsets.all(50),
             child: Container(
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
@@ -1741,7 +1751,7 @@ class _HomeScreen extends State<HomeScreen> {
                   Column(
                     children: <Widget>[
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.orangeAccent,
                             borderRadius: BorderRadius.only(topRight: Radius.circular(5),
                                 topLeft: Radius.circular(5))
@@ -1750,13 +1760,13 @@ class _HomeScreen extends State<HomeScreen> {
                         child:Row(
                           children: <Widget>[
                             Container(
-                              child: Icon(Icons.person,color: Colors.orangeAccent,),
-                              decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.white),
+                              child: const Icon(Icons.person,color: Colors.orangeAccent,),
+                              decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.white),
                               width: 30,
                               height: 30,
-                              margin: EdgeInsets.only(right: 10),
+                              margin: const EdgeInsets.only(right: 10),
                             ),
-                            Text(
+                            const Text(
                               '',
                               style: TextStyle(color: Colors.white,fontSize: 16),
                             ),
@@ -1764,8 +1774,8 @@ class _HomeScreen extends State<HomeScreen> {
                               flex:1,
                               child: Container(
                                 child: IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  icon: Icon(Icons.close_rounded,color: Colors.white,),
+                                  padding: const EdgeInsets.all(0),
+                                  icon: const Icon(Icons.close_rounded,color: Colors.white,),
                                   onPressed: ()=>{Navigator.pop(context)},
                                 ),
                                 width: MediaQuery.of(context).size.width,
@@ -1775,19 +1785,19 @@ class _HomeScreen extends State<HomeScreen> {
                             )
                           ],
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                       ),
                       Container(
                         alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(top: 10,bottom: 10,left: 10,right: 10),
+                        margin: const EdgeInsets.only(top: 10,bottom: 10,left: 10,right: 10),
                         child:Text(
                           contact_message,
-                          style: TextStyle(color: Colors.black,fontSize: 15,),
+                          style: const TextStyle(color: Colors.black,fontSize: 15,),
                         ),
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         alignment: Alignment.center,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1796,7 +1806,7 @@ class _HomeScreen extends State<HomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text('India: ', style: const TextStyle(
+                                const Text('India: ', style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87)),
@@ -1804,7 +1814,7 @@ class _HomeScreen extends State<HomeScreen> {
                                     onTap: ()=>{
                                       _makePhoneCall(contact_india)
                                     },
-                                    child: Text(contact_india, style: TextStyle(
+                                    child: Text(contact_india, style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.blue,
@@ -1814,7 +1824,7 @@ class _HomeScreen extends State<HomeScreen> {
                             ):
                             Container(),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
 
@@ -1822,7 +1832,7 @@ class _HomeScreen extends State<HomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text('US: ', style: const TextStyle(
+                                const Text('US: ', style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87)),
@@ -1830,7 +1840,7 @@ class _HomeScreen extends State<HomeScreen> {
                                   onTap: ()=>{
                                     _makePhoneCall(contact_us)
                                   },
-                                  child: Text(contact_us, style: TextStyle(
+                                  child: Text(contact_us, style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.blue,
@@ -1841,7 +1851,7 @@ class _HomeScreen extends State<HomeScreen> {
                             ):
                             Container(),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
 
@@ -1849,7 +1859,7 @@ class _HomeScreen extends State<HomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text('Email: ', style: const TextStyle(
+                                const Text('Email: ', style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black87)),
@@ -1857,7 +1867,7 @@ class _HomeScreen extends State<HomeScreen> {
                                   onTap: ()=>{
                                     _sendMail(contact_email)
                                   },
-                                  child: Text(contact_email, style: TextStyle(
+                                  child: Text(contact_email, style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.blue,
@@ -1870,7 +1880,7 @@ class _HomeScreen extends State<HomeScreen> {
 
                             MessageOnWhatsApp(),
 
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                           ],
@@ -1911,7 +1921,7 @@ class _HomeScreen extends State<HomeScreen> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             alignment: Alignment.center,
-            padding: EdgeInsets.all(50),
+            padding: const EdgeInsets.all(50),
             child: Container(
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
@@ -1924,7 +1934,7 @@ class _HomeScreen extends State<HomeScreen> {
                   Column(
                     children: <Widget>[
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                             color: Colors.orangeAccent,
                             borderRadius: BorderRadius.only(topRight: Radius.circular(5),
                                 topLeft: Radius.circular(5))
@@ -1933,13 +1943,13 @@ class _HomeScreen extends State<HomeScreen> {
                         child:Row(
                           children: <Widget>[
                             Container(
-                              child: Icon(Icons.email,color: Colors.orangeAccent,),
-                              decoration: BoxDecoration(shape: BoxShape.circle,color: Colors.white),
+                              child: const Icon(Icons.email,color: Colors.orangeAccent,),
+                              decoration: const BoxDecoration(shape: BoxShape.circle,color: Colors.white),
                               width: 30,
                               height: 30,
-                              margin: EdgeInsets.only(right: 10),
+                              margin: const EdgeInsets.only(right: 10),
                             ),
-                            Text(
+                            const Text(
                               'Verify your Email ID',
                               style: TextStyle(color: Colors.white,fontSize: 16),
                             ),
@@ -1947,8 +1957,8 @@ class _HomeScreen extends State<HomeScreen> {
                               flex:1,
                               child: Container(
                                 child: IconButton(
-                                  padding: EdgeInsets.all(0),
-                                  icon: Icon(Icons.close_rounded,color: Colors.white,),
+                                  padding: const EdgeInsets.all(0),
+                                  icon: const Icon(Icons.close_rounded,color: Colors.white,),
                                   onPressed: ()=>{Navigator.pop(context)},
                                 ),
                                 width: MediaQuery.of(context).size.width,
@@ -1958,21 +1968,21 @@ class _HomeScreen extends State<HomeScreen> {
                             )
                           ],
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                       ),
 
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         alignment: Alignment.center,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('Your Email ID is not yet verfied', style: const TextStyle(
+                            const Text('Your Email ID is not yet verfied', style: TextStyle(
                               fontSize: 15,
                               color: Colors.black54,)),
 
-                            SizedBox(height: 30,),
+                            const SizedBox(height: 30,),
 
                             Container(
                               width: MediaQuery.of(context).size.width,
@@ -1984,7 +1994,7 @@ class _HomeScreen extends State<HomeScreen> {
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.blue,
                                     ),
-                                    child: Text('Verify',style: TextStyle(color: Colors.white),),
+                                    child: const Text('Verify',style: TextStyle(color: Colors.white),),
                                     onPressed: () {
                                       gotoVerificationScreen();
                                     },
@@ -2146,7 +2156,7 @@ class _HomeScreen extends State<HomeScreen> {
                                 ),
                               ),
                             )),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         Container(

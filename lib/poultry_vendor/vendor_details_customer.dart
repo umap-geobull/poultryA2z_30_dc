@@ -1,8 +1,12 @@
+// ignore_for_file: unnecessary_null_comparison, unnecessary_brace_in_string_interps, sort_child_properties_last, non_constant_identifier_names, prefer_const_literals_to_create_immutables
+
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:get/get.dart';
 import 'package:poultry_a2z/Vendor_Module/Vendor_Home/Components/Show_Rating_Screen.dart';
 import 'package:poultry_a2z/Vendor_Module/Vendor_Home/Components/Vendor_Menu.dart';
 import 'package:poultry_a2z/poultry_vendor/product_model.dart';
@@ -29,33 +33,38 @@ import 'package:http/http.dart' as http;
 import 'add_product dialgo.dart';
 
 class VendorDetailsWithCustomer extends StatefulWidget {
-  // static String routeName = "/vendorDetailsEdit";
-  final GetVendorListCategory vendor;
-  const VendorDetailsWithCustomer({Key? key, required this.vendor}) : super(key: key);
+  final String? admin_auto_id;
+  final String? categoryAutoId;
+  final String? id;
+  final String? phoneNumber;
+  final String? title;
+  final String? subTitle;
+  final String? address;
+  const VendorDetailsWithCustomer({Key? key,this.admin_auto_id,this.categoryAutoId,this.id,this.phoneNumber,this.address,this.title,this.subTitle}) : super(key: key);
 
   @override
   _VendorDetailsWithCustomerState createState() => _VendorDetailsWithCustomerState();
 }
 
 class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
-  String user_id = "", baseUrl = "";
+  String baseUrl = "";
   bool isApiCallProcess = false;
   Vendor_info_Model? vendor_info_model;
   Vendor_Profile? vendor_profile;
-  var shopnameController = TextEditingController();
-  var shopAddressController = TextEditingController();
-  var shopCityController = TextEditingController();
-  var shopMin_OrderController = TextEditingController();
-  var shopPrice_RangeController = TextEditingController();
+  // var shopnameController = TextEditingController();
+  // var shopAddressController = TextEditingController();
+  // var shopCityController = TextEditingController();
+  // var shopMin_OrderController = TextEditingController();
+  // var shopPrice_RangeController = TextEditingController();
 
   Color appBarColor = Colors.white,
       appBarIconColor = Colors.black,
       primaryButtonColor = Colors.orange,
       secondaryButtonColor = Colors.orangeAccent;
-  Color bottomBarColor = Colors.white, bottomMenuIconColor = Color(0xFFFF7643);
+  Color bottomBarColor = Colors.white, bottomMenuIconColor = const Color(0xFFFF7643);
   bool isApiCallProcessing = true;
   bool isApiCallProcessingProduct = true;
-  String admin_auto_id = '63b2612f9821ce37456a4b31';
+  // String admin_auto_id = '63b2612f9821ce37456a4b31';
 
   void getappUi() async {
     SharedPreferences prefs= await SharedPreferences.getInstance();
@@ -70,7 +79,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
     }
 
     if(bottombarIcon!=null){
-      this.bottomMenuIconColor=Color(int.parse(bottombarIcon));
+      bottomMenuIconColor=Color(int.parse(bottombarIcon));
       setState(() {});
     }
 
@@ -80,7 +89,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
     }
 
     if(appbarIcon!=null){
-      this.appBarIconColor=Color(int.parse(appbarIcon));
+      appBarIconColor=Color(int.parse(appbarIcon));
       setState(() {});
     }
   }
@@ -97,7 +106,9 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
 
     await getVendorDetails();
   }
-  List<Vendor> vendor =[];
+  // List<Vendor> vendor =[];
+  List vendor =[];
+  var vendorDetailsVendor ;
 
   getVendorDetails() async {
     SharedPreferences prefs= await SharedPreferences.getInstance();
@@ -117,12 +128,14 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
 
     final body = {
       "APP_TYPE_ID": apptypeId,
-      "ADMIN_AUTO_ID": admin_auto_id,
+      "ADMIN_AUTO_ID": widget.admin_auto_id,
+      "CATEGORY_AUTO_ID": widget.categoryAutoId,
+      "POULTRY_VENDOR_AUTO_ID": widget.id
       // "USER_AUTO_ID": userID,
-      "CATEGORY_AUTO_ID": widget.vendor.CATEGORYAUTOID,
-      "POULTRY_VENDOR_AUTO_ID": widget.vendor.id
+      // "CATEGORY_AUTO_ID": widget.vendor.CATEGORYAUTOID,
+      // "POULTRY_VENDOR_AUTO_ID": widget.vendor.id
     };
-    //print(body.toString());
+    print("body for get_pountry_vendor_customer $body");
     final response = await http.post(uri, body: body);
     print("response vendor ${response.body}");
     if (response.statusCode == 200) {
@@ -133,16 +146,14 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
       print("status" + status.toString());
       if (status == "1") {
         print("status ${status}");
-        VendorDetailsVendor vendorDetailsVendor =
-        VendorDetailsVendor.fromJson(json.decode(response.body));
-
-        // // mainCategoryList=(vendorCatagoryModel!=null?vendorCatagoryModel.data:[])!;
-        //
-        vendor = vendorDetailsVendor.data;
-        print("vendor list ${vendor}");
+        // VendorDetailsVendor vendorDetailsVendor = VendorDetailsVendor.fromJson(json.decode(response.body));
+        vendorDetailsVendor = resp;
+        print("vendorDetailsVendor .... $vendorDetailsVendor");
+        vendor = vendorDetailsVendor["data"];
+        print("vendor .... $vendor");
         if (vendorDetailsVendor != null) {
-          if (vendorDetailsVendor.data != null) {
-            vendor = vendorDetailsVendor.data;
+          if (vendorDetailsVendor["data"] != null) {
+            vendor = vendorDetailsVendor["data"];
 
             getProduct();
           }
@@ -158,7 +169,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
         // }
       }
     } else if (response.statusCode == 500) {
-      if (this.mounted) {
+      if (mounted) {
         setState(() {
           isApiCallProcessing = false;
         });
@@ -184,7 +195,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
     var uri = Uri.parse(url);
 
     final body = {
-      "user_auto_id": vendor[0].USERAUTOID,
+      "user_auto_id": vendor[0]["USER_AUTO_ID"],
     };
 
     print("product Body ${body}");
@@ -206,7 +217,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
         isApiCallProcessingProduct = false;
       });}
     } else if (response.statusCode == 500) {
-      if (this.mounted) {
+      if (mounted) {
         setState(() {
           isApiCallProcessingProduct = false;
         });
@@ -224,7 +235,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    log("here is vendor details ---------------------");
     super.initState();
     getappUi();
     getBaseUrl();
@@ -234,6 +245,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("data from routed screen ------------- ");
     return Scaffold(
       appBar: AppBar(
         // toolbarHeight: 10,
@@ -251,7 +263,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
             icon: Icon(Icons.arrow_back,color: appBarIconColor,size: 20,),
             onPressed: ()=>{Navigator.of(context).pop()},
           ),
-          actions: [
+          actions: const [
             // IconButton(
             //   onPressed: () {
             //     // Update_Vendor();
@@ -297,7 +309,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                 padding: const EdgeInsets.all(8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
-                  child: vendor[0].VENDORPROFILE.isEmpty? Image.asset(
+                  child: vendor[0]["VENDOR_PROFILE"].toString().isEmpty? Image.asset(
                     'assets/thumbnail.jpeg',
                     fit: BoxFit.fill,
                     width: MediaQuery.of(context).size.width,
@@ -307,9 +319,9 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                     width: MediaQuery.of(context).size.width,
                     height: 200,
                     imageUrl:
-                    "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/profiles/${vendor[0].VENDORPROFILE}",
+                    "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/profiles/${vendor[0]["VENDOR_PROFILE"]}",
                     placeholder: (context, url) =>
-                    new Container(
+                    Container(
                       width: MediaQuery.of(context).size.width,
                       height: 200,
                       color: Colors.grey,
@@ -317,7 +329,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                     errorWidget: (context, url, error) =>
                         Container(height: 70,
                             width: 70,
-                            color: Colors.grey,child: new Icon(Icons.error)),
+                            color: Colors.grey,child: const Icon(Icons.error)),
                   ),
                 ),
               ),
@@ -327,14 +339,15 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
                         padding:
-                        EdgeInsets.only(left: 10, right: 10, bottom: 2),
+                        const EdgeInsets.only(left: 10, right: 10, bottom: 2),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             // Icon(Icons.location_on, color: kMainColor,size: 20,),
                             // SizedBox(width: 5,),
-                            Flexible(
-                                child: Text(vendor[0].FIRMNAME,
+                             Flexible(
+                                child: Text(
+                                    widget.title!,
                                     style: TextStyle(
                                         color: Colors.blueGrey,
                                         fontSize: 20,
@@ -347,180 +360,182 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                 child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           left: 10, right: 10, bottom: 2, top: 5),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           // Icon(Icons.location_on, color: kMainColor,size: 20,),
                           // SizedBox(width: 5,),
-                          Flexible(child: Text("${vendor[0].ADDRESS}"))
+                          // Flexible(child: Text("${vendor[0].ADDRESS}"))
+                           Flexible(child: Text("${widget.address}"))
                         ],
                       ),
                     )),
               ),
               Divider(color: Colors.grey.shade300),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
-              Container(
-                  margin: EdgeInsets.only(left: 10, right: 10),
-                  height: 90,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey.shade100),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 5,
-                        // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: GestureDetector(
-                      onTap: () => {_showSimpleDialog()},
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              // Expanded(
-                              //   flex: 1,
-                              //   child: Column(
-                              //     children: [
-                              //       Text(
-                              //         "Min Order Value",
-                              //         style: TextStyle(
-                              //           fontSize: 12,
-                              //         ),
-                              //       ),
-                              //       Container(
-                              //         height: 20,
-                              //         alignment: Alignment.center,
-                              //         child: TextFormField(
-                              //             autocorrect: true,
-                              //             enabled: false,
-                              //             controller: shopMin_OrderController,
-                              //             textAlign: TextAlign.center,
-                              //             cursorColor: Color(0xffF5591F),
-                              //             decoration: InputDecoration(
-                              //               hintText: vendor[0].MINORDERVALUE.isEmpty ? "N.A,":"${vendor[0].MINORDERVALUE}",
-                              //               border: InputBorder.none,
-                              //               contentPadding: EdgeInsets.only(
-                              //                   left: 0,
-                              //                   right: 0,
-                              //                   top: 0,
-                              //                   bottom:
-                              //                   10 // HERE THE IMPORTANT PART
-                              //               ),
-                              //               enabledBorder: InputBorder.none,
-                              //               focusedBorder: InputBorder.none,
-                              //             ),
-                              //             onChanged: (value) =>
-                              //             shopMin_OrderController.text =
-                              //                 value,
-                              //             style: TextStyle(
-                              //                 fontSize: 14,
-                              //                 color: Colors.black)),
-                              //       )
-                              //     ],
-                              //   ),
-                              // ),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Seller Rating",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                    Wrap(
-                                      crossAxisAlignment:
-                                      WrapCrossAlignment.center,
-                                      children: [
-                                        Text('4.4',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black)),
-                                        Icon(
-                                          Icons.star,
-                                          color: Colors.yellow,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // Expanded(
-                              //   flex: 1,
-                              //   child: Column(
-                              //     children: [
-                              //       Text(
-                              //         "Price Range",
-                              //         style: TextStyle(
-                              //           fontSize: 12,
-                              //         ),
-                              //       ),
-                              //       Container(
-                              //         height: 20,
-                              //         alignment: Alignment.center,
-                              //         child: TextFormField(
-                              //             enabled: false,
-                              //             controller: shopPrice_RangeController,
-                              //             textAlign: TextAlign.center,
-                              //             decoration: InputDecoration(
-                              //               hintText: vendor[0].PRICERANGE.isEmpty ? "N.A,":"${vendor[0].PRICERANGE}",
-                              //               border: InputBorder.none,
-                              //               contentPadding: EdgeInsets.only(
-                              //                   left: 0,
-                              //                   right: 0,
-                              //                   top: 0,
-                              //                   bottom:
-                              //                   10 // HERE THE IMPORTANT PART
-                              //               ),
-                              //               enabledBorder: InputBorder.none,
-                              //               focusedBorder: InputBorder.none,
-                              //             ),
-                              //             onChanged: (value) =>
-                              //             shopPrice_RangeController.text =
-                              //                 value,
-                              //             style: TextStyle(
-                              //                 fontSize: 14,
-                              //                 color: Colors.black)),
-                              //       )
-                              //     ],
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                          // Center(
-                          //   child: Wrap(
-                          //     crossAxisAlignment: WrapCrossAlignment.center,
-                          //     children: [
-                          //       Text('Show Rating',
-                          //           style: TextStyle(
-                          //               fontSize: 12, color: Colors.blue)),
-                          //       Icon(
-                          //         Icons.keyboard_arrow_down,
-                          //         color: Colors.blue,
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  )),
-              SizedBox(
-                height: 5,
-              ),
+              ///rating
+              // Container(
+              //     margin: const EdgeInsets.only(left: 10, right: 10),
+              //     height: 90,
+              //     decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       border: Border.all(color: Colors.grey.shade100),
+              //       borderRadius: BorderRadius.circular(10),
+              //       boxShadow: [
+              //         BoxShadow(
+              //           color: Colors.grey.withOpacity(0.5),
+              //           spreadRadius: 1,
+              //           blurRadius: 5,
+              //           // changes position of shadow
+              //         ),
+              //       ],
+              //     ),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(10.0),
+              //       child: GestureDetector(
+              //         onTap: () => {_showSimpleDialog()},
+              //         child: Column(
+              //           children: [
+              //             Row(
+              //               children: [
+              //                 // Expanded(
+              //                 //   flex: 1,
+              //                 //   child: Column(
+              //                 //     children: [
+              //                 //       Text(
+              //                 //         "Min Order Value",
+              //                 //         style: TextStyle(
+              //                 //           fontSize: 12,
+              //                 //         ),
+              //                 //       ),
+              //                 //       Container(
+              //                 //         height: 20,
+              //                 //         alignment: Alignment.center,
+              //                 //         child: TextFormField(
+              //                 //             autocorrect: true,
+              //                 //             enabled: false,
+              //                 //             controller: shopMin_OrderController,
+              //                 //             textAlign: TextAlign.center,
+              //                 //             cursorColor: Color(0xffF5591F),
+              //                 //             decoration: InputDecoration(
+              //                 //               hintText: vendor[0].MINORDERVALUE.isEmpty ? "N.A,":"${vendor[0].MINORDERVALUE}",
+              //                 //               border: InputBorder.none,
+              //                 //               contentPadding: EdgeInsets.only(
+              //                 //                   left: 0,
+              //                 //                   right: 0,
+              //                 //                   top: 0,
+              //                 //                   bottom:
+              //                 //                   10 // HERE THE IMPORTANT PART
+              //                 //               ),
+              //                 //               enabledBorder: InputBorder.none,
+              //                 //               focusedBorder: InputBorder.none,
+              //                 //             ),
+              //                 //             onChanged: (value) =>
+              //                 //             shopMin_OrderController.text =
+              //                 //                 value,
+              //                 //             style: TextStyle(
+              //                 //                 fontSize: 14,
+              //                 //                 color: Colors.black)),
+              //                 //       )
+              //                 //     ],
+              //                 //   ),
+              //                 // ),
+              //                 Expanded(
+              //                   flex: 1,
+              //                   child: Column(
+              //                     children: [
+              //                       const Text(
+              //                         "Seller Rating",
+              //                         style: TextStyle(
+              //                           fontSize: 12,
+              //                         ),
+              //                       ),
+              //                       Wrap(
+              //                         crossAxisAlignment:
+              //                         WrapCrossAlignment.center,
+              //                         children: const [
+              //                           Text('4.4',
+              //                               style: TextStyle(
+              //                                   fontSize: 16,
+              //                                   color: Colors.black)),
+              //                           Icon(
+              //                             Icons.star,
+              //                             color: Colors.yellow,
+              //                           ),
+              //                         ],
+              //                       ),
+              //                     ],
+              //                   ),
+              //                 ),
+              //                 // Expanded(
+              //                 //   flex: 1,
+              //                 //   child: Column(
+              //                 //     children: [
+              //                 //       Text(
+              //                 //         "Price Range",
+              //                 //         style: TextStyle(
+              //                 //           fontSize: 12,
+              //                 //         ),
+              //                 //       ),
+              //                 //       Container(
+              //                 //         height: 20,
+              //                 //         alignment: Alignment.center,
+              //                 //         child: TextFormField(
+              //                 //             enabled: false,
+              //                 //             controller: shopPrice_RangeController,
+              //                 //             textAlign: TextAlign.center,
+              //                 //             decoration: InputDecoration(
+              //                 //               hintText: vendor[0].PRICERANGE.isEmpty ? "N.A,":"${vendor[0].PRICERANGE}",
+              //                 //               border: InputBorder.none,
+              //                 //               contentPadding: EdgeInsets.only(
+              //                 //                   left: 0,
+              //                 //                   right: 0,
+              //                 //                   top: 0,
+              //                 //                   bottom:
+              //                 //                   10 // HERE THE IMPORTANT PART
+              //                 //               ),
+              //                 //               enabledBorder: InputBorder.none,
+              //                 //               focusedBorder: InputBorder.none,
+              //                 //             ),
+              //                 //             onChanged: (value) =>
+              //                 //             shopPrice_RangeController.text =
+              //                 //                 value,
+              //                 //             style: TextStyle(
+              //                 //                 fontSize: 14,
+              //                 //                 color: Colors.black)),
+              //                 //       )
+              //                 //     ],
+              //                 //   ),
+              //                 // ),
+              //               ],
+              //             ),
+              //             // Center(
+              //             //   child: Wrap(
+              //             //     crossAxisAlignment: WrapCrossAlignment.center,
+              //             //     children: [
+              //             //       Text('Show Rating',
+              //             //           style: TextStyle(
+              //             //               fontSize: 12, color: Colors.blue)),
+              //             //       Icon(
+              //             //         Icons.keyboard_arrow_down,
+              //             //         color: Colors.blue,
+              //             //       ),
+              //             //     ],
+              //             //   ),
+              //             // ),
+              //           ],
+              //         ),
+              //       ),
+              //     )),
+              // const SizedBox(
+              //   height: 5,
+              // ),
               Divider(color: Colors.grey.shade300),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               // Padding(
@@ -545,7 +560,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
               //           ),
               //         ))),
               Container(
-                margin: EdgeInsets.only(left: 10, right: 10),
+                margin: const EdgeInsets.only(left: 10, right: 10),
                 height: 70,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -562,7 +577,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                   ],
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+                  padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
                   child: Row(
                     //crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -573,14 +588,14 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                         child: Container(
                             height: 40,
                             width: 40,
-                            child:vendor[0].SUPPLIERPROFILE.isEmpty? Image.asset('assets/thumbnail.jpeg'):CachedNetworkImage(
+                            child:vendor[0]['SUPPLIER_PROFILE'].isEmpty? Image.asset('assets/thumbnail.jpeg'):CachedNetworkImage(
                               fit: BoxFit.fill,
                               width: MediaQuery.of(context).size.width,
                               height: 170,
                               imageUrl:
-                              "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/profiles/${vendor[0].SUPPLIERPROFILE}",
+                              "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/profiles/${vendor[0]['SUPPLIER_PROFILE']}",
                               placeholder: (context, url) =>
-                              new Container(
+                              Container(
                                 width: MediaQuery.of(context).size.width,
                                 height: 170,
                                 color: Colors.grey,
@@ -588,34 +603,41 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                               errorWidget: (context, url, error) =>
                                   Container(height: 70,
                                       width: 70,
-                                      color: Colors.grey,child: new Icon(Icons.error)),
+                                      color: Colors.grey,child: const Icon(Icons.error)),
                             ),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
                               color: Colors.grey[400],
                             )),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
-                      Text(vendor[0].NAME.isEmpty ?"N.A" :vendor[0].NAME,
+                      Text(
+                          // vendor[0].NAME.isEmpty ?"N.A" :vendor[0].NAME,
+                          widget.subTitle != null ?widget.subTitle!: "N.A.",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 14,
                               fontWeight: FontWeight.bold)),
-                      SizedBox(
+                      const SizedBox(
+                        width: 20,
+                      ),
+
+                      const SizedBox(
                         width: 20,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: <Widget>[
                           Container(
-                            width: 80,
-                            height: 35,
+                            width: Get.width*0.19,
+                            height: Get.width*0.08,
                             // color: primaryButtonColor,
                             child: ElevatedButton(
                               onPressed: () async {
-                                var url = "tel:${vendor[0].PHONENUMBER}";
+                                ///for call here
+                                var url = "tel:${widget.phoneNumber}";
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 } else {
@@ -632,22 +654,24 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           SizedBox(
-                            width: 90,
-                            height: 35,
+                            // width: 90,
+                            // height: 35,
+                            width: Get.width*0.23,
+                            height: Get.width*0.08,
                             child: ElevatedButton(
                               onPressed: () async {
+                                ///for sms here
                                 var uri =
-                                    'sms:+ ${vendor[0].PHONENUMBER}?body=hello%20there';
+                                    'sms:+ ${widget.phoneNumber}?body=hello%20there';
                                 if (await canLaunch(uri)) {
                                   await launch(uri);
                                 } else {
                                   // iOS
-                                  const uri =
-                                      'sms:0039-222-060-888?body=hello%20there';
+                                  var uri = 'sms:${widget.phoneNumber}?body=hello%20there';
                                   if (await canLaunch(uri)) {
                                     await launch(uri);
                                   } else {
@@ -671,11 +695,42 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Divider(color: Colors.grey.shade300),
-              SizedBox(
+
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: vendor[0]["fields"].length,
+                itemBuilder: (context, index) {
+                  var a = vendor[0]["fields"][index];
+                      return a["field_name"] == "FIRM_NAME"  ||
+                          a["field_name"] == "OWNER_NAME"  ||
+                          a["field_name"] == "PHONE_NUMBER"
+                          ?const SizedBox()
+                          :Padding(
+                            padding:  EdgeInsets.only(left: Get.width*0.05),
+                            child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                            Text("${a["field_name"].toString().replaceAll("_", " ")}",style: const TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w400),),
+                            // Text(
+                            //   vendorDetailsVendor[index]["fields"][0]["field_value"].toString()
+                            //       .isEmpty
+                            //       ? "Supplier: N.A."
+                            //       : "Supplier: ${vendorDetailsVendor[index]["fields"][0]["field_value"]}",
+                            //   style: const TextStyle(fontSize: 16,color: Colors.black,fontWeight: FontWeight.w400),),
+                            const SizedBox(height: 5,),
+                            Text(a["field_value"] == " " ?"N.A.": "${a["field_value"]}"),
+                            const SizedBox(height: 10,)
+                        ],
+                      ),
+                          );
+                },
+              ),
+              const SizedBox(
                 height: 5,
               ),
               Padding(
@@ -684,21 +739,21 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                       width: MediaQuery.of(context).size.width,
                       child: Padding(
                         padding:
-                        EdgeInsets.only(left: 10, right: 10, bottom: 2),
+                        const EdgeInsets.only(left: 10, right: 10, bottom: 2),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             // Icon(Icons.location_on, color: kMainColor,size: 20,),
                             // SizedBox(width: 5,),
-                            Flexible(
+                            const Flexible(
                                 child: Text("More Related Product",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold))),
                             Row(
-                              children: [
+                              children: const [
                                 // InkWell(
                                 //   onTap: () async {
                                 //     showModalBottomSheet(
@@ -728,7 +783,6 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                           ],
                         ),
                       ))),
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -745,7 +799,8 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                     alignment: Alignment.center,
                     width: MediaQuery.of(context).size.width,
                     child: const Text("Product not available"),
-                  ):Padding(
+                  )
+                      :Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
                       height: 130,
@@ -762,7 +817,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                               child: Column(
                                 children: [
                                   Container(
-                                      padding: EdgeInsets.all(5),
+                                      padding: const EdgeInsets.all(5),
                                       height: 70,
                                       width: 70,
                                       child: ClipRRect(
@@ -782,17 +837,17 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                                             imageUrl:
                                             "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${data[index].productImage}",
                                             placeholder: (context, url) =>
-                                            new Container(
-                                              height: 100,
-                                              width:
-                                              MediaQuery.of(context).size.width /
-                                                  2,
-                                              color: Colors.grey,
-                                            ),
+                                                Container(
+                                                  height: 100,
+                                                  width:
+                                                  MediaQuery.of(context).size.width /
+                                                      2,
+                                                  color: Colors.grey,
+                                                ),
                                             errorWidget: (context, url, error) =>
                                                 Container(height: 70,
                                                     width: 70,
-                                                    color: Colors.grey,child: new Icon(Icons.error)),
+                                                    color: Colors.grey,child: const Icon(Icons.error)),
                                           ) )),
                                   //const SizedBox(height: 2),
                                   SizedBox(
@@ -801,7 +856,7 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                                         "${data[index].productName}",
                                         maxLines: 2,
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.black),
+                                        style: const TextStyle(color: Colors.black),
                                       ))
                                 ],
                               ),
@@ -810,12 +865,11 @@ class _VendorDetailsWithCustomerState extends State<VendorDetailsWithCustomer> {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
-
     );
   }
 

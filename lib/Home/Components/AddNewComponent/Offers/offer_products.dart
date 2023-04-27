@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 
 import '../../../../Admin_add_Product/Components/Model/Rest_Apis.dart';
 import '../../../../Admin_add_Product/constants.dart';
@@ -92,7 +92,7 @@ class _Offer_Products extends State<Offer_Products> {
             ),
 
             actions: [
-              _shoppingCartBadge(),
+              //_shoppingCartBadge(),
             ]
 
         ),
@@ -132,25 +132,6 @@ class _Offer_Products extends State<Offer_Products> {
             Container()
           ],
         )
-    );
-  }
-
-  Widget _shoppingCartBadge() {
-    return Badge(
-      badgeColor: Colors.orangeAccent,
-      position: BadgePosition.topEnd(top: 0, end: 3),
-      animationDuration: const Duration(milliseconds: 300),
-      animationType: BadgeAnimationType.slide,
-      badgeContent: Text(
-        cartCount.toString(),
-        style: const TextStyle(color: Colors.white),
-      ),
-      child: IconButton(
-          icon: const Icon(Icons.shopping_cart, color: Colors.white),
-          onPressed: () {
-            gotoCartScreen();
-          }
-      ),
     );
   }
 

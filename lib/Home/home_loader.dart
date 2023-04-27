@@ -10,10 +10,10 @@ class HomeLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      margin: EdgeInsets.only(top: 45),
+      margin: const EdgeInsets.only(top: 45),
       child: GFShimmer(
-        mainColor:Color(0xFFF5F5F5),
-        secondaryColor: Color(0xFFE0E0E0),
+        mainColor:const Color(0xFFF5F5F5),
+        secondaryColor: const Color(0xFFE0E0E0),
         child:Container(
           height: MediaQuery.of(context).size.height,
           child: Column(
@@ -23,7 +23,7 @@ class HomeLoader extends StatelessWidget {
                   Container(
                     width: 70,
                     height: 80,
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                    margin: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -39,7 +39,7 @@ class HomeLoader extends StatelessWidget {
                   Container(
                     width: 70,
                     height: 80,
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                    margin: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -55,7 +55,7 @@ class HomeLoader extends StatelessWidget {
                   Container(
                     width: 70,
                     height: 80,
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                    margin: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -71,7 +71,7 @@ class HomeLoader extends StatelessWidget {
                   Container(
                     width: 70,
                     height: 80,
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                    margin: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -89,7 +89,7 @@ class HomeLoader extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 200,
-                margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                margin: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                 decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
@@ -109,7 +109,7 @@ class HomeLoader extends StatelessWidget {
                   Container(
                     width: 150,
                     height: 250,
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                    margin: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -125,7 +125,7 @@ class HomeLoader extends StatelessWidget {
                   Container(
                     width: 170,
                     height: 250,
-                    margin: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+                    margin: const EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(

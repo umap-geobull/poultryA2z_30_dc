@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:poultry_a2z/Admin_add_Product/Components/Model/product_color_model.dart';
 import 'package:poultry_a2z/Admin_add_Product/Components/Model/product_price_model.dart';
@@ -151,7 +153,7 @@ class _SubCategoriesListScreenState extends State<SubCategoriesListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    log("it entered here ------------------");
     super.initState();
 
     getappUi();

@@ -368,11 +368,15 @@ const String add_vproduct="add_vproduct";
 const String get_vproduct="get_vproduct";
 
 //vendor poultry
-const String add_pountry_vendor="add_pountry_vendor";
+// const String add_pountry_vendor="add_pountry_vendor";
+const String add_pountry_vendor="add_pountry_vendors";
 const String check_pountry_vendor_status="check_pountry_vendor_status";
-const String get_pountry_vendor_details="get_pountry_vendor_details";
-const String get_pountry_vendor_customer="get_pountry_vendor_customer";
-const String get_pountry_vendor="get_pountry_vendor";
+// const String get_pountry_vendor_details="get_pountry_vendor_details";
+const String get_pountry_vendor_details="get_pountry_vendor_detailss";
+// const String get_pountry_vendor_customer="get_pountry_vendor_customer";
+const String get_pountry_vendor_customer="get_pountry_vendor_customers";
+// const String get_pountry_vendor="get_pountry_vendor";
+const String get_pountry_vendor="get_pountry_vendors";
 
 //job approval
 const String get_job_approval_list="get_job_approval_list";

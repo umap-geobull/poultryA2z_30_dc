@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.2+2
 
 environment:
   sdk: ">=2.17.5 <3.0.0"
@@ -43,9 +43,9 @@ dependencies:
   lottie: ^1.2.1
   country_picker: ^2.0.8
   carousel_slider: ^4.0.0
-
+  get:
   fluttertoast: ^8.0.8
-  modal_bottom_sheet: ^2.0.0
+  modal_bottom_sheet: ^3.0.0-pre
   flutter_rating_bar: ^4.0.0
   google_fonts: ^3.0.1
   flutter_colorpicker: ^1.0.3
@@ -60,7 +60,7 @@ dependencies:
   flutter_swiper_null_safety: ^1.0.2
   visibility_detector: ^0.3.3
   dio: ^4.0.6
-  badges: ^2.0.3
+#  badges: ^2.0.3
   flutter_zoom_drawer: ^3.0.3
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3

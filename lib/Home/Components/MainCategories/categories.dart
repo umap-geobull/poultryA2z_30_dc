@@ -218,9 +218,14 @@ class _CategoriesState extends State<Categories> {
                         onTap: ()=>{
                           showEdit()
                         },
-                        child: Container(
-                            padding: const EdgeInsets.all(7),
-                            child: const Icon(Icons.edit,color: Colors.orange,)
+                        child: Column(
+                          children: [
+
+                            Container(
+                                padding: const EdgeInsets.all(7),
+                                child: const Icon(Icons.edit,color: Colors.orange,)
+                            ),
+                          ],
                         ),):
                       Container(),
 
@@ -6995,6 +7000,7 @@ class _CategoriesState extends State<Categories> {
     }
   }
 
+
   getLayout(){
     List<Widget> widgetList=[];
 
@@ -7201,36 +7207,54 @@ class _CategoriesState extends State<Categories> {
           ));
         }
         else if(iconType=="2"){
-          widgetList.add(Container(
+          widgetList.add(SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             child: GestureDetector(
                 onTap: () {
                   goToNextScreen(index);
                 },
-                child:
-                Container(
-                  margin: EdgeInsets.all(3),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child:
-                    mainCategoryList[index].categoryImageApp!=''?
-                    CachedNetworkImage(
-                      fit: BoxFit.fill,
-                      imageUrl: baseUrl+main_categories_base_url+ mainCategoryList[index].categoryImageApp,
-                      placeholder: (context, url) =>
-                          Container(decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.grey[400],
-                          )),
-                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                    ):
-                    Container(
-                        child:const Icon(Icons.error),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.grey[400],
-                        )),
-                  )
-                  ,
+                child: Container(
+                  margin: const EdgeInsets.all(3),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex:8,
+                        child: Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.only(bottom: 5,right: 5),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(125),
+                            child:
+                            mainCategoryList[index].categoryImageApp!=''?
+                            CachedNetworkImage(
+                              fit: BoxFit.fill,
+                              imageUrl: baseUrl+main_categories_base_url+mainCategoryList[index].categoryImageApp,
+                              placeholder: (context, url) =>
+                                  Container(decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[400],
+                                  )),
+                            ):
+                            Container(
+                                child:const Icon(Icons.error),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[400],
+                                )),
+                          )
+                          ,
+                        ),
+                      ),
+                      Expanded(
+                        flex:1,
+                        child: Text(mainCategoryList[index].mainCategoryName,style: labelStyle,maxLines: 1,textAlign: TextAlign.center,),
+                      ),
+                    ],
+                  ),
                 )
             ),
 
@@ -7251,6 +7275,7 @@ class _CategoriesState extends State<Categories> {
                       Expanded(
                         flex:8,
                         child: Container(
+                          width: MediaQuery.of(context).size.width,
                           margin: const EdgeInsets.only(bottom: 5),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
@@ -7289,40 +7314,55 @@ class _CategoriesState extends State<Categories> {
         }
         else if(iconType=="4"){
           widgetList.add(
-              Container(
-                child: GestureDetector(
-                  onTap: () {
-                    goToNextScreen(index);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(2),
-                    height: 150,
-                    width: 130,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child:
-                      mainCategoryList[index].categoryImageApp!=''?
-                      CachedNetworkImage(
-                        fit: BoxFit.fill,
-                        imageUrl: baseUrl+main_categories_base_url+ mainCategoryList[index].categoryImageApp,
-                        placeholder: (context, url) =>
-                            Container(decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Colors.grey[400],
-                            )),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ):
-                      Container(
-                          child:const Icon(Icons.error),
-                          decoration: BoxDecoration(
+              GestureDetector(
+                onTap: () {
+                  goToNextScreen(index);
+                },
+                child: Container(
+                  margin: const EdgeInsets.all(3),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex:8,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.only(bottom: 5),
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
-                            color: Colors.grey[400],
-                          )),
-                    )
-                    ,
+                            child:
+                            mainCategoryList[index].categoryImageApp!=''?
+                            CachedNetworkImage(
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.fill,
+                              imageUrl: baseUrl+main_categories_base_url+mainCategoryList[index].categoryImageApp,
+                              placeholder: (context, url) =>
+                                  Container(decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.grey[400],
+                                  )),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
+                            ):
+                            Container(
+                                child:const Icon(Icons.error),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.grey[400],
+                                )),
+                          )
+                          ,
+                        ),
+                      ),
+                      Expanded(
+                          flex:2,
+                          child: Text(mainCategoryList[index].mainCategoryName,style: labelStyle,maxLines: 1,textAlign: TextAlign.center,)
+                      )
+                    ],
                   ),
                 ),
-              ));
+              )
+          );
         }
         else if(iconType=="5"){
           widgetList.add(

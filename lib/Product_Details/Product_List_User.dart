@@ -31,7 +31,7 @@ import '../Admin_add_Product/Components/Model/Rest_Apis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:getwidget/getwidget.dart';
 
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 
 import '../Wishlist/model/wishlist_count_model.dart';
 
@@ -244,7 +244,7 @@ class _Product_List_User extends State<Product_List_User> {
                 },
                 icon: Icon(Icons.filter_alt_outlined,color: appBarIconColor,)),
 
-            _shoppingCartBadge(),
+            //_shoppingCartBadge(),
           ]),
       body: Stack(
         children: <Widget>[
@@ -482,23 +482,23 @@ class _Product_List_User extends State<Product_List_User> {
     getData();
   }
 
-  Widget _shoppingCartBadge() {
-    return Badge(
-      badgeColor: Colors.orangeAccent,
-      position: BadgePosition.topEnd(top: 0, end: 3),
-      animationDuration: const Duration(milliseconds: 300),
-      animationType: BadgeAnimationType.slide,
-      badgeContent: Text(
-        cartCount.toString(),
-        style: const TextStyle(color: Colors.white),
-      ),
-      child: IconButton(
-          icon: Icon(Icons.shopping_cart, color: appBarIconColor),
-          onPressed: () {
-            gotoCartScreen();
-          }),
-    );
-  }
+  // Widget _shoppingCartBadge() {
+  //   return Badge(
+  //     badgeColor: Colors.orangeAccent,
+  //     position: BadgePosition.topEnd(top: 0, end: 3),
+  //     animationDuration: const Duration(milliseconds: 300),
+  //     animationType: BadgeAnimationType.slide,
+  //     badgeContent: Text(
+  //       cartCount.toString(),
+  //       style: const TextStyle(color: Colors.white),
+  //     ),
+  //     child: IconButton(
+  //         icon: Icon(Icons.shopping_cart, color: appBarIconColor),
+  //         onPressed: () {
+  //           gotoCartScreen();
+  //         }),
+  //   );
+  // }
 
   gotoCartScreen() {
     routes = MaterialPageRoute(builder: (context) => const Cart_Screen());

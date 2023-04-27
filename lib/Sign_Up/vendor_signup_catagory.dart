@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,8 @@ import '../Utils/App_Apis.dart';
 import 'package:http/http.dart' as http;
 
 class VendorSignupCatagory extends StatefulWidget {
-  const VendorSignupCatagory({Key? key}) : super(key: key);
+  bool? isFromHomeScreen;
+   VendorSignupCatagory({Key? key , this.isFromHomeScreen = false}) : super(key: key);
 
   @override
   State<VendorSignupCatagory> createState() => _VendorSignupCatagoryState();
@@ -99,13 +101,12 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
       int status = resp['status'];
       print("status" + status.toString());
       if (status == 1) {
-        VendorCatagories vendorCatagoryModel =
-            VendorCatagories.fromJson(json.decode(response.body));
+        VendorCatagories vendorCatagoryModel = VendorCatagories.fromJson(json.decode(response.body));
         // mainCategoryList=(vendorCatagoryModel!=null?vendorCatagoryModel.data:[])!;
 
         if (vendorCatagoryModel != null) {
           if (vendorCatagoryModel.data != null) {
-            mainCategoryList = vendorCatagoryModel.data!;
+            mainCategoryList = vendorCatagoryModel.data;
           }
         }
 
@@ -170,7 +171,6 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
   }
 
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     getBaseUrl();
@@ -180,6 +180,7 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("it is in .....");
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryButtonColor,
@@ -194,10 +195,10 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
       )
         :isApiCallProcessing == false && mainCategoryList.isNotEmpty
           ? Container(
-              margin: EdgeInsets.all(8),
+              margin: const EdgeInsets.all(8),
               child: GridView.builder(
                 shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
@@ -207,22 +208,25 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
                 ),
                 itemCount: mainCategoryList.length,
                 itemBuilder: (context, index) {
+                  debugPrint("mainCategoryList    length  ----- ${mainCategoryList.length}");
                   return InkWell(
                     onTap: () {
+                      log("selected index's data is ------------  ${mainCategoryList[index].fields}");
                       Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (context) => VendorDetailsForm(
+                              isFromHomeScreen: widget.isFromHomeScreen,
                                   vendorData: mainCategoryList[index],
                                 )),
                       );
                     },
                     child: Container(
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
                           color: Colors.white,
                           border: Border.all(color: primaryButtonColor),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                                 color: Color.fromRGBO(0, 0, 0, 0.15),
                                 offset: Offset(1, 6),
@@ -234,7 +238,7 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
                           Container(
                               decoration: BoxDecoration(
                                   color: primaryButtonColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                       topRight: Radius.circular(10),
                                       topLeft: Radius.circular(10))),
                               child: mainCategoryList[index]
@@ -254,7 +258,7 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
                                       imageUrl:
                                           "https://grobiz.app/GRBCRM2022/PoultryEcommerce/${main_categories_base_url}${mainCategoryList[index].categoryImageApp}",
                                       placeholder: (context, url) =>
-                                          new Container(
+                                          Container(
                                         height: 100,
                                         width:
                                             MediaQuery.of(context).size.width /
@@ -266,15 +270,16 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
                                               width:
                                               MediaQuery.of(context).size.width /
                                                   2,
-                                              color: Colors.grey,child: new Icon(Icons.error)),
+                                              color: Colors.grey,child: Icon(Icons.error)),
                                     )),
-                          SizedBox(
+                          const SizedBox(
                             height: 2,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
                                 "${mainCategoryList[index].categoryName.toLowerCase()}",
+                                overflow: TextOverflow.ellipsis,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(color: appBarIconColor)),
                           )
@@ -285,7 +290,7 @@ class _VendorSignupCatagoryState extends State<VendorSignupCatagory> {
                 },
               ),
             )
-          : Text("Catagories Not available"),
+          : const Text("Catagories Not available"),
     );
   }
 }

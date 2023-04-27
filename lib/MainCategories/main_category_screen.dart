@@ -31,7 +31,7 @@ import 'SubCategory/SubCategoriesNew.dart';
 import 'catagories_list.dart';
 import 'main_category_components.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 import 'package:getwidget/getwidget.dart';
 
 class MainCategoryScreen extends StatefulWidget {
@@ -727,24 +727,24 @@ class _MainCategoryScreen extends State<MainCategoryScreen> {
     }
   }
 
-  Widget _shoppingCartBadge() {
-    return Badge(
-      badgeColor: Colors.orangeAccent,
-      position: BadgePosition.topEnd(top: 0, end: 3),
-      animationDuration: const Duration(milliseconds: 300),
-      animationType: BadgeAnimationType.slide,
-      badgeContent: Text(
-        cartCount.toString(),
-        style: TextStyle(color: Colors.white),
-      ),
-      child: IconButton(
-          icon: Icon(Icons.shopping_cart, color: appBarIconColor),
-          onPressed: () {
-            gotoCartScreen();
-          }
-      ),
-    );
-  }
+  // Widget _shoppingCartBadge() {
+  //   return Badge(
+  //     badgeColor: Colors.orangeAccent,
+  //     position: BadgePosition.topEnd(top: 0, end: 3),
+  //     animationDuration: const Duration(milliseconds: 300),
+  //     animationType: BadgeAnimationType.slide,
+  //     badgeContent: Text(
+  //       cartCount.toString(),
+  //       style: TextStyle(color: Colors.white),
+  //     ),
+  //     child: IconButton(
+  //         icon: Icon(Icons.shopping_cart, color: appBarIconColor),
+  //         onPressed: () {
+  //           gotoCartScreen();
+  //         }
+  //     ),
+  //   );
+  // }
 
   gotoCartScreen(){
     routes = MaterialPageRoute(builder: (context) => const Cart_Screen());

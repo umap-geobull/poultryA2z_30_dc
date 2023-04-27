@@ -25,8 +25,8 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
-      case TargetPlatform.iOS:
-        return ios;
+      // case TargetPlatform.iOS:
+      //   return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -50,21 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAt8bj4UACvakZfiSy-0c1o_ivfplm7jEU',
-    appId: '1:1092536869888:android:711ee88b66a6416df7a4e5',
+    apiKey: 'AIzaSyD1rRlA1h9cPnyJUS0Qo1hPd61uUdGaIt8',
+    appId: '1:331485042758:android:e4b0bbc73e1c2607ae5247',
     messagingSenderId: '1092536869888',
-    projectId: 'ecommerce-appbuilder',
-    storageBucket: 'ecommerce-appbuilder.appspot.com',
+    projectId: 'poultrya2z-2538e',
+    storageBucket: 'poultrya2z-2538e.appspot.com',
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA8j52mmVX5Sz_DE2n-4MdKaCyZJlA0g90',
-    appId: '1:1092536869888:ios:cbbbec6379c8d13cf7a4e5',
-    messagingSenderId: '1092536869888',
-    projectId: 'ecommerce-appbuilder',
-    storageBucket: 'ecommerce-appbuilder.appspot.com',
-    androidClientId: '1092536869888-jm5331ptkp60gfogh4qk263b6fb893td.apps.googleusercontent.com',
-    iosClientId: '1092536869888-g668d3sngute1oosld4tjkbagvd9iu8a.apps.googleusercontent.com',
-    iosBundleId: 'com.geobull.geobullEcommerce',
-  );
+  // static const FirebaseOptions ios = FirebaseOptions(
+  //   apiKey: 'AIzaSyD1rRlA1h9cPnyJUS0Qo1hPd61uUdGaIt8',
+  //   appId: '1:1092536869888:ios:cbbbec6379c8d13cf7a4e5',
+  //   messagingSenderId: '1092536869888',
+  //   projectId: 'poultrya2z-2538e',
+  //   storageBucket: 'poultrya2z-2538e.appspot.com',
+  //   androidClientId: '331485042758-ev0g5cjg5smgpe342fm62tae8fp5jh6h.apps.googleusercontent.com',
+  //   iosClientId: '1092536869888-g668d3sngute1oosld4tjkbagvd9iu8a.apps.googleusercontent.com',
+  //   iosBundleId: 'com.geobull.geobullEcommerce',
+  // );
 }

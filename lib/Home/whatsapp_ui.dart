@@ -32,7 +32,7 @@ class _Whatsapp extends State<MessageOnWhatsApp>{
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment:  MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.whatsapp_rounded, color: Colors.white, size: 18,),
+            Icon(Icons.chat_rounded, color: Colors.white, size: 18,),
             SizedBox(width: 5,),
             Text('Chat', style: TextStyle(
                 fontSize: 14,

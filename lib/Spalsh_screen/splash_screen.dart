@@ -1,5 +1,7 @@
 
 
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ import '../poultry_vendor/Vendor_details_with_edit.dart';
 class SplashScreen extends StatefulWidget{
   String admin_auto_id='63b2612f9821ce37456a4b31';
 
-  SplashScreen(this.admin_auto_id);
+  SplashScreen();
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
@@ -64,7 +66,8 @@ class _SplashScreenState extends State<SplashScreen>{
     getAppLogo();
     //getDeepLinkAdminId();
     //getAppMaintenanceStatus();
-    checkAdminId();
+    getAdminProfile(admin_auto_id);
+    //checkAdminId();
   }
 
   saveAppBaseUrl() async{
@@ -80,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen>{
         child: Center(
           child:
           businessLogo == 'No Data' || businessLogo.isEmpty?
-          SizedBox(
+          const SizedBox(
             width: 80,
             child: GFLoader(
                 type:GFLoaderType.circle
@@ -98,46 +101,6 @@ class _SplashScreenState extends State<SplashScreen>{
     );
   }
 
-  // check if app is under maintenace
-  getAppMaintenanceStatus() async {
-    if(this.mounted){
-      setState(() {
-        iSApiCallProcessing=true;
-      });
-    }
-
-    var url=AppConfig.grobizBaseUrl+get_maintenance_status;
-    var uri = Uri.parse(url);
-    final response = await http.get(uri);
-    if (response.statusCode == 200) {
-      iSApiCallProcessing=false;
-
-      final resp=jsonDecode(response.body);
-      int status=resp['status'];
-      if(status==1){
-        MaintenanceStatusModel maintenanceStatusModel=MaintenanceStatusModel.fromJson(json.decode(response.body));
-        String isUnderMaintenace=maintenanceStatusModel.maintanceStatusData[0].maintanceStatus;
-        if(isUnderMaintenace=='Enable'){
-          String maintenanceMessage=maintenanceStatusModel.maintanceStatusData[0].message;
-
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => MaintenanceScreen(widget.admin_auto_id, maintenanceMessage)),
-                  (Route<dynamic> route) => false
-          );
-
-        }
-        else{
-          checkAdminId();
-        }
-      }
-    }
-
-    else if(response.statusCode==500){
-      if(this.mounted){
-        setState(() {});
-      }
-    }
-  }
 
   Future getAdminProfile(String admin_id) async {
     print("Get admin profile");
@@ -196,20 +159,30 @@ class _SplashScreenState extends State<SplashScreen>{
           //saveAdminId();
           saveAppUiSession(appUiStyle);
 
-          print("Get UI user type ${user_type}");
-          if(user_type == 'customer'){
-            getCustomerLoginInfo();
-          }else if(user_type == 'Vendor'){
-            getVendorLoginInfo();
-          }
-          else{
-            getAdminLoginInfo();
-          }
+
+          getusertype();
         }
       }
     });
   }
-
+  getusertype()
+  async {
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    String? userType =prefs.getString('user_type');
+    if(userType!=null) {
+      this.user_type = userType;
+    }
+    setState(() {});
+    print("Get UI user type ${user_type}");
+    if(user_type == 'customer'){
+      getCustomerLoginInfo();
+    }else if(user_type == 'Vendor'){
+      getVendorLoginInfo();
+    }
+    else{
+      getAdminLoginInfo();
+    }
+  }
   // saveDeepLinkAdminId() async{
   //   SharedPreferences prefs= await SharedPreferences.getInstance();
   //   prefs.setString('deep_link_admin_id','63b2612f9821ce37456a4b31');
@@ -254,16 +227,6 @@ class _SplashScreenState extends State<SplashScreen>{
         });
       }
     }
-    // else if(deep_link_admin_auto_id_session.isNotEmpty){
-    //   if(this.mounted){
-    //     setState(() {
-    //       user_type = 'customer';
-    //       admin_auto_id = deep_link_admin_auto_id_session;
-    //       getAdminProfile(admin_auto_id);
-    //       //getAppUiDetails();
-    //     });
-    //   }
-    // }
     else{
       print("user admin is empty");
       checkAdminIdStoredInSession();
@@ -418,13 +381,12 @@ class _SplashScreenState extends State<SplashScreen>{
     }
   }
 
-
   getVendorLoginInfo() async{
     SharedPreferences prefs= await SharedPreferences.getInstance();
     bool? isLogin =prefs.getBool('is_login');
-    bool? isAddVendor =prefs.getBool('VENDOR_ADDED');
+    //bool? isAddVendor =prefs.getBool('VENDOR_ADDED');
     print("login customer"+isLogin.toString() );
-    print("vendo customer"+isAddVendor.toString() );
+    //print("vendo customer"+isAddVendor.toString() );
 
     if(isLogin !=null){
       if(isLogin ==true){

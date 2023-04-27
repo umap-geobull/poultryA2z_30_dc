@@ -1,11 +1,16 @@
+// ignore_for_file: unnecessary_string_interpolations, prefer_interpolation_to_compose_strings
+
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_extend/share_extend.dart';
@@ -21,7 +26,8 @@ import '../poultry_vendor/Vendor_details_with_edit.dart';
 
 class VendorDetailsForm extends StatefulWidget {
   final VendorData vendorData;
-  const VendorDetailsForm({Key? key, required this.vendorData})
+  bool? isFromHomeScreen;
+   VendorDetailsForm({Key? key, required this.vendorData,this.isFromHomeScreen = false})
       : super(key: key);
 
   @override
@@ -48,8 +54,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(
-        "Text editing lenth ${textController.length} field length ${widget.vendorData.fields.length}");
+    print("Text editing lenth ${textController.length} field length ${widget.vendorData.fields.length}");
     widget.vendorData.fields.forEach((e) => textController.insert(
         textController.length, new TextEditingController()));
 
@@ -156,7 +161,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
           ,],
       ),
       body: Container(
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         child: Stack(
           children: [
             Padding(
@@ -169,22 +174,19 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(
                           widget.vendorData.fields.length,
-                          (index) => widget
-                                      .vendorData.fields[index].inputType ==
-                                  "File"
+                          (index) => widget.vendorData.fields[index].inputType == "File"
                               ? Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    widget.vendorData.fields[index].required ==
-                                            "Yes"
+                                    widget.vendorData.fields[index].required == "Yes"
                                         ? Row(
                                             children: [
                                               Text(
                                                   "${widget.vendorData.fields[index].labels.toLowerCase()}",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.black)),
-                                              Text(" *",
+                                              const Text(" *",
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.red)),
@@ -192,7 +194,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                           )
                                         : Text(
                                             "${widget.vendorData.fields[index].labels.toLowerCase()}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.black)),
                                     const SizedBox(
@@ -212,11 +214,9 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                 ],
                                               );
                                               if (result != null) {
-                                                PlatformFile file =
-                                                    result.files.first;
+                                                PlatformFile file = result.files.first;
                                                 setState(() {
-                                                  resume_file[index] =
-                                                      File(file.path!);
+                                                  resume_file[index] = File(file.path!);
                                                   print(
                                                       "${resume_file[index].path.isEmpty}");
                                                   isfileuploaded[index] = true;
@@ -237,14 +237,14 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                 // ?
                                                 Container(
                                                     margin:
-                                                        EdgeInsets.only(top: 5),
+                                                        const EdgeInsets.only(top: 5),
                                                     decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.all(
+                                                          const BorderRadius.all(
                                                               Radius.circular(
                                                                   10)),
                                                       color: Colors.white,
-                                                      boxShadow: [
+                                                      boxShadow: const [
                                                         BoxShadow(
                                                             color:
                                                                 Color.fromRGBO(
@@ -268,10 +268,10 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                               .width,
                                                           height: 120,
                                                           padding:
-                                                              EdgeInsets.all(
+                                                              const EdgeInsets.all(
                                                                   30),
                                                           // color: Colors.white!,
-                                                          child: Icon(Icons.image,size: 70,color: Colors.grey,),
+                                                          child: const Icon(Icons.image,size: 70,color: Colors.grey,),
                                                         ),
                                                         Container(
                                                             width:
@@ -283,7 +283,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                             //color: Colors.white!,
                                                             alignment: Alignment
                                                                 .center,
-                                                            child: Text(
+                                                            child: const Text(
                                                               'Upload Image here',
                                                               style: TextStyle(
                                                                   fontSize: 16),
@@ -352,7 +352,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                 // ?
                                                 Container(
                                                     margin:
-                                                        EdgeInsets.only(top: 5),
+                                                        const EdgeInsets.only(top: 5),
                                                     decoration: BoxDecoration(
                                                       borderRadius:
                                                           const BorderRadius.all(
@@ -379,7 +379,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                               .width,
                                                           height: 120,
                                                           padding:
-                                                              EdgeInsets.all(
+                                                              const EdgeInsets.all(
                                                                   30),
                                                           // color: Colors.white!,
                                                           child: Image.file(
@@ -397,7 +397,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                             //color: Colors.white!,
                                                             alignment: Alignment
                                                                 .center,
-                                                            child: Text(
+                                                            child: const Text(
                                                               'Upload Image here',
                                                               style: TextStyle(
                                                                   fontSize: 16),
@@ -437,16 +437,15 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                               : Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    widget.vendorData.fields[index].required ==
-                                            "Yes"
+                                    widget.vendorData.fields[index].required == "Yes"
                                         ? Row(
                                             children: [
                                               Text(
                                                   "${widget.vendorData.fields[index].labels.toLowerCase()}",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.black)),
-                                              Text(" *",
+                                              const Text(" *",
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       color: Colors.red)),
@@ -454,7 +453,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                           )
                                         : Text(
                                             "${widget.vendorData.fields[index].labels.toLowerCase()}",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.black)),
                                     const SizedBox(
@@ -468,9 +467,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                     //     child:
                                     TextFormField(
                                       controller: textController[index],
-                                      validator: widget.vendorData.fields[index]
-                                                  .required ==
-                                              'Yes'
+                                      validator: widget.vendorData.fields[index].required == 'Yes'
                                           ? (name) {
                                               print("Is require");
                                               if (name!.isEmpty) {
@@ -485,7 +482,6 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                                     return null;
                                                   }
                                                 }
-
                                                 if (widget.vendorData.fields[index].inputType=="Number") {
                                                   if(name.length != 10){
                                                     return 'please Enter the valid ${widget.vendorData.fields[index].fieldName.toLowerCase()}';
@@ -500,6 +496,12 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                           : (name) {
                                               print("Is Not require");
                                             },
+
+                                      inputFormatters: [
+                                        FilteringTextInputFormatter(
+                                            RegExp(","),
+                                            allow: false),
+                                      ],
                                       decoration: InputDecoration(
                                           filled: true,
                                           fillColor: Colors.white,
@@ -554,7 +556,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
               left: 0,
               right: 0,
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 color: Colors.white,
                 child: isApiProcessing == true
                     ? Container(
@@ -576,9 +578,9 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                             color: primaryButtonColor,
                           ),
                           height: 40,
-                          padding: EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(4),
                           alignment: Alignment.center,
-                          child: Text(
+                          child: const Text(
                             "Sign up",
                             style: TextStyle(
                                 color: Colors.white,
@@ -615,8 +617,8 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                   _displayFromDialog(context)
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.only(left: 5),
-                                  padding: EdgeInsets.only(top:5,bottom: 5,left: 5,right: 5),
+                                  margin: const EdgeInsets.only(left: 5),
+                                  padding: const EdgeInsets.only(top:5,bottom: 5,left: 5,right: 5),
                                   decoration: BoxDecoration(
                                     //color: Colors.blue,
                                       borderRadius: BorderRadius.circular(5)
@@ -636,7 +638,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                       )
                     ],
                   ),
-                  SizedBox(width: 12,),
+                  const SizedBox(width: 12,),
                   // Row(
                   //   children: <Widget>[
                   //     //Text('Add New '+page_title),
@@ -673,7 +675,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
-                        child: Text('CANCEL'),
+                        child: const Text('CANCEL'),
                         onPressed: () {
                           setState(() {
                             Navigator.pop(context);
@@ -681,9 +683,9 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                           });
                         },
                       ),
-                      SizedBox(width: 10,),
+                      const SizedBox(width: 10,),
                       ElevatedButton(
-                        child: Text('OK'),
+                        child: const Text('OK'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.green,
                         ),
@@ -721,8 +723,8 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                                   generateCsv()
                                 },
                                 child: Container(
-                                  margin: EdgeInsets.only(left: 5),
-                                  padding: EdgeInsets.only(top:5,bottom: 5,left: 5,right: 5),
+                                  margin: const EdgeInsets.only(left: 5),
+                                  padding: const EdgeInsets.only(top:5,bottom: 5,left: 5,right: 5),
                                   decoration: BoxDecoration(
                                     //color: Colors.blue,
                                       borderRadius: BorderRadius.circular(5)
@@ -741,7 +743,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                       )
                     ],
                   ),
-                  SizedBox(width: 10,),
+                  const SizedBox(width: 10,),
                   Row(
                     children: <Widget>[
                       //Text('Add New '+page_title),
@@ -753,13 +755,13 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                               _csvSampleDialog(context)
                             },
                             child: Container(
-                              margin: EdgeInsets.only(left: 5),
-                              padding: EdgeInsets.only(top:5,bottom: 5,left: 5,right: 5),
+                              margin: const EdgeInsets.only(left: 5),
+                              padding: const EdgeInsets.only(top:5,bottom: 5,left: 5,right: 5),
                               decoration: BoxDecoration(
                                 //color: Colors.blue,
                                   borderRadius: BorderRadius.circular(5)
                               ),
-                              child: Text(
+                              child: const Text(
                                 '2. Import from .csv',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -780,7 +782,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
                         ),
-                        child: Text('CANCEL'),
+                        child: const Text('CANCEL'),
                         onPressed: () {
                           setState(() {
                             Navigator.pop(context);
@@ -814,7 +816,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
     }
     dataList.add(data);
 
-    String csvData = ListToCsvConverter().convert(dataList);
+    String csvData = const ListToCsvConverter().convert(dataList);
 
     final tempDir = await getTemporaryDirectory();
     final file = await new File('${tempDir.path}/sample${DateTime.now()}.csv').create();
@@ -840,11 +842,18 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
         .toList();
     List<dynamic> title=fields[0];
 
-    print(title.toString());
-    print(fields.toString());
+    print("titles from csv ... ${title.toString()}");
+    print("values from csv ... ${fields[1].toString()}");
+
+    var csvValueString = fields[1]
+        .map((item) => item.toString().replaceAll(",", " "))
+        .toList()
+        .join(",");
+
+    print("values after removed , and joining as string... \n${fields[1].toString()}\n$csvValueString");
+
     for(int i=0;i<widget.vendorData.fields.length;i++) {
-      print("csv"+title[i].toString().trim());
-      print("header"+widget.vendorData.fields[i].fieldName.toString());
+
       if(title[i].toString().trim().toLowerCase()==widget.vendorData.fields[i].fieldName.toString().toLowerCase()){
         //print("inner"+headerColumn[i].columnValue);
         // if(widget.vendorData.fields[i].columnValue.contains("Customer Name") || widget.vendorData.fields[i].columnValue.contains("Name"))
@@ -862,7 +871,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
       }else
       {
         csvColumn.clear();
-        Fluttertoast.showToast(msg: "Columns does't match from app and csv file", backgroundColor: Colors.grey,);
+        Fluttertoast.showToast(msg: "Columns doesn't match from app and csv file", backgroundColor: Colors.grey,);
         break;
       }
     }
@@ -896,7 +905,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
     return await csvFile
         .transform(utf8.decoder)
         .transform(
-      CsvToListConverter(),
+      const CsvToListConverter(),
     ).toList();
   }
 
@@ -924,8 +933,18 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
     request.fields["USER_AUTO_ID"] = userID!;
     request.fields["ADMIN_AUTO_ID"] = widget.vendorData.adminAutoId;
     request.fields["APP_TYPE_ID"] = widget.vendorData.appTypeId;
+    request.fields["ADMIN_APPROVAL"] = "No";
 
+
+    List fieldValueList= [];
+    List fieldNameList= [];
+    List fieldTypeList= [];
     for (int i = 0; i < widget.vendorData.fields.length; i++) {
+      if(widget.vendorData.fields[i].fieldName.toString() != "VENDOR_PROFILE"&& widget.vendorData.fields[i].fieldName.toString() != "SUPPLIER_PROFILE"){
+        fieldNameList.add(widget.vendorData.fields[i].fieldName);
+        print("fieldNameList...${widget.vendorData.fields[i].fieldName}...$fieldNameList");
+      }
+
       if (widget.vendorData.fields[i].inputType == "File") {
         try {
           if (resume_file != null) {
@@ -944,16 +963,38 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
           print('resume not selected');
           request.fields["${widget.vendorData.fields[i].fieldName}"] = '';
         }
-      } else {
+      }
+      else {
+        if(textController[i].text.isNotEmpty){
+          fieldValueList.add(textController[i].text);
+          fieldTypeList.add("Text");
+        }else{
+          fieldValueList.add(" ");
+          fieldTypeList.add(" ");
+        }
         request.fields['${widget.vendorData.fields[i].fieldName}'] =
             textController[i].text;
       }
     }
+    ///FIELD_NAME
+    request.fields["FIELD_NAME"] = fieldNameList
+        .map((item) => item)
+        .toList()
+        .join(",");
+    ///FIELD_VALUE
+    request.fields["FIELD_VALUE"] = fieldValueList
+        .map((item) => item)
+        .toList()
+        .join(",");
+    ///FIELD_TYPE
+    request.fields["FIELD_TYPE"] = fieldTypeList
+        .map((item) => item)
+        .toList()
+        .join(",");
 
-    http.Response response =
-        await http.Response.fromStream(await request.send());
+    http.Response response = await http.Response.fromStream(await request.send());
 
-    print("login response  ${response.body}");
+    print("add vendor response  ${response.body}");
     if (response.statusCode == 200) {
       setState(() {
         isApiProcessing = false;
@@ -968,7 +1009,8 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
       //           builder: (context) => OtpScreen(mobileNumber,country_code+'-'+phone_code)));
       // }
       // else if(status=="0"){
-      Fluttertoast.showToast(msg: response.statusCode.toString());
+      // Fluttertoast.showToast(msg: response.statusCode.toString());
+      // Fluttertoast.showToast(msg: response.statusCode.toString());
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       prefs.setBool('VENDOR_ADDED', true);
@@ -977,8 +1019,13 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
       //     HomeScreen.routeName, (Route<dynamic> route) => false);
       // Navigator.of(context).pushNamedAndRemoveUntil(
       //     VendorDetailsWithEdit.routeName, (Route<dynamic> route) => false);
-      Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) =>  VendorDetailsWithEdit("0")));
+     if( widget.isFromHomeScreen == false){
+       Navigator.pushReplacement(context, MaterialPageRoute(
+           builder: (context) =>  VendorDetailsWithEdit("0")));
+     }else{
+       Get.close(2);
+       Fluttertoast.showToast(msg: "Vendor Send for Approvel");
+     }
       // }
     } else {
       setState(() {
@@ -992,7 +1039,7 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
     }
   }
 
-    Future addVendorFromcsv(List<dynamic> vendorlist) async {
+  Future addVendorFromcsv(List<dynamic> vendorlist) async {
       setState(() {
         isApiProcessing = true;
       });
@@ -1016,8 +1063,21 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
       request.fields["USER_AUTO_ID"] = userID!;
       request.fields["ADMIN_AUTO_ID"] = widget.vendorData.adminAutoId;
       request.fields["APP_TYPE_ID"] = widget.vendorData.appTypeId;
+      request.fields["ADMIN_APPROVAL"] = "Yes";
+
+
+
+
+
+      List fieldValueList= [];
+      List fieldNameList= [];
+      List fieldTypeList= [];
 
       for (int i = 0; i < widget.vendorData.fields.length; i++) {
+        if(widget.vendorData.fields[i].fieldName.toString() != "VENDOR_PROFILE"&& widget.vendorData.fields[i].fieldName.toString() != "SUPPLIER_PROFILE"){
+          fieldNameList.add(widget.vendorData.fields[i].fieldName);
+          print("fieldNameList...${widget.vendorData.fields[i].fieldName}...$fieldNameList");
+        }
         if (widget.vendorData.fields[i].inputType == "File") {
           // try {
           //   if (resume_file != null) {
@@ -1037,10 +1097,34 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
           //   request.fields["${widget.vendorData.fields[i].fieldName}"] = '';
           // }
         } else {
+          log("vendorlist[i] ... ${vendorlist[i]}");
+          if(vendorlist[i].toString().isNotEmpty){
+            fieldValueList.add(vendorlist[i].toString());
+            fieldTypeList.add("Text");
+          }else{
+            fieldValueList.add(" ");
+            fieldTypeList.add(" ");
+          }
+          print("../././.${vendorlist[i].toString()}");
           request.fields['${widget.vendorData.fields[i].fieldName}'] =
              vendorlist[i].toString();
         }
       }
+      ///FIELD_NAME
+      request.fields["FIELD_NAME"] = fieldNameList
+          .map((item) => item)
+          .toList()
+          .join(",");
+      ///FIELD_VALUE
+      request.fields["FIELD_VALUE"] = fieldValueList
+          .map((item) => item)
+          .toList()
+          .join(",");
+      ///FIELD_TYPE
+      request.fields["FIELD_TYPE"] = fieldTypeList
+          .map((item) => item)
+          .toList()
+          .join(",");
 
       http.Response response =
       await http.Response.fromStream(await request.send());
@@ -1052,10 +1136,11 @@ class _VendorDetailsFormState extends State<VendorDetailsForm> {
         });
 
         final resp = jsonDecode(response.body);
-        int status = resp['status'];
+        int status =  resp['status'];
 
         Fluttertoast.showToast(msg: "Data imported successfully ");
         SharedPreferences prefs = await SharedPreferences.getInstance();
+
 
       } else {
         setState(() {

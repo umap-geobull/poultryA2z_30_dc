@@ -29,7 +29,7 @@ import 'package:getwidget/getwidget.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import '../Admin_add_Product/Components/Model/product_color_model.dart';
 import '../Admin_add_Product/Components/Model/product_details_model.dart';
-import 'package:badges/badges.dart';
+// import 'package:badges/badges.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:poultry_a2z/Home/Components/UserLocation/select_pincode_bottomsheet.dart';
@@ -159,24 +159,24 @@ class _ProductDetailScreen extends State<ProductDetailScreen> {
     }
   }
 
-  Widget _shoppingCartBadge() {
-    return Badge(
-      badgeColor: Colors.orangeAccent,
-      position: BadgePosition.topEnd(top: 0, end: 3),
-      animationDuration: const Duration(milliseconds: 300),
-      animationType: BadgeAnimationType.slide,
-      badgeContent: Text(
-        cartCount.toString(),
-        style: const TextStyle(color: Colors.white),
-      ),
-      child: IconButton(
-          icon: const Icon(Icons.shopping_cart, color: Colors.black),
-          onPressed: () {
-            gotoCartScreen();
-          }
-      ),
-    );
-  }
+  // Widget _shoppingCartBadge() {
+  //   return Badge(
+  //     badgeColor: Colors.orangeAccent,
+  //     position: BadgePosition.topEnd(top: 0, end: 3),
+  //     animationDuration: const Duration(milliseconds: 300),
+  //     animationType: BadgeAnimationType.slide,
+  //     badgeContent: Text(
+  //       cartCount.toString(),
+  //       style: const TextStyle(color: Colors.white),
+  //     ),
+  //     child: IconButton(
+  //         icon: const Icon(Icons.shopping_cart, color: Colors.black),
+  //         onPressed: () {
+  //           gotoCartScreen();
+  //         }
+  //     ),
+  //   );
+  // }
 
   @override
   void initState() {
@@ -276,7 +276,7 @@ class _ProductDetailScreen extends State<ProductDetailScreen> {
               //   icon: Icon(Icons.favorite_border_rounded, color: Colors.black87),
               // ),
 
-              _shoppingCartBadge(),
+              //_shoppingCartBadge(),
             ]
         ):
         null,

@@ -13,6 +13,528 @@ import 'package:http/http.dart' as http;
 
 import 'Model/VendorApprovalModule.dart';
 
+// class Disapproved_Vendors extends StatefulWidget {
+//   Disapproved_Vendors({
+//     Key? key,
+//     // required this.type,
+//     // required this.main_cat_id,
+//     // required this.sub_cat_id,
+//     // required this.brand_id,
+//     // required this.home_componet_id,
+//     // required this.offer_id
+//   }) : super(key: key);
+//
+//   // String type;
+//   // String main_cat_id;
+//   // String sub_cat_id;
+//   // String brand_id;
+//   // String home_componet_id;
+//   // String offer_id;
+//
+//   @override
+//   _Disapproved_VendorsState createState() =>
+//       _Disapproved_VendorsState();
+// }
+//
+// class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
+//   late Route routes;
+//   bool isApiCallProcessing = false;
+//   bool isDeleteProcessing = false;
+//   String baseUrl = '',
+//       user_id = '',
+//       admin_auto_id = '',
+//       app_type_id = '',
+//       user_type = '';
+//   List<String> categories = [];
+//   bool isfilter = false;
+//   late File icon_img;
+//   late XFile pickedImageFile;
+//   Color appBarColor = Colors.white,
+//       appBarIconColor = Colors.black,
+//       primaryButtonColor = Colors.orange,
+//       secondaryButtonColor = Colors.orangeAccent;
+//
+//   Color bottomBarColor = Colors.white, bottomMenuIconColor = Color(0xFFFF7643);
+//
+//   List<GetVendorListCategory> vendor_list = [];
+//
+//   void getappUi() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     String? appBarColor = prefs.getString('appbarColor');
+//     String? appbarIcon = prefs.getString('appbarIconColor');
+//     String? primaryButtonColor = prefs.getString('primaryButtonColor');
+//     String? secondaryButtonColor = prefs.getString('secondaryButtonColor');
+//     String? bottomBarColor = prefs.getString('bottomBarColor');
+//     String? bottombarIcon = prefs.getString('bottomBarIconColor');
+//
+//     if (appBarColor != null) {
+//       this.appBarColor = Color(int.parse(appBarColor));
+//     }
+//
+//     if (appbarIcon != null) {
+//       this.appBarIconColor = Color(int.parse(appbarIcon));
+//     }
+//
+//     if (primaryButtonColor != null) {
+//       this.primaryButtonColor = Color(int.parse(primaryButtonColor));
+//     }
+//
+//     if (secondaryButtonColor != null) {
+//       this.secondaryButtonColor = Color(int.parse(secondaryButtonColor));
+//     }
+//     if (bottomBarColor != null) {
+//       this.bottomBarColor = Color(int.parse(bottomBarColor));
+//       setState(() {});
+//     }
+//
+//     if (bottombarIcon != null) {
+//       this.bottomMenuIconColor = Color(int.parse(bottombarIcon));
+//       setState(() {});
+//     }
+//     if (this.mounted) {
+//       setState(() {});
+//     }
+//   }
+//
+//   void getBaseUrl() async {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     String? baseUrl = prefs.getString('base_url');
+//     String? userId = prefs.getString('user_id');
+//     String? adminId = prefs.getString('admin_auto_id');
+//     String? apptypeid = prefs.getString('app_type_id');
+//     String? userType = prefs.getString('user_type');
+//
+//     if (baseUrl != null &&
+//         userId != null &&
+//         adminId != null &&
+//         apptypeid != null &&
+//         userType != null) {
+//       if (this.mounted) {
+//         this.admin_auto_id = adminId;
+//         this.baseUrl = baseUrl;
+//         this.user_id = userId;
+//         this.app_type_id = apptypeid;
+//         this.user_type = userType;
+//         getVendorData();
+//       }
+//     }
+//   }
+//
+//   void getVendorData() async {
+//     if (mounted) {
+//       setState(() {
+//         isApiCallProcessing = true;
+//       });
+//     }
+//
+//     var url = baseUrl + 'api/' + get_disapproved_vendor_list;
+//
+//     var uri = Uri.parse(url);
+//
+//     final body = {
+//       "admin_auto_id": admin_auto_id,
+//       //"user_auto_id":user_id,
+//       //"category_auto_id":user_id,
+//     };
+//     print(body.toString());
+//     print(url);
+//     final response = await http.post(uri, body: body);
+//     if (response.statusCode == 200) {
+//       isApiCallProcessing = false;
+//       print(response.body.toString());
+//       final resp = jsonDecode(response.body);
+//       int status = resp['status'];
+//       if (status == 1) {
+//         VendorApprovalList Jobsmodel =
+//         VendorApprovalList.fromJson(json.decode(response.body));
+//         vendor_list = Jobsmodel.data;
+//
+//         if (mounted) {
+//           setState(() {});
+//         }
+//       } else {
+//         isApiCallProcessing = false;
+//         if (mounted) {
+//           setState(() {});
+//         }
+//       }
+//     } else if (response.statusCode == 500) {
+//       if (this.mounted) {
+//         setState(() {
+//           isApiCallProcessing = false;
+//         });
+//       }
+//       Fluttertoast.showToast(
+//         msg: "Server error ",
+//         backgroundColor: Colors.grey,
+//       );
+//     }
+//   }
+//
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//
+//     getappUi();
+//     getBaseUrl();
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.grey[200],
+//       body: Column(
+//         children: <Widget>[
+//           vendor_list.isNotEmpty?
+//           SingleChildScrollView(
+//             child: Container(
+//                 height: MediaQuery.of(context).size.height / 1.27,
+//                 padding: const EdgeInsets.only(top: 10),
+//                 margin: EdgeInsets.only(left: 15, right: 15),
+//                 child: ListView.builder(
+//                   scrollDirection: Axis.vertical,
+//                   itemCount: vendor_list.length,
+//                   itemBuilder: (context, index) => InkWell(
+//                     onTap: () {
+//                       // Navigator.push(context,
+//                       // MaterialPageRoute(builder: (context) => VendorDetailsWithCustomer( vendor: vendor_list[index],)));
+//                     },
+//                     child: Container(
+//                       height: 280,
+//                       width: MediaQuery.of(context).size.width,
+//                       margin: EdgeInsets.only(bottom: 10),
+//                       decoration: BoxDecoration(
+//                           color: Colors.white,
+//                           borderRadius: BorderRadius.circular(10)),
+//                       child: ClipRRect(
+//                         borderRadius: BorderRadius.circular(10),
+//                         child: Stack(
+//                           children: [
+//                             Column(
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: <Widget>[
+//                                 vendor_list[index].SUPPLIERPROFILE.isEmpty
+//                                     ? Expanded(
+//                                     flex: 5,
+//                                     child: Container(
+//                                       width:
+//                                       MediaQuery.of(context).size.width,
+//                                       height: 220,
+//                                       color: Colors.grey[200],
+//                                       child: Image(
+//                                         image: AssetImage(
+//                                             'assets/thumbnail.jpeg'),
+//                                       ),
+//                                     ))
+//                                     : Expanded(
+//                                   flex: 5,
+//                                   child: CachedNetworkImage(
+//                                     fit: BoxFit.fill,
+//                                     width:
+//                                     MediaQuery.of(context).size.width,
+//                                     height: 220,
+//                                     imageUrl:
+//                                     "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${vendor_list[index].SUPPLIERPROFILE}",
+//                                     placeholder: (context, url) =>
+//                                     new Container(
+//                                       width: MediaQuery.of(context)
+//                                           .size
+//                                           .width,
+//                                       height: 220,
+//                                       color: Colors.grey,
+//                                     ),
+//                                     errorWidget: (context, url, error) =>
+//                                         Container(
+//                                             width: MediaQuery.of(context)
+//                                                 .size
+//                                                 .width,
+//                                             height: 220,
+//                                             color: Colors.grey,
+//                                             child: new Icon(Icons.error)),
+//                                   ),
+//                                 ),
+//                                 Expanded(
+//                                     flex: 1,
+//                                     child: Padding(
+//                                       padding: EdgeInsets.only(
+//                                           left: 10,
+//                                           right: 10,
+//                                           top: 5,
+//                                           bottom: 5),
+//                                       child: Text(
+//                                         vendor_list[index].FIRMNAME.isEmpty
+//                                             ? "N.A."
+//                                             : vendor_list[index].FIRMNAME,
+//                                         style: TextStyle(
+//                                             color: Colors.blueGrey,
+//                                             fontSize: 20),
+//                                       ),
+//                                     )),
+//                                 Expanded(
+//                                     flex: 1,
+//                                     child: SizedBox(
+//                                         width:
+//                                         MediaQuery.of(context).size.width,
+//                                         child: Padding(
+//                                           padding: EdgeInsets.only(
+//                                               left: 10,
+//                                               right: 10,
+//                                               bottom: 2,
+//                                               top: 5),
+//                                           child: Row(
+//                                             crossAxisAlignment:
+//                                             CrossAxisAlignment.start,
+//                                             children: <Widget>[
+//                                               // Icon(Icons.location_on, color: kMainColor,size: 20,),
+//                                               // SizedBox(width: 5,),
+//                                               Flexible(
+//                                                   child: Text(
+//                                                     vendor_list[index]
+//                                                         .OWNERNAME
+//                                                         .isEmpty
+//                                                         ? "N.A."
+//                                                         : "${vendor_list[index].OWNERNAME}",
+//                                                   ))
+//                                             ],
+//                                           ),
+//                                         ))),
+//
+//                                 Divider(
+//                                   height: 5,
+//                                   thickness: 5,
+//                                   color: Colors.grey[500],
+//                                 ),
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 )),
+//           ):Container(),
+//           isApiCallProcessing == false && vendor_list.isEmpty
+//               ? Container(
+//               alignment: Alignment.center,
+//               width: MediaQuery.of(context).size.width,
+//               height: MediaQuery.of(context).size.height / 1.3,
+//               child: const Text('No vendors available'))
+//               : Container(),
+//           isApiCallProcessing == true
+//               ? Container(
+//             alignment: Alignment.center,
+//             width: MediaQuery.of(context).size.width,
+//             height: MediaQuery.of(context).size.height / 1.3,
+//             child: const GFLoader(type: GFLoaderType.circle),
+//           )
+//               : Container()
+//         ],
+//       ),
+//     );
+//   }
+//
+//   Future<void> SendApproval_vendor(
+//       String vendor_id, String approval, String category_id) async {
+//     if (mounted) {
+//       setState(() {
+//         isApiCallProcessing = true;
+//       });
+//     }
+//
+//     final body = {
+//       "vendor_auto_id": vendor_id,
+//       "category_auto_id": category_id,
+//       "admin_auto_id": admin_auto_id,
+//       "user_auto_id": user_id,
+//       "status": approval,
+//     };
+//     var url = baseUrl + 'api/' + approve_vendor;
+//     //print(body.toString());
+//     //print(url);
+//     Uri uri = Uri.parse(url);
+//
+//     final response = await http.post(uri, body: body);
+//     print(response.statusCode.toString());
+//     if (response.statusCode == 200) {
+//       isApiCallProcessing = false;
+//
+//       final resp = jsonDecode(response.body);
+//       int status = resp['status'];
+//       print("status=>" + status.toString());
+//       if (status == 1) {
+//         Fluttertoast.showToast(
+//           msg: "Vendor " + approval + " successfully",
+//           backgroundColor: Colors.grey,
+//         );
+//         vendor_list.clear();
+//         getVendorData();
+//       } else {
+//         print('empty');
+//       }
+//       // if(mounted){
+//       //   setState(() {});
+//       // }
+//     } else if (response.statusCode == 500) {
+//       isApiCallProcessing = false;
+//       Fluttertoast.showToast(
+//         msg: "server error",
+//         backgroundColor: Colors.grey,
+//       );
+//     }
+//   }
+//
+//   Future<bool> showAlert(String jobid, String category_id) async {
+//     return await showDialog(
+//       context: context,
+//       builder: (context) => AlertDialog(
+//           backgroundColor: Colors.yellow[50],
+//           title: const Text(
+//             'Are you sure?',
+//             style: TextStyle(color: Colors.black87),
+//           ),
+//           content: Wrap(
+//             children: <Widget>[
+//               Container(
+//                 child: Column(
+//                   children: <Widget>[
+//                     const Text(
+//                       'Do you want to approve this vendor',
+//                       style: TextStyle(color: Colors.black54),
+//                     ),
+//                     const SizedBox(
+//                       height: 10,
+//                     ),
+//                     Row(
+//                       crossAxisAlignment: CrossAxisAlignment.end,
+//                       mainAxisAlignment: MainAxisAlignment.end,
+//                       children: <Widget>[
+//                         Container(
+//                             child: ElevatedButton(
+//                               onPressed: () {
+//                                 Navigator.pop(context);
+//                                 SendApproval_vendor(jobid, 'Approved', category_id);
+//                               },
+//                               child: const Text("Yes",
+//                                   style: TextStyle(
+//                                       color: Colors.black54, fontSize: 13)),
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: Colors.green[200],
+//                                 //minimumSize: Size(70, 30),
+//                                 shape: const RoundedRectangleBorder(
+//                                   borderRadius:
+//                                   BorderRadius.all(Radius.circular(2.0)),
+//                                 ),
+//                               ),
+//                             )),
+//                         const SizedBox(
+//                           width: 10,
+//                         ),
+//                         Container(
+//                             child: ElevatedButton(
+//                               onPressed: () {
+//                                 Navigator.of(context).pop();
+//                               },
+//                               child: const Text("No",
+//                                   style: TextStyle(
+//                                       color: Colors.black54, fontSize: 13)),
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: Colors.blue[200],
+//                                 // minimumSize: Size(70, 30),
+//                                 shape: const RoundedRectangleBorder(
+//                                   borderRadius:
+//                                   BorderRadius.all(Radius.circular(2.0)),
+//                                 ),
+//                               ),
+//                             )),
+//                       ],
+//                     )
+//                   ],
+//                 ),
+//               )
+//             ],
+//           )),
+//     );
+//   }
+//
+//   Future<bool> showAlertDisapprove(String jobid, String category_id) async {
+//     return await showDialog(
+//       context: context,
+//       builder: (context) => AlertDialog(
+//           backgroundColor: Colors.yellow[50],
+//           title: const Text(
+//             'Are you sure?',
+//             style: TextStyle(color: Colors.black87),
+//           ),
+//           content: Wrap(
+//             children: <Widget>[
+//               Container(
+//                 child: Column(
+//                   children: <Widget>[
+//                     const Text(
+//                       'Do you want to disapprove this vendor',
+//                       style: TextStyle(color: Colors.black54),
+//                     ),
+//                     const SizedBox(
+//                       height: 10,
+//                     ),
+//                     Row(
+//                       crossAxisAlignment: CrossAxisAlignment.end,
+//                       mainAxisAlignment: MainAxisAlignment.end,
+//                       children: <Widget>[
+//                         Container(
+//                             child: ElevatedButton(
+//                               onPressed: () {
+//                                 Navigator.pop(context);
+//                                 SendApproval_vendor(
+//                                     jobid, 'Disapproved', category_id);
+//                               },
+//                               child: const Text("Yes",
+//                                   style: TextStyle(
+//                                       color: Colors.black54, fontSize: 13)),
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: Colors.green[200],
+//                                 minimumSize: const Size(70, 30),
+//                                 shape: const RoundedRectangleBorder(
+//                                   borderRadius:
+//                                   BorderRadius.all(Radius.circular(2.0)),
+//                                 ),
+//                               ),
+//                             )),
+//                         const SizedBox(
+//                           width: 10,
+//                         ),
+//                         Container(
+//                             child: ElevatedButton(
+//                               onPressed: () => {Navigator.pop(context)},
+//                               child: const Text("No",
+//                                   style: TextStyle(
+//                                       color: Colors.black54, fontSize: 13)),
+//                               style: ElevatedButton.styleFrom(
+//                                 backgroundColor: Colors.blue[200],
+//                                 minimumSize: const Size(70, 30),
+//                                 shape: const RoundedRectangleBorder(
+//                                   borderRadius:
+//                                   BorderRadius.all(Radius.circular(2.0)),
+//                                 ),
+//                               ),
+//                             )),
+//                       ],
+//                     )
+//                   ],
+//                 ),
+//               )
+//             ],
+//           )),
+//     );
+//   }
+//
+//   FutureOr onGoBack(dynamic value) {
+//     getVendorData();
+//   }
+// }
+
+
 class Disapproved_Vendors extends StatefulWidget {
   Disapproved_Vendors({
     Key? key,
@@ -54,9 +576,10 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
       primaryButtonColor = Colors.orange,
       secondaryButtonColor = Colors.orangeAccent;
 
-  Color bottomBarColor = Colors.white, bottomMenuIconColor = Color(0xFFFF7643);
+  Color bottomBarColor = Colors.white, bottomMenuIconColor = const Color(0xFFFF7643);
 
-  List<GetVendorListCategory> vendor_list = [];
+  // List<GetVendorListCategory> vendor_list = [];
+  List disapprovedVendorList = [];
 
   void getappUi() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -145,9 +668,10 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
       final resp = jsonDecode(response.body);
       int status = resp['status'];
       if (status == 1) {
-        VendorApprovalList Jobsmodel =
-        VendorApprovalList.fromJson(json.decode(response.body));
-        vendor_list = Jobsmodel.data;
+        disapprovedVendorList = resp["data"];
+        // VendorApprovalList Jobsmodel =
+        // VendorApprovalList.fromJson(json.decode(response.body));
+        // vendor_list = Jobsmodel.data;
 
         if (mounted) {
           setState(() {});
@@ -186,15 +710,15 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
       backgroundColor: Colors.grey[200],
       body: Column(
         children: <Widget>[
-          vendor_list.isNotEmpty?
+          disapprovedVendorList.isNotEmpty?
           SingleChildScrollView(
             child: Container(
                 height: MediaQuery.of(context).size.height / 1.27,
                 padding: const EdgeInsets.only(top: 10),
-                margin: EdgeInsets.only(left: 15, right: 15),
+                margin: const EdgeInsets.only(left: 15, right: 15),
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: vendor_list.length,
+                  itemCount: disapprovedVendorList.length,
                   itemBuilder: (context, index) => InkWell(
                     onTap: () {
                       // Navigator.push(context,
@@ -203,7 +727,7 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
                     child: Container(
                       height: 280,
                       width: MediaQuery.of(context).size.width,
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10)),
@@ -214,7 +738,7 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                vendor_list[index].SUPPLIERPROFILE.isEmpty
+                                disapprovedVendorList[index]["SUPPLIER_PROFILE"].isEmpty
                                     ? Expanded(
                                     flex: 5,
                                     child: Container(
@@ -222,7 +746,7 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
                                       MediaQuery.of(context).size.width,
                                       height: 220,
                                       color: Colors.grey[200],
-                                      child: Image(
+                                      child: const Image(
                                         image: AssetImage(
                                             'assets/thumbnail.jpeg'),
                                       ),
@@ -235,7 +759,8 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
                                     MediaQuery.of(context).size.width,
                                     height: 220,
                                     imageUrl:
-                                    "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${vendor_list[index].SUPPLIERPROFILE}",
+                                    // "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/products/${disapprovedVendorList[index]["SUPPLIER_PROFILE"]}",
+                                    "https://grobiz.app/GRBCRM2022/PoultryEcommerce/images/profiles/${disapprovedVendorList[index]["SUPPLIER_PROFILE"]}",
                                     placeholder: (context, url) =>
                                     new Container(
                                       width: MediaQuery.of(context)
@@ -257,16 +782,17 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
                                 Expanded(
                                     flex: 1,
                                     child: Padding(
-                                      padding: EdgeInsets.only(
+                                      padding: const EdgeInsets.only(
                                           left: 10,
                                           right: 10,
                                           top: 5,
                                           bottom: 5),
                                       child: Text(
-                                        vendor_list[index].FIRMNAME.isEmpty
+                                        disapprovedVendorList[index]["fields"][0]["field_value"].toString()
+                                            .isEmpty
                                             ? "N.A."
-                                            : vendor_list[index].FIRMNAME,
-                                        style: TextStyle(
+                                            : "${disapprovedVendorList[index]["fields"][0]["field_value"]}",
+                                        style: const TextStyle(
                                             color: Colors.blueGrey,
                                             fontSize: 20),
                                       ),
@@ -277,7 +803,7 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
                                         width:
                                         MediaQuery.of(context).size.width,
                                         child: Padding(
-                                          padding: EdgeInsets.only(
+                                          padding: const EdgeInsets.only(
                                               left: 10,
                                               right: 10,
                                               bottom: 2,
@@ -290,11 +816,10 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
                                               // SizedBox(width: 5,),
                                               Flexible(
                                                   child: Text(
-                                                    vendor_list[index]
-                                                        .OWNERNAME
+                                                    disapprovedVendorList[index]["fields"][1]["field_value"].toString()
                                                         .isEmpty
-                                                        ? "Supplier: N.A."
-                                                        : "Supplier: ${vendor_list[index].OWNERNAME}",
+                                                        ? "N.A."
+                                                        : "${disapprovedVendorList[index]["fields"][2]["field_value"]}",
                                                   ))
                                             ],
                                           ),
@@ -314,7 +839,7 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
                   ),
                 )),
           ):Container(),
-          isApiCallProcessing == false && vendor_list.isEmpty
+          isApiCallProcessing == false && disapprovedVendorList.isEmpty
               ? Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width,
@@ -367,7 +892,7 @@ class _Disapproved_VendorsState extends State<Disapproved_Vendors> {
           msg: "Vendor " + approval + " successfully",
           backgroundColor: Colors.grey,
         );
-        vendor_list.clear();
+        disapprovedVendorList.clear();
         getVendorData();
       } else {
         print('empty');

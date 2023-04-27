@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
+
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -413,7 +416,7 @@ class _OtpScreen extends State<OtpScreen> {
 
     final response = await http.post(uri,body: body);
 
-    print("B to c sign up OTP verify ${response.body}");
+    print("B to c sign in OTP verify ${response.body}");
     if (response.statusCode == 200) {
       isVerifyOtpApiProcessing=false;
 
@@ -421,7 +424,7 @@ class _OtpScreen extends State<OtpScreen> {
       String status=resp['status'];
 
       if(status=="1"){
-        print(resp.toString());
+        print("B to c sign in OTP verify ... ${resp.toString()}");
         // Fluttertoast.showToast(msg: 'Signed in successfully', backgroundColor: Colors.grey,);
         String userAutoId=resp['user_id'];
         String userType=resp['user_type'];
@@ -438,20 +441,19 @@ class _OtpScreen extends State<OtpScreen> {
     }
   }
 
-bool isvendorProcessing = false;
+  bool isvendorProcessing = false;
   String isVendorCreated = '';
 
   Future checkIsVendorAdded(String apptypeId,String userId,) async {
 
+    log("ADMIN_AUTO_ID<><><><><><>   $admin_auto_id");
 
     final body = {
-
       "ADMIN_AUTO_ID":admin_auto_id,
       "APP_TYPE_ID": apptypeId,
       "USER_AUTO_ID":userId,
-
     };
-    //print(body.toString());
+    print("check_pountry_vendor_status body...${body.toString()}");
 
     var url= AppConfig.grobizBaseUrl +check_pountry_vendor_status;
     print('baseurl'+url);
@@ -459,14 +461,13 @@ bool isvendorProcessing = false;
 
     final response = await http.post(uri,body: body);
 
-    print("Vendor verify ${response.body}");
+    print(" Vendor verify   ${response.statusCode} ${response.body} ");
     if (response.statusCode == 200) {
+      log("check_pountry_vendor_status....${response.statusCode}");
       isvendorProcessing=false;
 
       final resp=jsonDecode(response.body);
       String status=resp['status'];
-
-
 
       if(status=="1"){
         print(resp.toString());
@@ -480,11 +481,15 @@ bool isvendorProcessing = false;
         // saveLoginSession(userAutoId,userType,admin_auto_id,category_id);
       }
       else {
-        String msg=resp['msg'];
-        Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey,);
+        // log("resp['msg']....${resp['msg']}");
+        // String msg=resp['msg'];
+        // Fluttertoast.showToast(msg: msg, backgroundColor: Colors.grey,);
       }
 
       setState(() {});
+    }
+    else{
+      log("error");
     }
   }
 
@@ -503,9 +508,10 @@ bool isvendorProcessing = false;
     print("user id ${userID}");
     Fluttertoast.showToast(msg: "Signed in successfully", backgroundColor: Colors.grey,);
     if(userType == "Vendor"){
+      log("category_id <><><>  $category_id   userID   $userID ");
       await checkIsVendorAdded(category_id,userID!);
-      if(isVendorCreated.isNotEmpty){
-        print("inside yes empry");
+      if(isVendorCreated!=''){
+        print("inside yes empty");
         if(isVendorCreated == "Yes"){
           print("inside yes");
           // Navigator.of(context).pushNamedAndRemoveUntil(HomeScreen.routeName, (Route<dynamic> route) => false);
@@ -518,13 +524,15 @@ bool isvendorProcessing = false;
                 builder: (context) => VendorSignupCatagory()),
           );
         }
-      }else{
+      }
+      else{
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
               builder: (context) => VendorSignupCatagory()),
         );
       }
-    }else {
+    }
+    else {
       Navigator.of(context).pushNamedAndRemoveUntil(
           HomeScreen.routeName, (Route<dynamic> route) => false);
     }
